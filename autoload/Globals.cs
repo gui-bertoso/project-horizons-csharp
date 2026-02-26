@@ -3,6 +3,12 @@ using System;
 
 public partial class Globals : Node
 {
-	public Player Player;
-	public bool DevModeEnabled;
+	public static Globals I {get; private set;}
+	public Player LocalPlayer {get; set;}
+	public bool DevModeEnabled = true;
+
+    public override void _Ready()
+    {
+        I = this;
+    }
 }
