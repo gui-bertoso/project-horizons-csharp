@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bmcuyjc015a3i"]
 
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_mowe0"]
-[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://player/Player.tscn" id="2_7ksiy"]
+[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="2_7ksiy"]
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 

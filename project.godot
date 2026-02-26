@@ -19,6 +19,10 @@ config/icon="res://Icon.svg"
 
 Globals="*uid://dxu3j7isnds5t"
 
+[display]
+
+window/vsync/vsync_mode=0
+
 [dotnet]
 
 project/assembly_name="project-horizons-cs"
@@ -26,11 +30,11 @@ project/assembly_name="project-horizons-cs"
 [file_customization]
 
 folder_colors={
+"res://Assets/": "yellow",
+"res://Autoload/": "red",
 "res://Levels/": "green",
-"res://assets/": "yellow",
-"res://autoload/": "red",
-"res://player/": "blue",
-"res://tilesets/": "pink"
+"res://Player/": "blue",
+"res://Tilesets/": "pink"
 }
 
 [input]
