@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bo41mbgikuxqk"]
+
+[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://tilesets/Layer0Tileset.tres" id="1_gup2b"]
+
+[node name="LevelTemplate" type="Node2D" unique_id=1049057679]
+
+[node name="Scenario" type="Node2D" parent="." unique_id=2043432428]
+
+[node name="Layer0" type="TileMapLayer" parent="Scenario" unique_id=1763907386]
+tile_set = ExtResource("1_gup2b")
