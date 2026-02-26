@@ -1,3 +1,7 @@
 [gd_scene format=3 uid="uid://lbt34dfemles"]
 
+[ext_resource type="PackedScene" uid="uid://blfohvpid3goa" path="res://Interface/DebugPanel/DebugPanel.tscn" id="1_vy2b5"]
+
 [node name="HUD" type="CanvasLayer" unique_id=1839957270]
+
+[node name="DebugPanel" parent="." unique_id=1513264503 instance=ExtResource("1_vy2b5")]
