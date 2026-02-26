@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Stats : Node
+public partial class PlayerStats : Node
 {
 	public int BaseHealth = 10;
 	public int BaseMoveSpeed = 10;
@@ -13,9 +13,9 @@ public partial class Stats : Node
 
 	public override void _Ready()
 	{
-		if (Globals.DevModeEnabled)
+		if (Globals.I.DevModeEnabled)
 		{
-			SetDevStats()
+			SetDevStats();
 		}
 		UpdateStats();
 	}
@@ -33,6 +33,6 @@ public partial class Stats : Node
 	public void SetDevStats()
 	{
 		ExtraHealth = 1200;
-		ExtraMoveSpeed = 250;
+		ExtraMoveSpeed = 350;
 	}
 }
