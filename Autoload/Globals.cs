@@ -7,6 +7,8 @@ public partial class Globals : Node
 	public Player LocalPlayer {get; set;}
 	public bool DevModeEnabled = true;
 
+    public Vector2 CurrentPlayerChunk;
+
     public override void _Ready()
     {
         I = this;
