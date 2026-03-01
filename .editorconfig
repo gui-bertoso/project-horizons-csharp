@@ -2,3 +2,6 @@ root = true
 
 [*]
 charset = utf-8
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = silent

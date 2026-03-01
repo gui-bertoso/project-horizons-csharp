@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b1shirisnhtrs"]
+
+[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="1_7ae1w"]
+[ext_resource type="Script" uid="uid://d4jih0bkgc7eb" path="res://NewLevelGeneratorTests/LevelGenerator.cs" id="2_qcmoa"]
+
+[node name="TilemapGenerator" type="TileMapLayer" unique_id=426732340]
+tile_set = ExtResource("1_7ae1w")
+script = ExtResource("2_qcmoa")
