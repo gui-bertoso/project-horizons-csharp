@@ -13,6 +13,7 @@ public partial class DebugPanel : Control
 	private Label _UsedDashChargesLabel;
 	private Label _NotDashingTimeLabel;
 	private Label _FramesPerSecondLabel;
+	private Label _CurrentChunkLabel;
 
 
     public override void _Ready()
@@ -24,6 +25,7 @@ public partial class DebugPanel : Control
         _UsedDashChargesLabel = GetNode<Label>("Panel/VBoxContainer/HBoxContainer5/Value");
         _NotDashingTimeLabel = GetNode<Label>("Panel/VBoxContainer/HBoxContainer6/Value");
         _FramesPerSecondLabel = GetNode<Label>("Panel2/VBoxContainer/HBoxContainer/Value");
+        _CurrentChunkLabel = GetNode<Label>("Panel/VBoxContainer/HBoxContainer7/Value");
     }
 
 	public override void _Process(double delta)
@@ -34,6 +36,7 @@ public partial class DebugPanel : Control
 	public void UpdateData()
 	{
 		_PlayerPositionLabel.Text = Globals.I.LocalPlayer.GlobalPosition.ToString();
+		_CurrentChunkLabel.Text = Globals.I.CurrentPlayerChunk.ToString();
 		_PlayerVelocityLabel.Text = Globals.I.LocalPlayer.Velocity.ToString();
 		_DashDurationCountdownLabel.Text = Globals.I.LocalPlayer.DashDurationCountdown.ToString();
 		_DashCooldownCountLabel.Text = Globals.I.LocalPlayer.DashCooldownCount.ToString();

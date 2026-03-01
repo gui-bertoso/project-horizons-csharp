@@ -16,7 +16,7 @@ layout_mode = 0
 offset_left = 10.0
 offset_top = 61.0
 offset_right = 300.0
-offset_bottom = 225.0
+offset_bottom = 266.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1623783731]
 layout_mode = 1
@@ -25,10 +25,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -127.5
-offset_top = -65.5
-offset_right = 251.0
-offset_bottom = 65.5
+offset_left = -136.0
+offset_top = -93.5
+offset_right = 242.5
+offset_bottom = 91.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -119,6 +119,21 @@ layout_mode = 2
 text = ":"
 
 [node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer6" unique_id=1093002986]
+layout_mode = 2
+text = "Value"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=598698910]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer7" unique_id=55259290]
+layout_mode = 2
+text = "CurrentChunk"
+
+[node name="Label2" type="Label" parent="Panel/VBoxContainer/HBoxContainer7" unique_id=1692449012]
+layout_mode = 2
+text = ":"
+
+[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer7" unique_id=1384177325]
 layout_mode = 2
 text = "Value"
 

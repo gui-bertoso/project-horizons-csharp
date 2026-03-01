@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
+using System.Numerics;
 using Godot;
 
 public sealed class ChunkData
@@ -15,7 +18,7 @@ public sealed class ChunkData
 	}
 }
 
-public partial class NewLevelGenerator : TileMapLayer
+public partial class NextLevelGenerator : TileMapLayer
 {
 
 	private FastNoiseLite Layer0_NoiseImage;
@@ -31,11 +34,18 @@ public partial class NewLevelGenerator : TileMapLayer
 
 	private double Delta;
 
-	private int chunk_size_x = 100;
-	private int chunk_size_y = 200;
+	private int chunkSizeX = 25;
+	private int chunkSizeY = 75;
 
-	private int level_size_x = 400;
-	private int level_size_y = 600;
+	private int levelSizeX = 2000;
+	private int levelSizeY = 2800;
+
+	private Vector2I playerPosition;
+	private Vector2I currentPlayerChunk = new (0, 0);
+
+	const int SourceID = 0;
+
+	Vector2I lastRenderedChunk;
 
 	private Dictionary<Vector2I, ChunkData> chunksDataDictionary = new ();
 
@@ -50,36 +60,99 @@ public partial class NewLevelGenerator : TileMapLayer
     public override void _Process(double delta)
     {
         Delta = delta;
+
+		Vector2I playerPosition = LocalToMap(ToLocal(Globals.I.LocalPlayer.Position));
+		Vector2I currentPlayerChunk = new (Mathf.FloorToInt(playerPosition.X / chunkSizeX), Mathf.FloorToInt(playerPosition.Y / chunkSizeY));
+		Globals.I.CurrentPlayerChunk = currentPlayerChunk;
+
+		RenderChunks();
+		
+    }
+
+	public void RenderChunks()
+	{
+		int renderDistance = 1;
+		for (int y = -renderDistance; y <= renderDistance; y++)
+		for(int x = -renderDistance; x <= renderDistance; x++)
+			RenderChunk(currentPlayerChunk + new Vector2I(x, y));
+	}
+
+	public void RenderChunk(Vector2I ChunkPosition)
+	{
+		int halfX = chunkSizeX / 2;
+		int halfY = chunkSizeY / 2;
+
+		int originX = ChunkPosition.X * chunkSizeX;
+		int originY = ChunkPosition.Y * chunkSizeY;
+
+		int i = 0;
+		for (int y = -halfY; y < halfY; y++)
+		{
+			for (int x = -halfX; x < halfX; x++)
+			{
+				ChunkData current_chunk = chunksDataDictionary[ChunkPosition];
+				int id = current_chunk.Layer0[i++];
+				
+				Vector2I cell = new (originX + x, originY + y);
+
+				if (id == -1)
+				{
+					SetCell(cell, -1);
+					continue;
+				}
+
+				SetCell(cell, SourceID, blockIDs[id]);
+
+			}
+		}
+	}
+
+    public override void _Ready()
+    {
+        SetNoises();
+		GenerateLevel();
     }
 
 	public void GenerateLevel()
 	{
+		int chunksX = levelSizeX / chunkSizeX;
+		int chunksY = levelSizeY / chunkSizeY;
 		
+		for (int y = -chunksY; y < chunksY; y++)
+		{
+			for (int x = -chunksX; x < chunksX; x++)
+			{
+				Vector2I grid_coordinade = new (x, y);
+				GenerateChunkData(grid_coordinade);
+			}
+		}
 	}
 
-	public void GenerateChunkData(Vector2I grid_coordinades)
+	public void GenerateChunkData(Vector2I gridCoordinades)
 	{
 
-		GD.PrintT("CHUNK: creating new");
+		GD.Print($"CHUNK SYSTEM: creating new in {gridCoordinades}");
 
-		List<int> new_chunk_layer0_data = [];
-		List<int> new_chunk_layer1_data = [];
+		List<int> newChunkLayer0Data = [];
+		List<int> newChunkLayer1Dta = [];
 		
-		Vector2 center = new(level_size_x/2f, level_size_y/2f);
-		float levelRadius = Mathf.Min(level_size_x, level_size_y) * .42f;
+		Vector2I center = new ((gridCoordinades.X * chunkSizeX)/2, (gridCoordinades.Y * chunkSizeY)/2);
+		float levelRadius = Mathf.Min(levelSizeX, levelSizeY) * .42f;
 
-		int halfX = chunk_size_x / 2;
-		int halfY = chunk_size_y / 2;
+		int halfX = chunkSizeX / 2;
+		int halfY = chunkSizeY / 2;
 
 		for (int y = -halfY; y < halfY; y++)
 		{
 			for (int x = -halfX; x < halfX; x++)
 			{
-				Vector2 p = new(x, y);
-				Vector2 v = p;
+				Vector2I global = new(
+					gridCoordinades.X * chunkSizeX + x,
+					gridCoordinades.Y * chunkSizeY + y
+				);
 
-				float dist = v.Length();
-				float angle = Mathf.Atan2(v.Y, v.X);
+				float dist = global.Length();
+				float angle = Mathf.Atan2(global.Y, global.X);
 				float ax = Mathf.Cos(angle) * coastDetails;
 				float ay = Mathf.Sin(angle) * coastDetails;
 
@@ -91,30 +164,29 @@ public partial class NewLevelGenerator : TileMapLayer
 				mask = Mathf.Clamp(mask, 0f, 1f);
 				mask = mask * mask;
 
-				float n = Layer0_NoiseImage.GetNoise2D(x * insideDetails, y * insideDetails);
-				float inside01 = (n + 1f);
+				float n = Layer0_NoiseImage.GetNoise2D(global.X * insideDetails, global.Y * insideDetails);
+				float inside01 = (n + 1f) * .5f;
 
 				float value = mask * (.65f + inside01 * .35f);
 
 				if (value > threshould)
 				{
-					new_chunk_layer0_data.Add(1);
+					newChunkLayer0Data.Add(1);
 				} else if (value > threshould - .05f && value < threshould)
 				{
-					new_chunk_layer0_data.Add(2);
+					newChunkLayer0Data.Add(2);
 				}
 				else
 				{
-					new_chunk_layer0_data.Add(-1);
+					newChunkLayer0Data.Add(-1);
 				}
 			}
 		}
-		GD.PrintT($"CHUNK: created in {Delta}");
+		GD.Print($"CHUNK SYSTEM: created in {Delta}ms");
 
-		ChunkData new_chunk_data = new(new_chunk_layer0_data, []);
+		ChunkData new_chunk_data = new(newChunkLayer0Data, []);
 
-		chunksDataDictionary[grid_coordinades] = new_chunk_data;
-		GD.PrintT($"CHUNK: new chunk data: {new_chunk_data}");
+		chunksDataDictionary[gridCoordinades] = new_chunk_data;
 	}
 
 
