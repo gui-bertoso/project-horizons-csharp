@@ -1,3 +1,20 @@
 {
-    "godotTools.editorPath.godot4": "/home/gbertoso/Downloads/Godot_v4.7-dev1_mono_linux_x86_64/Godot_v4.7-dev1_mono_linux.x86_64"
+    "godotTools.editorPath.godot4": "/home/gbertoso/Downloads/Godot_v4.7-dev1_mono_linux_x86_64/Godot_v4.7-dev1_mono_linux.x86_64",
+    "workbench.statusBar.visible": false,
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "none",
+    "editor.lineNumbers": "relative",
+    "editor.scrollbar.vertical": "hidden",
+    "editor.scrollbar.horizontal": "hidden",
+    "breadcrumbs.enabled": false,
+    "editor.glyphMargin": false,
+    "workbench.activityBar.location": "hidden",
+    "editor.guides.indentation": false,
+    "editor.fontFamily": "JetBrains Mono",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.fontWeight": "500",
+    "editor.cursorBlinking": "solid",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true
 }
