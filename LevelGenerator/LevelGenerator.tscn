@@ -6,3 +6,9 @@
 [node name="TilemapGenerator" type="TileMapLayer" unique_id=426732340]
 tile_set = ExtResource("1_7ae1w")
 script = ExtResource("1_xjjrg")
+
+[node name="Details" type="TileMapLayer" parent="." unique_id=1598290285]
+z_index = 1
+y_sort_enabled = true
+tile_set = ExtResource("1_7ae1w")
+rendering_quadrant_size = 32

@@ -4,7 +4,10 @@ using System;
 public partial class LevelGenerator : TileMapLayer
 {
 
+	private TileMapLayer DetailsTileMap;
+
 	private FastNoiseLite Layer0_NoiseImage;
+	private FastNoiseLite Layer1_NoiseImage;
 	private FastNoiseLite.NoiseTypeEnum Layer0_NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
 	private int Layer0_Seed;
 	private float Layer0_Frequency = .01f;
@@ -20,6 +23,7 @@ public partial class LevelGenerator : TileMapLayer
 
 	public override void _Ready()
 	{
+		DetailsTileMap = GetNode<TileMapLayer>("Details");
 		SetNoises();
 		GenerateLevel();
 	}
@@ -71,12 +75,43 @@ public partial class LevelGenerator : TileMapLayer
 				}
 			}
 		}
+
+		for (int y = -halfY; y < halfY; y++)
+		{
+			for (int x = -halfX; x < halfX; x++)
+			{
+				float value = Layer1_NoiseImage.GetNoise2D(x, y);
+
+				Vector2I cell_position = new (x, y);
+
+				var block_cell = GetCellSourceId(cell_position);
+				GD.Print($"{cell_position}: {block_cell}");
+
+				if (value > 0.2 && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 0))
+				{
+					var rng = new RandomNumberGenerator();
+					if (rng.RandiRange(0, 2) == 1)
+					{
+						DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 0));
+					}
+					else
+					{
+						DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 1));
+					}
+				}
+				else
+				{
+					DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+				}
+			}
+		}
 	}
 
 	public void SetNoises()
 	{
 		Layer0_NoiseImage = new FastNoiseLite();
 		Layer0_NoiseImage.NoiseType = Layer0_NoiseType;
+		Layer1_NoiseImage = new FastNoiseLite();
 
 		var rng = new Godot.RandomNumberGenerator();
 		Layer0_Seed = rng.RandiRange(0, 99999999);

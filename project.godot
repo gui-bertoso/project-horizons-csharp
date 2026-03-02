@@ -32,7 +32,9 @@ project/assembly_name="project-horizons-cs"
 folder_colors={
 "res://Assets/": "yellow",
 "res://Autoload/": "red",
+"res://Interface/": "orange",
 "res://Levels/": "green",
+"res://NewLevelGeneratorTests/": "purple",
 "res://Player/": "blue",
 "res://Tilesets/": "pink"
 }
