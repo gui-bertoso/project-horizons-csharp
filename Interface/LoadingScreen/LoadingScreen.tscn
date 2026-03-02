@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://xvuy4nrq8uyd"]
+
+[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/Portal.tscn" id="1_65e70"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=622922478]
+
+[node name="Control" type="Control" parent="." unique_id=1361937680]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=574457574]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="Label" type="Label" parent="Control" unique_id=1267142374]
+layout_mode = 0
+offset_left = 510.0
+offset_top = 373.0
+offset_right = 625.0
+offset_bottom = 396.0
+text = "[MessageHere]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Node2D" parent="Control" unique_id=1591361011 instance=ExtResource("1_65e70")]
+position = Vector2(565, 311.99997)
