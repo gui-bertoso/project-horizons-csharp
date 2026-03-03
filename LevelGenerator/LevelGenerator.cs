@@ -13,6 +13,20 @@ public partial class LevelGenerator : TileMapLayer
 	private float Layer0_Frequency = .01f;
 	private int Layer0_FractalOctaves = 8;
 
+	private int LevelBiome_ID;
+	/*
+	Biome IDS
+		- 0 = Forest
+		- 1 = Dark Forest
+		- 2 = Dry Forest
+		- 3 = Snowlands
+		- 4 = Icelands
+		- 5 = Desert
+		- 6 = Beach
+		- 7 = Old Beach
+		- 8 = Vulcanic
+	*/
+
 	private int level_size_x = 400;
 	private int level_size_y = 600;
 
@@ -21,10 +35,13 @@ public partial class LevelGenerator : TileMapLayer
 	private float coastStrength = .55f;
 	private float threshould = .45f;
 
+
+
 	public override void _Ready()
 	{
 		DetailsTileMap = GetNode<TileMapLayer>("Details");
 		SetNoises();
+		SetBiome();
 		GenerateLevel();
 	}
 
@@ -62,17 +79,125 @@ public partial class LevelGenerator : TileMapLayer
 
 				float value = mask * (.65f + inside01 * .35f);
 
-				if (value > threshould)
+				switch (LevelBiome_ID)
 				{
-					SetCell(new Vector2I(x, y), 0, new Vector2I(1, 0));
-				} else if (value > threshould - .05f && value < threshould)
-				{
-					SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+					case (0): 
+						if (value > .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 0));
+						} else if (value > .40f && value < .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+						break;
+					case (1): 
+						if (value > .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 4));
+						} else if (value > .40f && value < .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+						break;
+					case (2): 
+						if (value > .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 3));
+						} else if (value > .40f && value < .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+						break;
+					case (3): 
+						if (value > .45f)
+						{
+							if (new Godot.RandomNumberGenerator().RandiRange(0, 1) == 1)
+							{
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 1));
+							}
+							else
+							{
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
+							}
+						} else if (value > .40f && value < .45f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+						break;
+					case (4): 
+
+						FastNoiseLite IceNoise = new FastNoiseLite();
+						IceNoise.Seed = Layer0_Seed;
+
+						if (value > .40f)
+						{						
+							if (IceNoise.GetNoise2D(x, y) > .35f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(2, 1));
+						} else if (IceNoise.GetNoise2D(x, y) > .25f && IceNoise.GetNoise2D(x, y) < .35f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
+						}
+						} else if (value > .35f && value < .40f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+
+
+						break;
+					case (5): 
+						FastNoiseLite SecondaryBlockNoise = new FastNoiseLite();
+						SecondaryBlockNoise.Seed = Layer0_Seed;
+
+						if (value > .40f)
+						{
+							if (SecondaryBlockNoise.GetNoise2D(x, y) > .35f)
+							{
+								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 2));
+							} else if (SecondaryBlockNoise.GetNoise2D(x, y) > .27f && SecondaryBlockNoise.GetNoise2D(x, y) < .35f)
+							{
+								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 1));
+							}
+							else
+							{
+								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 0));
+							}
+						} else if (value > .35f && value < .40f)
+						{
+							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+						}
+						else
+						{
+							SetCell(new Vector2I(x, y), -1);
+						}
+						break;
 				}
-				else
-				{
-					SetCell(new Vector2I(x, y), -1);
-				}
+
+
 			}
 		}
 
@@ -118,5 +243,12 @@ public partial class LevelGenerator : TileMapLayer
 		Layer0_NoiseImage.Seed = Layer0_Seed;
 		Layer0_NoiseImage.FractalOctaves = Layer0_FractalOctaves;
 		Layer0_NoiseImage.Frequency = Layer0_Frequency;
+	}
+
+	public void SetBiome()
+	{
+		var rng = new Godot.RandomNumberGenerator();
+		LevelBiome_ID = rng.RandiRange(0, 5);
+		//LevelBiome_ID = 6;
 	}
 }
