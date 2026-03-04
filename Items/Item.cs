@@ -14,6 +14,7 @@ public partial class Item : Resource
 	}
 	public enum ITEM_CLASS
 	{
+		All,
 		Mellee,
 		Mage,
 		HeavyMellee,
