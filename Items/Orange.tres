@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://80jmqt7odv8r"]
+
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="1_sbh4d"]
+
+[resource]
+script = ExtResource("1_sbh4d")
+ItemName = "Orange"
+ItemType = 5
+ItemDescription = "A citric fruit"
