@@ -12,3 +12,9 @@ z_index = 1
 y_sort_enabled = true
 tile_set = ExtResource("1_7ae1w")
 rendering_quadrant_size = 32
+
+[node name="Details2" type="TileMapLayer" parent="." unique_id=1338576977]
+z_index = 1
+y_sort_enabled = true
+tile_set = ExtResource("1_7ae1w")
+rendering_quadrant_size = 32
