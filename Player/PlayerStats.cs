@@ -4,7 +4,7 @@ using System;
 public partial class PlayerStats : Node
 {
 	public int BaseHealth = 10;
-	public int BaseMoveSpeed = 10;
+	public int BaseMoveSpeed = 180;
 
 	public int ExtraHealth = 0;
 	public int ExtraMoveSpeed = 0;
@@ -29,29 +29,27 @@ public partial class PlayerStats : Node
 
 	public override void _Ready()
 	{
-		if (Globals.I.DevModeEnabled)
-		{
-			SetDevStats();
-		}
+		Globals.I.DevModeUpdated += UpdateStats;
 		UpdateStats();
 	}
 
 	public void UpdateStats()
 	{
+		if (Globals.I.DevModeEnabled == true)
+		{
+			Health = 3000;
+			MoveSpeed = 350;
+			DashDuration = 0.05f;
+			DashCooldown = .5f;
+			DashSpeed = 4000;
+			DashCharges = 5;
+			return;
+		}
 		Health = BaseHealth + ExtraHealth;
 		MoveSpeed = BaseMoveSpeed + ExtraMoveSpeed;
 		DashDuration = BaseDashDuration + ExtraDashDuration;
 		DashCooldown = BaseDashCooldown + ExtraDashCooldown;
 		DashSpeed = BaseDashSpeed + ExtraDashSpeed;
 		DashCharges = BaseDashCharges + ExtraDashCharges;
-	}
-
-	public void SetDevStats()
-	{
-		ExtraHealth = 1200;
-		ExtraMoveSpeed = 350;
-		ExtraDashCooldown = -1.2f;
-		ExtraDashDuration = 0.05f;
-		ExtraDashCharges = 5;
 	}
 }
