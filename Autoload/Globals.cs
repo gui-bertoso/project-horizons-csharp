@@ -8,6 +8,7 @@ public partial class Globals : Node
 	public static Globals I {get; private set;}
 	public Player LocalPlayer {get; set;}
 	public bool DevModeEnabled = false;
+    public bool InMenu = false;
 
     public Vector2 CurrentPlayerChunk;
 

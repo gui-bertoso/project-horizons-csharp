@@ -56,7 +56,9 @@ public partial class DebugPanel : Control
 				VerifyCheatCode();
 				_CheatInput.Text = "";
 				_CheatInput.ReleaseFocus();
+				Globals.I.InMenu= false;
 			}
+			Globals.I.InMenu= true;
 		}
 	}
 
