@@ -14,7 +14,7 @@ public partial class DebugPanel : Control
 	private Label _NotDashingTimeLabel;
 	private Label _FramesPerSecondLabel;
 	private Label _CurrentChunkLabel;
-
+	private TextEdit _CheatInput;
 
     public override void _Ready()
     {
@@ -26,11 +26,13 @@ public partial class DebugPanel : Control
         _NotDashingTimeLabel = GetNode<Label>("Panel/VBoxContainer/HBoxContainer6/Value");
         _FramesPerSecondLabel = GetNode<Label>("Panel2/VBoxContainer/HBoxContainer/Value");
         _CurrentChunkLabel = GetNode<Label>("Panel/VBoxContainer/HBoxContainer7/Value");
+		_CheatInput = GetNode<TextEdit>("Panel4/TextEdit");
     }
 
 	public override void _Process(double delta)
 	{
 		UpdateData();
+		UpdateCheatEditor();
 	}
 
 	public void UpdateData()
@@ -43,5 +45,35 @@ public partial class DebugPanel : Control
 		_UsedDashChargesLabel.Text = Globals.I.LocalPlayer.UsedDashCharges.ToString();
 		_NotDashingTimeLabel.Text = Globals.I.LocalPlayer.NotDashingTime.ToString();
 		_FramesPerSecondLabel.Text = Engine.GetFramesPerSecond().ToString();
+	}
+
+	public void UpdateCheatEditor()
+	{
+		if (_CheatInput.HasFocus())
+		{
+			if (Input.IsActionJustPressed("ui_accept"))
+			{
+				VerifyCheatCode();
+				_CheatInput.Text = "";
+				_CheatInput.ReleaseFocus();
+			}
+		}
+	}
+
+
+	public void VerifyCheatCode()
+	{
+		string input = _CheatInput.Text.ToLower();
+		switch (input)
+		{
+			case ("code.devmode.true"):
+				Globals.I.DevModeEnabled = true;
+				Globals.I.EmitSignal(Globals.SignalName.DevModeUpdated);
+				break;
+			case ("code.devmode.false"):
+				Globals.I.DevModeEnabled = false;
+				Globals.I.EmitSignal(Globals.SignalName.DevModeUpdated);
+				break;
+		}
 	}
 }

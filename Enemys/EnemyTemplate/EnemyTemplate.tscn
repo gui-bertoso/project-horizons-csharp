@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://btxaahjihi36b"]
+
+[ext_resource type="Script" uid="uid://6g0lm4udf7fl" path="res://Enemys/EnemyTemplate/EnemyTemplate.cs" id="1_3tre6"]
+
+[node name="EnemyTemplate" type="CharacterBody2D" unique_id=1875013965]
+script = ExtResource("1_3tre6")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=728830498]
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=494260580]
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1331474415]
+
+[node name="Collision" type="CollisionShape2D" parent="Hitbox" unique_id=48495568]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=60564881]
+
+[node name="Label" type="Label" parent="." unique_id=491899875]
+offset_right = 28.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 8
+text = "aaaaaa"
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=1732603855]
+
+[node name="Collision" type="CollisionShape2D" parent="AttackArea" unique_id=1961384960]

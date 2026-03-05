@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_mowe0"]
 [ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="2_7ksiy"]
 [ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/Portal.tscn" id="2_aq0ab"]
+[ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="4_aq0ab"]
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 
@@ -15,3 +16,7 @@ tile_map_data = PackedByteArray("AAALAP7/AAAAAAEAAAALAP3/AAAAAAEAAAAMAP3/AAAAAAE
 position = Vector2(1422, 108.00001)
 
 [node name="Player" parent="." index="1" unique_id=621873643 instance=ExtResource("2_7ksiy")]
+
+[node name="Slime" parent="." index="3" unique_id=1875013965 instance=ExtResource("4_aq0ab")]
+position = Vector2(445, 498)
+DetectionDistance = 358
