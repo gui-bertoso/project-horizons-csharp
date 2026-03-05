@@ -281,3 +281,20 @@ text = ":"
 layout_mode = 2
 theme_override_font_sizes/font_size = 9
 text = "Value"
+
+[node name="Panel4" type="Panel" parent="." unique_id=1922507592]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 242.0
+offset_right = 287.0
+offset_bottom = 271.0
+
+[node name="TextEdit" type="TextEdit" parent="Panel4" unique_id=874637811]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 272.0
+offset_bottom = 25.0
+theme_override_constants/line_spacing = -5
+theme_override_font_sizes/font_size = 14
+placeholder_text = "code.codename.value"
