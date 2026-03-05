@@ -24,6 +24,10 @@ public partial class Player : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (Globals.I.InMenu)
+		{
+			return;
+		}
 		MovementBehavior();
 		DashBehavior((float)delta);
 		MoveAndSlide();
