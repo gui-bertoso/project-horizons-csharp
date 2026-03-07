@@ -23,8 +23,12 @@ public partial class DebugPanel : Control
 
 	private Panel _Panel3;
 
+	private VBoxContainer _VContainer => GetNode<VBoxContainer>("VBoxContainer");
+
 	private Player LocalPlayer => Globals.I.LocalPlayer;
 	private LevelGenerator LocalLevelGenerator => Globals.I.LocalLevelGenerator;
+
+	private bool Enabled = false;
 
 	/*
 	Biome IDS
@@ -102,8 +106,16 @@ public partial class DebugPanel : Control
 
 	public override void _Process(double delta)
 	{
-		UpdateData();
-		UpdateCheatEditor();
+		if (Input.IsActionJustPressed("debug"))
+		{
+			Enabled = !Enabled;
+			_VContainer.Visible = Enabled;
+		}
+		if (Enabled == true)
+		{
+			UpdateData();
+			UpdateCheatEditor();
+		}
 	}
 
 	public void UpdateData()

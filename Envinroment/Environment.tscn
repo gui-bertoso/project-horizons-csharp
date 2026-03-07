@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://batl3kqaga0xt"]
+
+[ext_resource type="Script" uid="uid://b2c1ybhqimqr2" path="res://Envinroment/Environment.cs" id="1_dypck"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="1_eag3u"]
+
+[sub_resource type="Environment" id="Environment_3pigm"]
+background_mode = 3
+tonemap_mode = 3
+glow_enabled = true
+glow_normalized = true
+adjustment_enabled = true
+adjustment_brightness = 0.89
+adjustment_contrast = 0.965
+adjustment_saturation = 1.32
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dypck"]
+atlas = ExtResource("1_eag3u")
+region = Rect2(232, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pfccg"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(656, 49.755, 1)
+angle_min = -179.99998
+angle_max = 180.00002
+gravity = Vector3(0, 98, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=10120490]
+environment = SubResource("Environment_3pigm")
+script = ExtResource("1_dypck")
+
+[node name="BaseModulate" type="CanvasModulate" parent="." unique_id=312499868]
+visible = false
+color = Color(0.34532225, 0.34532225, 0.34532225, 1)
+
+[node name="SnowBiomeEffects" type="Node2D" parent="." unique_id=1591965983]
+visible = false
+
+[node name="SnowModulate" type="CanvasModulate" parent="SnowBiomeEffects" unique_id=1659501640]
+color = Color(0, 0.7465407, 0.7585016, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SnowBiomeEffects" unique_id=1083686960]
+visible = false
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="SnowBiomeEffects/CanvasLayer" unique_id=1385254304]
+visible = false
+position = Vector2(586, -21)
+amount = 42
+texture = SubResource("AtlasTexture_dypck")
+lifetime = 5.9799999999999995
+process_material = SubResource("ParticleProcessMaterial_pfccg")

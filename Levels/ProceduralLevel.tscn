@@ -1,16 +1,8 @@
 [gd_scene format=3 uid="uid://caeqsflrr74fw"]
 
 [ext_resource type="PackedScene" uid="uid://cuiypyxqvmafj" path="res://LevelGenerator/LevelGenerator.tscn" id="1_1celh"]
-[ext_resource type="PackedScene" uid="uid://lbt34dfemles" path="res://Interface/Hud/Hud.tscn" id="2_1celh"]
-[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="3_1celh"]
+[ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_3xjt4"]
 
-[node name="LevelTemplate" type="Node2D" unique_id=1049057679]
+[node name="LevelTemplate" unique_id=1049057679 instance=ExtResource("1_3xjt4")]
 
-[node name="Scenario" type="Node2D" parent="." unique_id=2043432428]
-
-[node name="TilemapGenerator" parent="Scenario" unique_id=426732340 instance=ExtResource("1_1celh")]
-y_sort_enabled = true
-
-[node name="HUD" parent="." unique_id=1839957270 instance=ExtResource("2_1celh")]
-
-[node name="Player" parent="." unique_id=621873643 instance=ExtResource("3_1celh")]
+[node name="TilemapGenerator" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=426732340 instance=ExtResource("1_1celh")]
