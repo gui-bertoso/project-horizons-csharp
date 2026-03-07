@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://33yotgc3cmmw"]
+
+[ext_resource type="Texture2D" uid="uid://cjdexf5t6gn37" path="res://Assets/Weapons/HeavyMellee/DebugHammer.png" id="1_va5n4"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_ma6yj"]
+
+[resource]
+script = ExtResource("2_ma6yj")
+ItemName = "Orange"
+ItemType = 5
+ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("1_va5n4")

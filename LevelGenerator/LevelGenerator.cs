@@ -15,7 +15,7 @@ public partial class LevelGenerator : TileMapLayer
 	private float Layer0_Frequency = .01f;
 	private int Layer0_FractalOctaves = 8;
 
-	private int LevelBiome_ID;
+	public int LevelBiome_ID;
 	/*
 	Biome IDS
 		- 0 = Forest
@@ -39,6 +39,7 @@ public partial class LevelGenerator : TileMapLayer
 
 	public override void _Ready()
 	{
+		Globals.I.LocalLevelGenerator = this;
 		DetailsTileMap = GetNode<TileMapLayer>("Details");
 		Details2TileMap = GetNode<TileMapLayer>("Details2");
 		SetLevelData();
@@ -53,7 +54,6 @@ public partial class LevelGenerator : TileMapLayer
 
 	public void GenerateLevel()
 	{
-
 		Vector2 center = new(LevelSizeX/2f, LevelSizeY/2f);
 		float levelRadius = Mathf.Min(LevelSizeX, LevelSizeY) * .42f;
 

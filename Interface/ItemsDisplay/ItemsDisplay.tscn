@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c7ybtt5poys77"]
 
+[ext_resource type="Script" uid="uid://dt6umio8u2jas" path="res://Interface/ItemsDisplay/ItemsDisplay.cs" id="1_15uhm"]
 [ext_resource type="Texture2D" uid="uid://bnbpumt0f28pm" path="res://Assets/Interface/InterfaceSpriteSheet.png" id="1_85j5r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_15uhm"]
@@ -38,6 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_15uhm")
 
 [node name="Control" type="Control" parent="." unique_id=1280991461]
 layout_mode = 1
