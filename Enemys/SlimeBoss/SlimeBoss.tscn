@@ -109,7 +109,9 @@ script = ExtResource("2_g0q6i")
 
 [node name="Sprite" parent="." index="0" unique_id=728830498]
 position = Vector2(0, -32)
+scale = Vector2(2, 2)
 texture = ExtResource("3_s0ueu")
+offset = Vector2(0, -15.98)
 
 [node name="Collision" parent="." index="1" unique_id=494260580]
 position = Vector2(0, -9.000001)

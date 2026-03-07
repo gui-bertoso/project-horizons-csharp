@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://6afjihoylen2"]
+
+[ext_resource type="Script" uid="uid://8qxqmrq2mua1" path="res://Interface/SavesManager/SaveSlot.cs" id="1_uutvi"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kiwph"]
+
+[node name="Panel" type="Panel" unique_id=76235896]
+custom_minimum_size = Vector2(593, 80)
+offset_right = 593.0
+offset_bottom = 80.0
+script = ExtResource("1_uutvi")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="." unique_id=88259447]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 7.0
+offset_top = -29.0
+offset_right = 586.0
+offset_bottom = 29.0
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=1167092038]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_kiwph")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer" unique_id=1391143057]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer" unique_id=1879918837]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "LevelNameHere"
+
+[node name="Label2" type="Label" parent="VBoxContainer/VBoxContainer" unique_id=1047014343]
+layout_mode = 2
+text = "LevelDifficultyHere"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer" unique_id=937719978]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2" unique_id=571352154]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "PlayedTime"
+horizontal_alignment = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/VBoxContainer2" unique_id=1958081109]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "00h00m"
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2" unique_id=1119422091]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1109307910]
+custom_minimum_size = Vector2(129, 0)
+layout_mode = 2
+text = "Delete"
+
+[node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1783031463]
+custom_minimum_size = Vector2(129, 0)
+layout_mode = 2
+text = "Play"
