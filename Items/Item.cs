@@ -10,7 +10,9 @@ public partial class Item : Resource
 		BodyArmor,
 		FootArmor,
 		Acessory,
-		Consumable
+		Consumable,
+		Acessory1,
+		Acessory2
 	}
 	public enum ITEM_CLASS
 	{

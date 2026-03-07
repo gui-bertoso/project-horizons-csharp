@@ -1,5 +1,6 @@
 [gd_resource type="Resource" format=3 uid="uid://80jmqt7odv8r"]
 
+[ext_resource type="Texture2D" uid="uid://otp85dp7o4bt" path="res://Assets/Consumables/Orange.png" id="1_p3rpm"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="1_sbh4d"]
 
 [resource]
@@ -7,3 +8,4 @@ script = ExtResource("1_sbh4d")
 ItemName = "Orange"
 ItemType = 5
 ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("1_p3rpm")

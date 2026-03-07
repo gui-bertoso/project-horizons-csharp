@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://cyg3xv7u7ejjx"]
+
+[ext_resource type="Texture2D" uid="uid://2s8v7uft5omg" path="res://Assets/Weapons/Mage/AirBook.png" id="1_eh0fj"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_aubqo"]
+
+[resource]
+script = ExtResource("2_aubqo")
+ItemName = "Orange"
+ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("1_eh0fj")
