@@ -48,7 +48,7 @@
 [ext_resource type="PackedScene" uid="uid://dgtpo1o47clj" path="res://Enemys/SlimeBoss/SlimeBoss.tscn" id="46_jqk32"]
 [ext_resource type="PackedScene" uid="uid://bp5ijnt0j3y5f" path="res://Enemys/TestDummy/TestDummy.tscn" id="47_302e7"]
 [ext_resource type="PackedScene" uid="uid://cgyit0mk1agd4" path="res://Enemys/YellowSeaStar/YellowSeaStar.tscn" id="48_igw5y"]
-[ext_resource type="Environment" uid="uid://cbc327o0vjqcj" path="res://Envinroment/DebugEnvinroment.tres" id="49_qt5um"]
+[ext_resource type="Environment" uid="uid://cbc327o0vjqcj" path="res://BiomeEnvinroments/DebugEnvinroment.tres" id="49_qt5um"]
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 
