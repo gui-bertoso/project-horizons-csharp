@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://5fgyla3rgnoh" path="res://LevelGenerator/LevelGenerator.cs" id="1_xjjrg"]
 
 [node name="TilemapGenerator" type="TileMapLayer" unique_id=426732340]
+y_sort_enabled = true
 tile_set = ExtResource("1_7ae1w")
 script = ExtResource("1_xjjrg")
 

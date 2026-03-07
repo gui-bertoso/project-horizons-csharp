@@ -8,10 +8,19 @@ region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="Gradient" id="Gradient_oj4a0"]
 offsets = PackedFloat32Array(0, 0.27900553, 0.7762431, 1)
-colors = PackedColorArray(0.60784316, 0, 1, 1, 1, 0, 1, 1, 1, 0.061302688, 1, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.60784316, 0, 1, 1, 1, 0, 1, 1, 1, 0.061302688, 1, 1, 18.892157, 18.892157, 18.892157, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_7wdhh"]
 gradient = SubResource("Gradient_oj4a0")
+
+[sub_resource type="Curve" id="Curve_squw6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+point_0/position = Vector2(0, 1)
+point_1/position = Vector2(1, 0)
+
+[sub_resource type="CurveTexture" id="CurveTexture_mduat"]
+curve = SubResource("Curve_squw6")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e2qe2"]
 particle_flag_disable_z = true
@@ -25,6 +34,7 @@ gravity = Vector3(0, 98, 0)
 scale_min = 0.19999999
 scale_max = 0.84999996
 color_ramp = SubResource("GradientTexture1D_7wdhh")
+emission_curve = SubResource("CurveTexture_mduat")
 
 [node name="Node2D" type="Node2D" unique_id=1591361011]
 scale = Vector2(0.335, 0.445)
