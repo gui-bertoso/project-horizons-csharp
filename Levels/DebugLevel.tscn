@@ -4,6 +4,50 @@
 [ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="2_7ksiy"]
 [ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/Portal.tscn" id="2_aq0ab"]
 [ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="4_aq0ab"]
+[ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="5_afn2h"]
+[ext_resource type="Resource" uid="uid://cyg3xv7u7ejjx" path="res://Items/AirBook.tres" id="6_86uab"]
+[ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="6_h4hu5"]
+[ext_resource type="Resource" uid="uid://bp64be1s84hre" path="res://Items/Apple.tres" id="6_i6pwl"]
+[ext_resource type="Resource" uid="uid://ju5egulwdm5w" path="res://Items/BurnPotion.tres" id="7_nomgy"]
+[ext_resource type="Resource" uid="uid://dnkj2govjti3v" path="res://Items/Branch.tres" id="8_qpdt5"]
+[ext_resource type="Resource" uid="uid://dxu00pmxlk06y" path="res://Items/BrokenSword.tres" id="9_1hjnl"]
+[ext_resource type="Resource" uid="uid://luuuoctufjnv" path="res://Items/VenomPotion.tres" id="9_xtfwg"]
+[ext_resource type="Resource" uid="uid://npbb34wexvr7" path="res://Items/DebugBoomerang.tres" id="11_p36sd"]
+[ext_resource type="Resource" uid="uid://b3iuqx3o77hgi" path="res://Items/DebugBow.tres" id="12_i1swl"]
+[ext_resource type="Resource" uid="uid://ds8o8uyx2ld3p" path="res://Items/DebugGun.tres" id="13_1w57s"]
+[ext_resource type="Resource" uid="uid://33yotgc3cmmw" path="res://Items/DebugHammer.tres" id="14_0nsif"]
+[ext_resource type="Resource" uid="uid://be7vsngc8digk" path="res://Items/DebugRod.tres" id="15_ua34m"]
+[ext_resource type="Resource" uid="uid://bcw5m77wo71hk" path="res://Items/DebugSpell.tres" id="16_wwhxo"]
+[ext_resource type="Resource" uid="uid://x2kso84n6vhn" path="res://Items/DebugSword.tres" id="17_qmlrk"]
+[ext_resource type="Resource" uid="uid://bcg8kptyhhel2" path="res://Items/FireBook.tres" id="18_xhit2"]
+[ext_resource type="Resource" uid="uid://djstkq8sv78m6" path="res://Items/OldSword.tres" id="19_8hffr"]
+[ext_resource type="Resource" uid="uid://buo5x8ppueefw" path="res://Items/SimpleBook.tres" id="21_ki3ay"]
+[ext_resource type="Resource" uid="uid://by5vaxm5nm501" path="res://Items/Sword0.tres" id="22_qf5dj"]
+[ext_resource type="Resource" uid="uid://d3cqlwtx1g8ch" path="res://Items/Sword1.tres" id="23_8485w"]
+[ext_resource type="Resource" uid="uid://gdwobj2h2ben" path="res://Items/Sword2.tres" id="24_wrmfb"]
+[ext_resource type="Resource" uid="uid://hipndr781e6e" path="res://Items/Sword3.tres" id="25_ssnfo"]
+[ext_resource type="Resource" uid="uid://dyrsl6s38qw8b" path="res://Items/Sword4.tres" id="26_raufk"]
+[ext_resource type="Resource" uid="uid://bhnr2r3v2oj4m" path="res://Items/Sword5.tres" id="27_qt5um"]
+[ext_resource type="Resource" uid="uid://cqjs8l25ga1oc" path="res://Items/Sword6.tres" id="28_16dk7"]
+[ext_resource type="Resource" uid="uid://ltdw5o4xhdyq" path="res://Items/Sword7.tres" id="29_3pigm"]
+[ext_resource type="Resource" uid="uid://cg3b3u27cxaww" path="res://Items/Sword8.tres" id="30_a3h4s"]
+[ext_resource type="PackedScene" uid="uid://cbi26ck84a7vt" path="res://Enemys/BigLeave/BigLeave.tscn" id="31_raufk"]
+[ext_resource type="PackedScene" uid="uid://cyvxkgif4hkd2" path="res://Enemys/BigPurpleSeaStar/BigPurpleSeaStar.tscn" id="32_qt5um"]
+[ext_resource type="PackedScene" uid="uid://dfpfcw37w18uk" path="res://Enemys/BigRedSeaStar/BigRedSeaStar.tscn" id="33_16dk7"]
+[ext_resource type="PackedScene" uid="uid://bcaiqcsyutf3h" path="res://Enemys/BlueSeaStar/BlueSeaStar.tscn" id="34_3pigm"]
+[ext_resource type="PackedScene" uid="uid://bqr7htmdp4vo0" path="res://Enemys/DebugEnemy/DebugEnemy.tscn" id="35_a3h4s"]
+[ext_resource type="PackedScene" uid="uid://dda4okaf00gyt" path="res://Enemys/DryBigLeave/DryBigLeave.tscn" id="36_0ky7e"]
+[ext_resource type="PackedScene" uid="uid://bhsnsh34ccas0" path="res://Enemys/DryLeave/DryLeave.tscn" id="37_4iy5u"]
+[ext_resource type="PackedScene" uid="uid://834fniewtsf1" path="res://Enemys/Leave/Leave.tscn" id="38_b3nne"]
+[ext_resource type="PackedScene" uid="uid://kx7p5e3ot70a" path="res://Enemys/PurpleSeaStar/PurpleSeaStar.tscn" id="39_8xps1"]
+[ext_resource type="PackedScene" uid="uid://iqddsepl7qw2" path="res://Enemys/RageFlower/RageFlower.tscn" id="40_r4sgv"]
+[ext_resource type="PackedScene" uid="uid://dnwvjj5x2bff6" path="res://Enemys/RedSeaStar/RedSeaStar.tscn" id="41_oy1bj"]
+[ext_resource type="PackedScene" uid="uid://lpx4coq7ons1" path="res://Enemys/RockGuy/RockGuy.tscn" id="42_d8bal"]
+[ext_resource type="PackedScene" uid="uid://dwkyhktv3kdss" path="res://Enemys/SandAmount/SandAmount.tscn" id="43_l00j7"]
+[ext_resource type="PackedScene" uid="uid://duidimrh7jui6" path="res://Enemys/SandEater/SandEater.tscn" id="44_wilel"]
+[ext_resource type="PackedScene" uid="uid://dgtpo1o47clj" path="res://Enemys/SlimeBoss/SlimeBoss.tscn" id="46_jqk32"]
+[ext_resource type="PackedScene" uid="uid://bp5ijnt0j3y5f" path="res://Enemys/TestDummy/TestDummy.tscn" id="47_302e7"]
+[ext_resource type="PackedScene" uid="uid://cgyit0mk1agd4" path="res://Enemys/YellowSeaStar/YellowSeaStar.tscn" id="48_igw5y"]
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 
@@ -16,7 +60,162 @@ tile_map_data = PackedByteArray("AAALAP7/AAAAAAEAAAALAP3/AAAAAAEAAAAMAP3/AAAAAAE
 position = Vector2(1422, 108.00001)
 
 [node name="Player" parent="." index="1" unique_id=621873643 instance=ExtResource("2_7ksiy")]
+position = Vector2(-791, 760)
 
-[node name="Slime" parent="." index="3" unique_id=1875013965 instance=ExtResource("4_aq0ab")]
-position = Vector2(445, 498)
-DetectionDistance = 358
+[node name="PhysicItem" parent="." index="3" unique_id=654771301 instance=ExtResource("5_afn2h")]
+position = Vector2(-738, 455)
+Item = ExtResource("6_86uab")
+
+[node name="PhysicItem2" parent="." index="4" unique_id=803263090 instance=ExtResource("5_afn2h")]
+position = Vector2(-735, 392)
+Item = ExtResource("6_i6pwl")
+
+[node name="PhysicItem3" parent="." index="5" unique_id=1459116363 instance=ExtResource("5_afn2h")]
+position = Vector2(-736, 334)
+Item = ExtResource("8_qpdt5")
+
+[node name="PhysicItem4" parent="." index="6" unique_id=1581893835 instance=ExtResource("5_afn2h")]
+position = Vector2(-737, 279)
+Item = ExtResource("9_1hjnl")
+
+[node name="PhysicItem5" parent="." index="7" unique_id=503008657 instance=ExtResource("5_afn2h")]
+position = Vector2(-652, 453)
+Item = ExtResource("7_nomgy")
+
+[node name="PhysicItem6" parent="." index="8" unique_id=198981474 instance=ExtResource("5_afn2h")]
+position = Vector2(-651, 401)
+Item = ExtResource("11_p36sd")
+
+[node name="PhysicItem7" parent="." index="9" unique_id=1715505969 instance=ExtResource("5_afn2h")]
+position = Vector2(-655, 347)
+Item = ExtResource("12_i1swl")
+
+[node name="PhysicItem8" parent="." index="10" unique_id=1139293456 instance=ExtResource("5_afn2h")]
+position = Vector2(-648, 285)
+Item = ExtResource("13_1w57s")
+
+[node name="PhysicItem9" parent="." index="11" unique_id=74670818 instance=ExtResource("5_afn2h")]
+position = Vector2(-648, 223)
+Item = ExtResource("14_0nsif")
+
+[node name="PhysicItem10" parent="." index="12" unique_id=1125498133 instance=ExtResource("5_afn2h")]
+position = Vector2(-649, 166)
+Item = ExtResource("15_ua34m")
+
+[node name="PhysicItem11" parent="." index="13" unique_id=690179970 instance=ExtResource("5_afn2h")]
+position = Vector2(-584, 455)
+Item = ExtResource("16_wwhxo")
+
+[node name="PhysicItem12" parent="." index="14" unique_id=56409196 instance=ExtResource("5_afn2h")]
+position = Vector2(-584, 403)
+Item = ExtResource("17_qmlrk")
+
+[node name="PhysicItem13" parent="." index="15" unique_id=2062561060 instance=ExtResource("5_afn2h")]
+position = Vector2(-583, 343)
+Item = ExtResource("18_xhit2")
+
+[node name="PhysicItem14" parent="." index="16" unique_id=1663226041 instance=ExtResource("5_afn2h")]
+position = Vector2(-582, 272)
+Item = ExtResource("19_8hffr")
+
+[node name="PhysicItem15" parent="." index="17" unique_id=823302858 instance=ExtResource("5_afn2h")]
+position = Vector2(-580, 210)
+Item = ExtResource("6_h4hu5")
+
+[node name="PhysicItem16" parent="." index="18" unique_id=57721529 instance=ExtResource("5_afn2h")]
+position = Vector2(-581, 143)
+Item = ExtResource("21_ki3ay")
+
+[node name="PhysicItem17" parent="." index="19" unique_id=2122331244 instance=ExtResource("5_afn2h")]
+position = Vector2(-501, 145)
+Item = ExtResource("22_qf5dj")
+
+[node name="PhysicItem18" parent="." index="20" unique_id=732842636 instance=ExtResource("5_afn2h")]
+position = Vector2(-497, 214)
+Item = ExtResource("23_8485w")
+
+[node name="PhysicItem19" parent="." index="21" unique_id=1644999536 instance=ExtResource("5_afn2h")]
+position = Vector2(-502, 268)
+Item = ExtResource("24_wrmfb")
+
+[node name="PhysicItem20" parent="." index="22" unique_id=1798318642 instance=ExtResource("5_afn2h")]
+position = Vector2(-507, 344)
+Item = ExtResource("25_ssnfo")
+
+[node name="PhysicItem21" parent="." index="23" unique_id=912563698 instance=ExtResource("5_afn2h")]
+position = Vector2(-503, 411)
+Item = ExtResource("26_raufk")
+
+[node name="PhysicItem22" parent="." index="24" unique_id=1964914962 instance=ExtResource("5_afn2h")]
+position = Vector2(-503, 467)
+Item = ExtResource("27_qt5um")
+
+[node name="PhysicItem23" parent="." index="25" unique_id=374781800 instance=ExtResource("5_afn2h")]
+position = Vector2(-432, 485)
+Item = ExtResource("28_16dk7")
+
+[node name="PhysicItem24" parent="." index="26" unique_id=1630786448 instance=ExtResource("5_afn2h")]
+position = Vector2(-437, 404)
+Item = ExtResource("29_3pigm")
+
+[node name="PhysicItem25" parent="." index="27" unique_id=1337142526 instance=ExtResource("5_afn2h")]
+position = Vector2(-425, 324)
+Item = ExtResource("30_a3h4s")
+
+[node name="PhysicItem26" parent="." index="28" unique_id=949109052 instance=ExtResource("5_afn2h")]
+position = Vector2(-436, 260)
+Item = ExtResource("9_xtfwg")
+
+[node name="BigLeave" parent="." index="29" unique_id=1875013965 instance=ExtResource("31_raufk")]
+position = Vector2(1031, 228)
+
+[node name="BigLeave2" parent="." index="30" unique_id=1110466286 instance=ExtResource("32_qt5um")]
+position = Vector2(1135, 224)
+
+[node name="BigLeave3" parent="." index="31" unique_id=732544143 instance=ExtResource("33_16dk7")]
+position = Vector2(1248, 221)
+
+[node name="BigLeave4" parent="." index="32" unique_id=855605884 instance=ExtResource("34_3pigm")]
+position = Vector2(1374, 218)
+
+[node name="BigLeave5" parent="." index="33" unique_id=2093304573 instance=ExtResource("35_a3h4s")]
+position = Vector2(947, 306)
+
+[node name="BigLeave6" parent="." index="34" unique_id=897573911 instance=ExtResource("36_0ky7e")]
+position = Vector2(1083, 304)
+
+[node name="BigLeave7" parent="." index="35" unique_id=2004891815 instance=ExtResource("37_4iy5u")]
+position = Vector2(1219, 295)
+
+[node name="Leave" parent="." index="36" unique_id=1192637422 instance=ExtResource("38_b3nne")]
+position = Vector2(1356, 295)
+
+[node name="BigLeave8" parent="." index="37" unique_id=936087583 instance=ExtResource("39_8xps1")]
+position = Vector2(825, 392)
+
+[node name="RageFlower" parent="." index="38" unique_id=1771400735 instance=ExtResource("40_r4sgv")]
+position = Vector2(983, 398)
+
+[node name="BigLeave9" parent="." index="39" unique_id=1228208238 instance=ExtResource("41_oy1bj")]
+position = Vector2(1146, 398)
+
+[node name="BigLeave10" parent="." index="40" unique_id=799905812 instance=ExtResource("42_d8bal")]
+position = Vector2(1323, 399)
+
+[node name="BigLeave11" parent="." index="41" unique_id=1526455698 instance=ExtResource("43_l00j7")]
+position = Vector2(1500, 402)
+
+[node name="BigLeave12" parent="." index="42" unique_id=672210232 instance=ExtResource("44_wilel")]
+position = Vector2(989, 535)
+
+[node name="Slime" parent="." index="43" unique_id=684259099 instance=ExtResource("4_aq0ab")]
+position = Vector2(1203, 541)
+
+[node name="BigLeave13" parent="." index="44" unique_id=430231296 instance=ExtResource("46_jqk32")]
+position = Vector2(1418, 541)
+
+[node name="TestDummy" parent="." index="45" unique_id=1943605032 instance=ExtResource("47_302e7")]
+position = Vector2(1614, 544)
+
+[node name="BigLeave14" parent="." index="46" unique_id=1218472122 instance=ExtResource("48_igw5y")]
+position = Vector2(1176, 670)

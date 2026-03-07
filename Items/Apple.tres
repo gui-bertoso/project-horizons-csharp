@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://bp64be1s84hre"]
+
+[ext_resource type="Texture2D" uid="uid://sp8y2b4p5b5i" path="res://Assets/Consumables/Apple.png" id="1_3h2xm"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_06x63"]
+
+[resource]
+script = ExtResource("2_06x63")
+ItemName = "Orange"
+ItemType = 5
+ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("1_3h2xm")

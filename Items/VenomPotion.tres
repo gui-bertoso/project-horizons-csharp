@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://luuuoctufjnv"]
+
+[ext_resource type="Texture2D" uid="uid://dfd3nekbr821s" path="res://Assets/Consumables/venom_potion.png" id="1_m3fog"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_0qggs"]
+
+[resource]
+script = ExtResource("2_0qggs")
+ItemName = "Orange"
+ItemType = 5
+ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("1_m3fog")

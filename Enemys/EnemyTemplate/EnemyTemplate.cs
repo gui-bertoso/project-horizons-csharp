@@ -59,6 +59,7 @@ public partial class EnemyTemplate : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		ApplyStatePhysics();
+		MoveAndSlide();
 	}
 
 	public virtual void ApplyStatePhysics()
@@ -106,4 +107,5 @@ public partial class EnemyTemplate : CharacterBody2D
 			_BodySprite.FlipH = false;
 		}
 	}
+
 }

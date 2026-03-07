@@ -55,17 +55,52 @@ public partial class Slime : EnemyTemplate
 
 	public override void ApplyStatePhysics()
 	{
+		Vector2 velocity = Velocity;
+		Vector2 Direction;
+		
 		switch (CurrentState)
 		{
 			case EnemyState.Idle:
+				if (Velocity != Vector2.Zero)
+				{
+					velocity.X = Mathf.MoveToward(velocity.X, 0, MoveSpeed);
+					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
+				}
 				break;
 			case EnemyState.Chase:
-				break;
-			case EnemyState.Wander:
+				velocity = Velocity;
+				Direction = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
+				if (Direction != Vector2.Zero)
+				{
+					velocity = Direction * MoveSpeed;
+				}
+				else
+				{
+					velocity.X = Mathf.MoveToward(velocity.X, 0, MoveSpeed);
+					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
+				}
+				Velocity = velocity;
 				break;
 			case EnemyState.Attack:
+				velocity = Velocity;
+				Direction = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
+				if (Direction != Vector2.Zero)
+				{
+					velocity = Direction * MoveSpeed;
+				}
+				else
+				{
+					velocity.X = Mathf.MoveToward(velocity.X, 0, MoveSpeed);
+					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
+				}
+				Velocity = velocity;
 				break;
 			case EnemyState.Death:
+				if (Velocity != Vector2.Zero)
+				{
+					velocity.X = Mathf.MoveToward(velocity.X, 0, MoveSpeed);
+					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
+				}
 				break;
 		}
 	}
