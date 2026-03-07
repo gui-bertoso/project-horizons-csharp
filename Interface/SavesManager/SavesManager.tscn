@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://dd2nrqr1prju0"]
+
+[ext_resource type="PackedScene" uid="uid://6afjihoylen2" path="res://Interface/SavesManager/SaveSlot.tscn" id="1_lix6m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ks6hq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ygav5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1eqj3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_io7q2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2casd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_emnn6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6jqnw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lvs2q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_efhhj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jrf4b"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qo2gr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ks6hq"]
+bg_color = Color(0.15127608, 0.15127608, 0.15127605, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lix6m"]
+bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygjdw"]
+bg_color = Color(0.1847857, 0.1847857, 0.18478557, 1)
+
+[node name="Control" type="Control" unique_id=610749935]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=536293881]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="Button" type="Button" parent="." unique_id=2143912008]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 62.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9846037, 0.99999696, 0.77647364, 1)
+theme_override_colors/font_disabled_color = Color(0.32049134, 0.32049137, 0.32049137, 1)
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ks6hq")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_ygav5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1eqj3")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_io7q2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2casd")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_emnn6")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_6jqnw")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_lvs2q")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_efhhj")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jrf4b")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qo2gr")
+text = "BACK"
+
+[node name="Panel" type="Panel" parent="." unique_id=335505045]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -326.875
+offset_top = -208.0
+offset_right = 326.875
+offset_bottom = 208.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ks6hq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=1174943904]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = -196.0
+offset_right = 304.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer" unique_id=1583853357]
+custom_minimum_size = Vector2(608, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer/VBoxContainer" unique_id=647297285]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1032590201]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Save Manager"
+
+[node name="Button" type="Button" parent="Panel/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1815745821]
+custom_minimum_size = Vector2(174, 0)
+layout_mode = 2
+text = "NEW SAVE"
+
+[node name="HSeparator" type="HSeparator" parent="Panel/HBoxContainer/VBoxContainer" unique_id=439467530]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Panel/HBoxContainer/VBoxContainer" unique_id=1477271570]
+custom_minimum_size = Vector2(625, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lix6m")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/HBoxContainer/VBoxContainer/Panel" unique_id=864262192]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -303.75
+offset_top = -166.5
+offset_right = 303.75
+offset_bottom = 166.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer" unique_id=1700963796]
+custom_minimum_size = Vector2(593, 333)
+layout_mode = 2
+
+[node name="Panel" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=76235896 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel2" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1549491504 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel3" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=749384105 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel4" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=146432543 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel5" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=595297822 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel6" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1962474483 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel7" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=380468031 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel8" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1407702852 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel9" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1475869050 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[node name="Panel10" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1351474623 instance=ExtResource("1_lix6m")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
