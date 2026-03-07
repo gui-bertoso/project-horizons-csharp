@@ -1,0 +1,11 @@
+[gd_resource type="Environment" format=3 uid="uid://jtrjkrebd7dw"]
+
+[resource]
+background_mode = 3
+tonemap_mode = 1
+tonemap_exposure = 0.85
+glow_enabled = true
+glow_normalized = true
+glow_strength = 0.68
+adjustment_enabled = true
+adjustment_saturation = 1.29
