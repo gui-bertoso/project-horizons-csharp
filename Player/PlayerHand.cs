@@ -1,53 +1,51 @@
 using Godot;
-using System;
-using System.Runtime.Serialization.Formatters;
+
+namespace projecthorizonscs.Player;
 
 public partial class PlayerHand : Marker2D
 {
-	Item EquippedItem;
-	Node EquippedItemReference;
+	private Items.Item _equippedItem;
+	private Node _equippedItemReference;
 
-    public override void _Ready()
-    {
-        Globals.I.LocalPlayerHand = this;
-    }
-
-	public void EquipItem(Item item)
+	public override void _Ready()
 	{
-		EquippedItem = item;
-		if (EquippedItem.ItemScene != null)
+		Autoload.Globals.I.LocalPlayerHand = this;
+	}
+
+	public void EquipItem(Items.Item item)
+	{
+		_equippedItem = item;
+		if (_equippedItem.ItemScene != null)
 		{
-			EquippedItemReference = EquippedItem.ItemScene.Instantiate();
-			AddChild(EquippedItemReference);
+			_equippedItemReference = _equippedItem.ItemScene.Instantiate();
 		}
 		else
 		{
-			EquippedItemReference = new TextureRect();
-			((TextureRect)EquippedItemReference).Texture = EquippedItem.ItemTexture;
-			AddChild(EquippedItemReference);
+			_equippedItemReference = new TextureRect();
+			((TextureRect)_equippedItemReference).Texture = _equippedItem.ItemTexture;
 		}
+
+		AddChild(_equippedItemReference);
 	}
 
-	public void ClearEquippedItem()
+	private void ClearEquippedItem()
 	{
-		for (int i = 0; i < GetChildCount(); i++)
+		for (var i = 0; i < GetChildCount(); i++)
 		{
-			Node child = GetChild(i);
-			if (child == EquippedItemReference)
-			{
-				child.QueueFree();
-				break;
-			}
+			var child = GetChild(i);
+			if (child != _equippedItemReference) continue;
+			child.QueueFree();
+			break;
 		}
-		EquippedItem = null;
-		EquippedItemReference = null;
+		_equippedItem = null;
+		_equippedItemReference = null;
 	}
 
-	public void UnequipItem()
+	private void UnequipItem()
 	{
-		PhysicItem droppedItem = (PhysicItem)Globals.I.PhysicItemScene.Instantiate();
+		var droppedItem = (projecthorizonscs.PhysicItem.PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
 		droppedItem.GlobalPosition = GlobalPosition;
-		droppedItem.Item = EquippedItem;
+		droppedItem.Item = _equippedItem;
 		ClearEquippedItem();
 		GetTree().CurrentScene.AddChild(droppedItem);
 	}

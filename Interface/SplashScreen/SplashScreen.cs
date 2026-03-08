@@ -1,9 +1,10 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.Interface.SplashScreen;
 
 public partial class SplashScreen : Control
 {
-	public void _OnAnimationFinished(string _animName)
+	private void _OnAnimationFinished(string animName)
 	{
 		GetTree().ChangeSceneToFile("uid://c25rg72x1rdir");
 	}

@@ -1,26 +1,28 @@
-using Godot;
 using System;
+using Godot;
+
+namespace projecthorizonscs.Interface.SavesManager;
 
 public partial class SavesManager : Control
 {
-	public PackedScene SaveSlotScene;
+	private PackedScene _saveSlotScene;
 
-	public VBoxContainer _SavesVBoxContainer;
+	private VBoxContainer _savesVBoxContainer;
 
-	public Panel _NewSavePanel;
-	public Panel _SavesPanel;
+	private Panel _newSavePanel;
+	private Panel _savesPanel;
 
-	public Button _CreateSaveButton;
+	private Button _createSaveButton;
 
-	public TextEdit _NewSaveNameTextEdit;
-	public TextEdit _NewSaveSeedTextEdit;
-	public OptionButton _NewSaveDifficultyOptionButton;
+	private TextEdit _newSaveNameTextEdit;
+	private TextEdit _newSaveSeedTextEdit;
+	private OptionButton _newSaveDifficultyOptionButton;
 
-	public CheckButton _NewSaveMultiplayerEnabledCheckButton;
+	private CheckButton _newSaveMultiplayerEnabledCheckButton;
 
 
-	public Godot.Collections.Array<string> SaveNames1 = new()
-	{
+	private Godot.Collections.Array<string> _saveNames1 =
+	[
 		"",
 		"A",
 		"The",
@@ -28,10 +30,11 @@ public partial class SavesManager : Control
 		"Second",
 		"Third",
 		"Frontier",
-		"Fucking",
-	};
-	public Godot.Collections.Array<string> SaveNames2 = new()
-	{
+		"Fucking"
+	];
+
+	private Godot.Collections.Array<string> _saveNames2 =
+	[
 		"",
 		"Crazy",
 		"Wild",
@@ -59,10 +62,11 @@ public partial class SavesManager : Control
 		"Garbage",
 		"Shitty",
 		"Trash",
-		"Crappy",
-	};
-	public Godot.Collections.Array<string> SaveNames3 = new()
-	{
+		"Crappy"
+	];
+
+	private Godot.Collections.Array<string> _saveNames3 =
+	[
 		"",
 		"Place",
 		"World",
@@ -88,87 +92,127 @@ public partial class SavesManager : Control
 		"City",
 		"Town",
 		"Metropolis"
-	};
+	];
+
+	public SavesManager(VBoxContainer savesVBoxContainer)
+	{
+		_savesVBoxContainer = savesVBoxContainer;
+	}
+
+	public SavesManager()
+	{
+	}
 
 	public override void _Ready()
 	{
-		SaveSlotScene = GD.Load<PackedScene>("uid://6afjihoylen2");
-		_SavesVBoxContainer = GetNode<VBoxContainer>("Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer");
+		_saveSlotScene = GD.Load<PackedScene>("uid://6afjihoylen2");
+		_savesVBoxContainer = GetNode<VBoxContainer>("Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer");
 
-		_NewSavePanel = GetNode<Panel>("Panel2");
-		_SavesPanel = GetNode<Panel>("Panel");
-		_CreateSaveButton = GetNode<Button>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/Button2");
+		_newSavePanel = GetNode<Panel>("Panel2");
+		_savesPanel = GetNode<Panel>("Panel");
+		_createSaveButton = GetNode<Button>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Button2");
 
-		_NewSaveNameTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/TextEdit");
-		_NewSaveSeedTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/TextEdit");
-		_NewSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/OptionButton");	
-		_NewSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");	
+		_newSaveNameTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/TextEdit");
+		_newSaveSeedTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/TextEdit");
+		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/OptionButton");	
+		_newSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");	
 
 		ClearPlaceholderSaveSlots();
 	}
 
-	public void ClearPlaceholderSaveSlots()
+	private void ClearPlaceholderSaveSlots()
 	{
-		var placeholderSaveSlots = _SavesVBoxContainer.GetChildren();
+		var placeholderSaveSlots = _savesVBoxContainer.GetChildren();
 		foreach (var child in placeholderSaveSlots)
 		{
 			child.QueueFree();
 		}
 	}
 
-	public void _OnBackButtonUp()
+	private void _OnBackButtonUp()
 	{
 		GetTree().ChangeSceneToFile("uid://c25rg72x1rdir");
 	}
 
-	public void _OnNewSaveBackButtonUp()
+	private void _OnNewSaveBackButtonUp()
 	{
-		_NewSavePanel.Visible = false;
-		_SavesPanel.Visible = true;
+		_newSavePanel.Visible = false;
+		_savesPanel.Visible = true;
 	}
 
-	public void _OnGivenNewSaveButtonUp()
+	private void _OnGivenNewSaveButtonUp()
 	{
-		_NewSaveNameTextEdit.Text = CreateRandomSaveName();
-		_NewSaveSeedTextEdit.Text = CreateRandomSeed().ToString();
+		_newSaveNameTextEdit.Text = CreateRandomSaveName();
+		_newSaveSeedTextEdit.Text = CreateRandomSeed().ToString();
 	}
 
-	public void _OnNewSaveButtonUp()
+	private void _OnNewSaveButtonUp()
 	{
-		_NewSavePanel.Visible = true;
-		_SavesPanel.Visible = false;
+		_newSavePanel.Visible = true;
+		_savesPanel.Visible = false;
 	}
 
 	public override void _Process(double delta)
 	{
+		if (_newSavePanel.Visible)
+		{
+			UpdateCanCreate();
+		}
 	}
 
-	public void LoadSaves()
+	private void UpdateCanCreate()
 	{
-		for (int i = 0; i < DataManager.I.GameDataDictionary["Saves"].AsGodotArray().Count; i++)
+		var canCreate = false;
+		if (_newSaveNameTextEdit.Text != "")
 		{
-			string saveName = DataManager.I.GameDataDictionary["Saves"].AsGodotArray()[i].ToString();
-			DataManager.I.LoadWorldData(saveName);
-			Godot.Collections.Dictionary<string, Variant> saveData = (Godot.Collections.Dictionary<string, Variant>)DataManager.I.CurrentSaveData;
+			if (_newSaveSeedTextEdit.Text != "")
+			{
+				canCreate = true;
+			}
+		}
 
-			var saveSlot = SaveSlotScene.Instantiate<SaveSlot>();
+		if (canCreate)
+		{
+			if (_createSaveButton.Disabled)
+			{
+				_createSaveButton.Disabled = false;
+			}
+		}
+		else
+		{
+			if (!_createSaveButton.Disabled)
+			{
+				_createSaveButton.Disabled = true;
+			}
+		}
+	}
+
+	private void LoadSaves()
+	{
+		for (var i = 0; i < Autoload.DataManager.I.GameDataDictionary["Saves"].AsGodotArray().Count; i++)
+		{
+			var saveName = Autoload.DataManager.I.GameDataDictionary["Saves"].AsGodotArray()[i].ToString();
+			Autoload.DataManager.I.LoadWorldData(saveName);
+			var saveData = (Godot.Collections.Dictionary<string, Variant>)Autoload.DataManager.I.CurrentSaveData;
+
+			var saveSlot = _saveSlotScene.Instantiate<SaveSlot>();
 			saveSlot.SetData(saveData);
-			_SavesVBoxContainer.AddChild(saveSlot);
+			_savesVBoxContainer.AddChild(saveSlot);
 			saveSlot.Name = saveName;
 		}
 	}
 
-	public int CreateRandomSeed()
+	private static int CreateRandomSeed()
 	{
 		Random random = new();
-		int seed = random.Next(int.MinValue, int.MaxValue);
+		var seed = random.Next(int.MinValue, int.MaxValue);
 		return seed;
 	}
 
-	public string CreateRandomSaveName()
+	private string CreateRandomSaveName()
 	{
 		Random random = new();
-		string saveName = SaveNames1[random.Next(SaveNames1.Count)] + " " + SaveNames2[random.Next(SaveNames2.Count)] + " " + SaveNames3[random.Next(SaveNames3.Count)];
+		var saveName = _saveNames1[random.Next(_saveNames1.Count)] + " " + _saveNames2[random.Next(_saveNames2.Count)] + " " + _saveNames3[random.Next(_saveNames3.Count)];
 		return saveName;
 	}
 }

@@ -1,7 +1,9 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class SandEater : EnemyTemplate
+namespace projecthorizonscs.Enemys.SandEater;
+
+public partial class SandEater : projecthorizonscs.Enemys.EnemyTemplate.EnemyTemplate
 {
 
 	public override void UpdateState()
@@ -11,16 +13,9 @@ public partial class SandEater : EnemyTemplate
 			case EnemyState.Idle:
 				if (DistanceToPlayer < DetectionDistance)
 				{
-					if (DistanceToPlayer < AttackDistance)
-					{
-						CurrentState = EnemyState.Attack;
-						PlayerReference = Globals.I.LocalPlayer;
-					}
-					else
-					{
-						CurrentState = EnemyState.Chase;
-						PlayerReference = Globals.I.LocalPlayer;
-					}
+					CurrentState = DistanceToPlayer < AttackDistance ? EnemyState.Attack : EnemyState.Chase;
+
+					PlayerReference = Autoload.Globals.I.LocalPlayer;
 				}
 				else
 				{
@@ -46,18 +41,18 @@ public partial class SandEater : EnemyTemplate
 				break;
 			
 			case EnemyState.Wander:
-				break;
 			
 			case EnemyState.Death:
 				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 
 	public override void ApplyStatePhysics()
 	{
-		Vector2 velocity = Velocity;
-		Vector2 Direction;
-		
+		var velocity = Velocity;
+
 		switch (CurrentState)
 		{
 			case EnemyState.Idle:
@@ -68,25 +63,12 @@ public partial class SandEater : EnemyTemplate
 				}
 				break;
 			case EnemyState.Chase:
-				velocity = Velocity;
-				Direction = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
-				if (Direction != Vector2.Zero)
-				{
-					velocity = Direction * MoveSpeed;
-				}
-				else
-				{
-					velocity.X = Mathf.MoveToward(velocity.X, 0, MoveSpeed);
-					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
-				}
-				Velocity = velocity;
-				break;
 			case EnemyState.Attack:
 				velocity = Velocity;
-				Direction = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
-				if (Direction != Vector2.Zero)
+				var direction = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
+				if (direction != Vector2.Zero)
 				{
-					velocity = Direction * MoveSpeed;
+					velocity = direction * MoveSpeed;
 				}
 				else
 				{
@@ -102,6 +84,10 @@ public partial class SandEater : EnemyTemplate
 					velocity.Y = Mathf.MoveToward(velocity.Y, 0, MoveSpeed);
 				}
 				break;
+			case EnemyState.Wander:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 
@@ -111,10 +97,7 @@ public partial class SandEater : EnemyTemplate
 		{
 			case EnemyState.Idle:
 				break;
-			case EnemyState.Chase:
-				LookToTarget(PlayerReference.GlobalPosition);
-				break;
-			case EnemyState.Wander:
+			case EnemyState.Chase or EnemyState.Wander:
 				LookToTarget(PlayerReference.GlobalPosition);
 				break;
 			case EnemyState.Attack:
@@ -131,20 +114,20 @@ public partial class SandEater : EnemyTemplate
 		switch (CurrentState)
 		{
 			case EnemyState.Idle:
-				_AnimationPlayer.Play("Idle");
+				AnimPlayer.Play("Idle");
 				break;
 			case EnemyState.Chase:
-				_AnimationPlayer.Play("Move");
-				break;
 			case EnemyState.Wander:
-				_AnimationPlayer.Play("Move");
+				AnimPlayer.Play("Move");
 				break;
 			case EnemyState.Attack:
-				_AnimationPlayer.Play("Bite");
+				AnimPlayer.Play("Bite");
 				break;
 			case EnemyState.Death:
-				_AnimationPlayer.Play("Death");
+				AnimPlayer.Play("Death");
 				break;
+			default:
+				throw new ArgumentOutOfRangeException();
 		}
 	}
 }

@@ -1,70 +1,76 @@
-using Godot;
 using System;
+using Godot;
+
+namespace projecthorizonscs.Interface.ItemsDisplay;
 
 public partial class ItemsDisplay : Control
 {
-	public TextureRect ArmorTextureRect;
-	public TextureRect BodyTextureRect;
-	public TextureRect FootTextureRect;
-	public TextureRect WeaponTextureRect;
-	public TextureRect ConsumableTextureRect;
-	public TextureRect Acessory1TextureRect;
-	public TextureRect Acessory2TextureRect;
+	private TextureRect _armorTextureRect;
+	private TextureRect _bodyTextureRect;
+	private TextureRect _footTextureRect;
+	private TextureRect _weaponTextureRect;
+	private TextureRect _consumableTextureRect;
+	private TextureRect _acessory1TextureRect;
+	private TextureRect _acessory2TextureRect;
 
-	private Item EquippedHeadArmor;
-	private Item EquippedBodyArmor;
-	private Item EquippedFootArmor;
-	private Item EquippedWeapon;
-	private Item EquippedConsumable;
-	private Item EquippedAcessory1;
-	private Item EquippedAcessory2;
+	private Items.Item _equippedHeadArmor;
+	private Items.Item _equippedBodyArmor;
+	private Items.Item _equippedFootArmor;
+	private Items.Item _equippedWeapon;
+	private Items.Item _equippedConsumable;
+	private Items.Item _equippedAcessory1;
+	private Items.Item _equippedAcessory2;
 
 	public override void _Ready()
 	{
-		Globals.I.LocalItemsDisplay = this;
+		Autoload.Globals.I.LocalItemsDisplay = this;
 
-		ArmorTextureRect = GetNode<TextureRect>("TexureRect/TextureRect2");
-		BodyTextureRect = GetNode<TextureRect>("TexureRect2/TextureRect2");
-		FootTextureRect = GetNode<TextureRect>("TexureRect3/TextureRect2");
-		WeaponTextureRect = GetNode<TextureRect>("TexureRect4/TextureRect2");
-		ConsumableTextureRect = GetNode<TextureRect>("TexureRect5/TextureRect2");
-		Acessory1TextureRect = GetNode<TextureRect>("TexureRect6/TextureRect2");
-		Acessory2TextureRect = GetNode<TextureRect>("TexureRect7/TextureRect2");
+		_armorTextureRect = GetNode<TextureRect>("TexureRect/TextureRect2");
+		_bodyTextureRect = GetNode<TextureRect>("TexureRect2/TextureRect2");
+		_footTextureRect = GetNode<TextureRect>("TexureRect3/TextureRect2");
+		_weaponTextureRect = GetNode<TextureRect>("TexureRect4/TextureRect2");
+		_consumableTextureRect = GetNode<TextureRect>("TexureRect5/TextureRect2");
+		_acessory1TextureRect = GetNode<TextureRect>("TexureRect6/TextureRect2");
+		_acessory2TextureRect = GetNode<TextureRect>("TexureRect7/TextureRect2");
 	}
 
-	public void EquipItem(Item.ITEM_TYPE slot, Item item)
+	public void EquipItem(Items.Item.ITEM_TYPE slot, Items.Item item)
 	{
 		switch (slot)
 		{
-			case Item.ITEM_TYPE.HeadArmor:
-				ArmorTextureRect.Texture = item.ItemTexture;
-				EquippedHeadArmor = item;
+			case Items.Item.ITEM_TYPE.HeadArmor:
+				_armorTextureRect.Texture = item.ItemTexture;
+				_equippedHeadArmor = item;
 				break;
-			case Item.ITEM_TYPE.BodyArmor:
-				BodyTextureRect.Texture = item.ItemTexture;
-				EquippedBodyArmor = item;
+			case Items.Item.ITEM_TYPE.BodyArmor:
+				_bodyTextureRect.Texture = item.ItemTexture;
+				_equippedBodyArmor = item;
 				break;
-			case Item.ITEM_TYPE.FootArmor:
-				FootTextureRect.Texture = item.ItemTexture;
-				EquippedFootArmor = item;
+			case Items.Item.ITEM_TYPE.FootArmor:
+				_footTextureRect.Texture = item.ItemTexture;
+				_equippedFootArmor = item;
 				break;
-			case Item.ITEM_TYPE.Weapon:
-				WeaponTextureRect.Texture = item.ItemTexture;
-				EquippedWeapon = item;
-				Globals.I.LocalPlayerHand.EquipItem(EquippedWeapon);
+			case Items.Item.ITEM_TYPE.Weapon:
+				_weaponTextureRect.Texture = item.ItemTexture;
+				_equippedWeapon = item;
+				Autoload.Globals.I.LocalPlayerHand.EquipItem(_equippedWeapon);
 				break;
-			case Item.ITEM_TYPE.Consumable:
-				ConsumableTextureRect.Texture = item.ItemTexture;
-				EquippedConsumable = item;
+			case Items.Item.ITEM_TYPE.Consumable:
+				_consumableTextureRect.Texture = item.ItemTexture;
+				_equippedConsumable = item;
 				break;
-			case Item.ITEM_TYPE.Acessory1:
-				Acessory1TextureRect.Texture = item.ItemTexture;
-				EquippedAcessory1 = item;
+			case Items.Item.ITEM_TYPE.Acessory1:
+				_acessory1TextureRect.Texture = item.ItemTexture;
+				_equippedAcessory1 = item;
 				break;
-			case Item.ITEM_TYPE.Acessory2:
-				Acessory2TextureRect.Texture = item.ItemTexture;
-				EquippedAcessory2 = item;
-				break;	
+			case Items.Item.ITEM_TYPE.Acessory2:
+				_acessory2TextureRect.Texture = item.ItemTexture;
+				_equippedAcessory2 = item;
+				break;
+			case Items.Item.ITEM_TYPE.Acessory:
+				break;
+			default:
+				throw new ArgumentOutOfRangeException(nameof(slot), slot, null);
 		}
 	}
 
