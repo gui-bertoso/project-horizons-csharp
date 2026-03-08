@@ -1,23 +1,27 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.Interface.MainMenu;
 
 public partial class MainMenu : Control
 {
-	public Button ContinueButton;
-    public override void _Ready()
-    {
-        ContinueButton = GetNode<Button>("VBoxContainer/Button2");
-		ContinueButton.Disabled = true;
-    }
-	public void _OnPlayButtonUp()
+	private Button _continueButton;
+	public override void _Ready()
+	{
+		_continueButton = GetNode<Button>("VBoxContainer/Button2");
+		_continueButton.Disabled = true;
+	}
+
+	private void _OnPlayButtonUp()
 	{
 		GetTree().ChangeSceneToFile("uid://dd2nrqr1prju0");
 	}
-	public void _OnQuitButtonUp()
+
+	private void _OnQuitButtonUp()
 	{
 		GetTree().Quit();
 	}
-	public void _OnSettingsButtonUp()
+
+	private void _OnSettingsButtonUp()
 	{
 		GetTree().ChangeSceneToFile("uid://dduowujep6yb0");
 	}

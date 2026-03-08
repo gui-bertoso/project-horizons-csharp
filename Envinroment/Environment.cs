@@ -1,117 +1,110 @@
 using Godot;
 
-public partial class Environment : WorldEnvironment
-{
-	private CanvasModulate _BaseModulate;
-	private Node2D _SnowBiomeEffects;
-	private Node2D _DesertBiomeEffects;
-	private Node2D _ForestBiomeEffects;
-	private Node2D _DarkForestBiomeEffects;
+namespace projecthorizonscs.Envinroment;
 
-	private Variant env;
+public partial class Environment(Node2D desertBiomeEffects) : WorldEnvironment
+{
+	private CanvasModulate _baseModulate;
+	private Node2D _snowBiomeEffects;
+	private Node2D _desertBiomeEffects = desertBiomeEffects;
+	private Node2D _forestBiomeEffects;
+	private Node2D _darkForestBiomeEffects;
+
+	private Variant _env;
+	private DirectionalLight2D _directionalLight2D;
 
 	public override void _Ready()
 	{
-		_BaseModulate = GetNode<CanvasModulate>("BaseModulate");
-		_SnowBiomeEffects = GetNode<Node2D>("SnowBiomeEffects");
-		_DesertBiomeEffects = GetNode<Node2D>("DesertBiomeEffects");
-		_ForestBiomeEffects = GetNode<Node2D>("ForestBiomeEffects");
-		_DarkForestBiomeEffects = GetNode<Node2D>("DarkForestBiomeEffects");
+		_baseModulate = GetNode<CanvasModulate>("BaseModulate");
+		_snowBiomeEffects = GetNode<Node2D>("SnowBiomeEffects");
+		_desertBiomeEffects = GetNode<Node2D>("DesertBiomeEffects");
+		_forestBiomeEffects = GetNode<Node2D>("ForestBiomeEffects");
+		_darkForestBiomeEffects = GetNode<Node2D>("DarkForestBiomeEffects");
+		_directionalLight2D = GetNode<DirectionalLight2D>("DirectionalLight2D");
+		
 		SetToBiome();
 	}
 
-	public void SetToBiome()
+	private void SetToBiome()
 	{
-		if (Globals.I.LocalLevelGenerator == null)
+		if (Autoload.Globals.I.LocalLevelGenerator == null)
 		{
-			_BaseModulate.Visible = true;
+			_baseModulate.Visible = true;
 		}
 		else
 		{
-			int biomeID = Globals.I.LocalLevelGenerator.LevelBiome_ID;
-			switch (biomeID)
+			var biomeId = Autoload.Globals.I.LocalLevelGenerator.LevelBiomeId;
+			switch (biomeId)
 			{
 				case 1:
-					bool IsRaining = new RandomNumberGenerator().RandiRange(0, 9) < 2;
-					_ForestBiomeEffects.Visible = true;
-					if (IsRaining)
+					var isRaining = new RandomNumberGenerator().RandiRange(0, 9) < 2;
+					_forestBiomeEffects.Visible = true;
+					if (isRaining)
 					{
-						_ForestBiomeEffects.GetChild<CanvasModulate>(1).Visible = true;
-						_ForestBiomeEffects.GetChild<CanvasLayer>(2).Visible = true;
+						_forestBiomeEffects.GetChild<CanvasModulate>(1).Visible = true;
+						_forestBiomeEffects.GetChild<CanvasLayer>(2).Visible = true;
 					}
 					else
 					{
-						_ForestBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+						_forestBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
 					}
 
-					env = ResourceLoader.Load("res://BiomeEnvinroments/ForestEnvinroment.tres");
-					Environment = (Godot.Environment)env;
+					_env = ResourceLoader.Load("res://BiomeEnvinroments/ForestEnvinroment.tres");
+					Environment = (Godot.Environment)_env;
 					break;
 				case 2:
-					bool IsRaining2 = new RandomNumberGenerator().RandiRange(0, 9) < 3;
-					_ForestBiomeEffects.Visible = true;
-					if (IsRaining2)
+					var isRaining2 = new RandomNumberGenerator().RandiRange(0, 9) < 3;
+					_forestBiomeEffects.Visible = true;
+					if (isRaining2)
 					{
-						_DarkForestBiomeEffects.GetChild<CanvasModulate>(1).Visible = true;
-						_DarkForestBiomeEffects.GetChild<CanvasLayer>(2).Visible = true;
+						_darkForestBiomeEffects.GetChild<CanvasModulate>(1).Visible = true;
+						_darkForestBiomeEffects.GetChild<CanvasLayer>(2).Visible = true;
 					}
 					else
 					{
-						_DarkForestBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+						_darkForestBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
 					}
 
-					env = ResourceLoader.Load("res://BiomeEnvinroments/DarkForestEnvinroment.tres");
-					Environment = (Godot.Environment)env;
+					_env = ResourceLoader.Load("res://BiomeEnvinroments/DarkForestEnvinroment.tres");
+					Environment = (Godot.Environment)_env;
 					break;
 				case 3:
-					bool IsSnowing = new RandomNumberGenerator().RandiRange(0, 9) < 3;
-					_SnowBiomeEffects.Visible = true;
-					if (IsSnowing)
+					var isSnowing = new RandomNumberGenerator().RandiRange(0, 9) < 3;
+					_snowBiomeEffects.Visible = true;
+					_snowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+					if (isSnowing)
 					{
-						_SnowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
-						_SnowBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
-					}
-					else
-					{
-						_SnowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+						_snowBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
 					}
 
-					env = ResourceLoader.Load("res://BiomeEnvinroments/SnowEnvinroment.tres");
-					Environment = (Godot.Environment)env;
+					_env = ResourceLoader.Load("res://BiomeEnvinroments/SnowEnvinroment.tres");
+					Environment = (Godot.Environment)_env;
 					break;
 				case 4:
-					bool IsSnowing2 = new RandomNumberGenerator().RandiRange(0, 9) < 5;
-					_SnowBiomeEffects.Visible = true;
-					if (IsSnowing2)
+					var isSnowing2 = new RandomNumberGenerator().RandiRange(0, 9) < 5;
+					_snowBiomeEffects.Visible = true;
+					_snowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+					if (isSnowing2)
 					{
-						_SnowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
-						_SnowBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
-					}
-					else
-					{
-						_SnowBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+						_snowBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
 					}
 
-					env = ResourceLoader.Load("res://BiomeEnvinroments/SnowEnvinroment.tres");
-					Environment = (Godot.Environment)env;
+					_env = ResourceLoader.Load("res://BiomeEnvinroments/SnowEnvinroment.tres");
+					Environment = (Godot.Environment)_env;
 					break;
 				case 5:
-					bool IsWindy = new RandomNumberGenerator().RandiRange(0, 9) < 7;
-					_DesertBiomeEffects.Visible = true;
-					if (IsWindy)
+					var isWindy = new RandomNumberGenerator().RandiRange(0, 9) < 7;
+					_desertBiomeEffects.Visible = true;
+					_desertBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+					if (isWindy)
 					{
-						_DesertBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
-						_DesertBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
-					}
-					else
-					{
-						_DesertBiomeEffects.GetChild<CanvasModulate>(0).Visible = true;
+						_desertBiomeEffects.GetChild<CanvasLayer>(1).Visible = true;
 					}
 
-					env = ResourceLoader.Load("res://BiomeEnvinroments/DesertEnvinroment.tres");
-					Environment = (Godot.Environment)env;
+					_env = ResourceLoader.Load("res://BiomeEnvinroments/DesertEnvinroment.tres");
+					Environment = (Godot.Environment)_env;
 					break;
-				default: _BaseModulate.Visible = true; break;
+				default: _baseModulate.Visible = true; break;
 			}
 		}
 	}

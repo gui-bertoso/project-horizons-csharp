@@ -1,25 +1,26 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.PhysicItem;
 
 public partial class PhysicItem : Node2D
 {
-	private Sprite2D _Sprite;
-	private Label _Label;
+	private Sprite2D _sprite;
+	private Label _label;
 
-	private float _CollectDistance = 40f;
+	private float _collectDistance = 40f;
 
-	private bool CanCollect = false;
+	private bool _canCollect;
 
-	private int _TickCounter = 0;
-	private int _TicksToLive = 300;
+	private int _tickCounter;
+	private int _ticksToLive = 300;
 
 	[Export]
-	public Item Item;
+	public Items.Item Item;
 
 	public override void _Ready()
 	{
-		_Sprite = GetNode<Sprite2D>("Sprite");
-		_Label = GetNode<Label>("Label");
+		_sprite = GetNode<Sprite2D>("Sprite");
+		_label = GetNode<Label>("Label");
 		if (Item != null)
 		{
 			UpdateData();
@@ -30,44 +31,32 @@ public partial class PhysicItem : Node2D
 		}
 	}
 
-    public override void _Process(double delta)
-    {
-		/*
-		_TickCounter++;
-		if (_TickCounter <= _TicksToLive)
-		{
-			return;
-		}
-		_TickCounter = 0;
-		*/
-        UpdateCanCollect();
-		if (Input.IsActionJustPressed("collect") && CanCollect)
-		{
-			Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
-			QueueFree();
-		}
-    }
-
-	public void UpdateCanCollect()
+	public override void _Process(double delta)
 	{
-		if (Globals.I.LocalPlayer != null)
+		UpdateCanCollect();
+		if (!Input.IsActionJustPressed("collect") || !_canCollect) return;
+		Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
+		QueueFree();
+	}
+
+	private void UpdateCanCollect()
+	{
+		if (Autoload.Globals.I.LocalPlayer == null) return;
+		var distanceToPlayer = Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
+		if (distanceToPlayer <= _collectDistance)
 		{
-			float distanceToPlayer = Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
-			if (distanceToPlayer <= _CollectDistance)
-			{
-				CanCollect = true;
-				_Label.Visible = true;
-			}
-			else
-			{
-				_Label.Visible = false;
-				CanCollect = false;
-			}
+			_canCollect = true;
+			_label.Visible = true;
+		}
+		else
+		{
+			_label.Visible = false;
+			_canCollect = false;
 		}
 	}
 
-	public void UpdateData()
+	private void UpdateData()
 	{
-		_Sprite.Texture = Item.ItemTexture;
+		_sprite.Texture = Item.ItemTexture;
 	}
 }

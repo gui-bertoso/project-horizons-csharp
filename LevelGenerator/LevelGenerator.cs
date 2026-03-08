@@ -1,208 +1,204 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.LevelGenerator;
 
 public partial class LevelGenerator : TileMapLayer
 {
 
-	private TileMapLayer DetailsTileMap;
-	private TileMapLayer Details2TileMap;
+	private TileMapLayer _detailsTileMap;
+	private TileMapLayer _details2TileMap;
 
-	private FastNoiseLite Layer0_NoiseImage;
-	private FastNoiseLite Layer1_NoiseImage;
-	private FastNoiseLite Layer2_NoiseImage;
-	private FastNoiseLite.NoiseTypeEnum Layer0_NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
-	private int Layer0_Seed;
-	private float Layer0_Frequency = .01f;
-	private int Layer0_FractalOctaves = 8;
+	private FastNoiseLite _layer0NoiseImage;
+	private FastNoiseLite _layer1NoiseImage;
+	private FastNoiseLite _layer2NoiseImage;
+	private FastNoiseLite.NoiseTypeEnum _layer0NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
+	private int _layer0Seed;
+	private float _layer0Frequency = .01f;
+	private int _layer0FractalOctaves = 8;
 
-	public int LevelBiome_ID;
+	public int LevelBiomeId;
 	/*
-	Biome IDS
-		- 0 = Forest
-		- 1 = Dark Forest
-		- 2 = Dry Forest
-		- 3 = Snowlands
-		- 4 = Icelands
-		- 5 = Desert
-		- 6 = Beach
-		- 7 = Old Beach
-		- 8 = Vulcanic
-	*/
+Biome IDS
+	- 0 = Forest
+	- 1 = Dark Forest
+	- 2 = Dry Forest
+	- 3 = Snowlands
+	- 4 = Icelands
+	- 5 = Desert
+	- 6 = Beach
+	- 7 = Old Beach
+	- 8 = Vulcanic
+*/
 
-	private int LevelSizeX = 400;
-	private int LevelSizeY = 600;
+	private int _levelSizeX = 400;
+	private int _levelSizeY = 600;
 
-	private float InsideDetails = 40f;
-	private float CoastDetails = 90.0f;
-	private float CoastStrength = .55f;
+	private float _insideDetails = 40f;
+	private float _coastDetails = 90.0f;
+	private float _coastStrength = .55f;
 
 
 	public override void _Ready()
 	{
-		Globals.I.LocalLevelGenerator = this;
-		DetailsTileMap = GetNode<TileMapLayer>("Details");
-		Details2TileMap = GetNode<TileMapLayer>("Details2");
+		Autoload.Globals.I.LocalLevelGenerator = this;
+		_detailsTileMap = GetNode<TileMapLayer>("Details");
+		_details2TileMap = GetNode<TileMapLayer>("Details2");
 		SetLevelData();
 	}
 
-	public void SetLevelData()
+	private void SetLevelData()
 	{
 		SetNoises();
 		SetBiome();
 		GenerateLevel();
 	}
 
-	public void GenerateLevel()
+	private void GenerateLevel()
 	{
-		Vector2 center = new(LevelSizeX/2f, LevelSizeY/2f);
-		float levelRadius = Mathf.Min(LevelSizeX, LevelSizeY) * .42f;
+		var levelRadius = Mathf.Min(_levelSizeX, _levelSizeY) * .42f;
 
-		int halfX = LevelSizeX / 2;
-		int halfY = LevelSizeY / 2;
+		var halfX = _levelSizeX / 2;
+		var halfY = _levelSizeY / 2;
 
 		//Generate base layer - Layer0
-		for (int y = -halfY; y < halfY; y++)
+		for (var y = -halfY; y < halfY; y++)
 		{
-			for (int x = -halfX; x < halfX; x++)
+			for (var x = -halfX; x < halfX; x++)
 			{
 				Vector2 p = new(x, y);
-				Vector2 v = p;
 
-				float dist = v.Length();
-				float angle = Mathf.Atan2(v.Y, v.X);
-				float ax = Mathf.Cos(angle) * CoastDetails;
-				float ay = Mathf.Sin(angle) * CoastDetails;
+				var dist = p.Length();
+				var angle = Mathf.Atan2(p.Y, p.X);
+				var ax = Mathf.Cos(angle) * _coastDetails;
+				var ay = Mathf.Sin(angle) * _coastDetails;
 
-				float coastN = Layer0_NoiseImage.GetNoise2D(ax + 123.4f, ay - 567.8f);
-				float coast01 = (coastN + 1f) * .5f;
-				float radius = levelRadius * (1f + (coast01 - .5f) * 2f * CoastStrength);
+				var coastN = _layer0NoiseImage.GetNoise2D(ax + 123.4f, ay - 567.8f);
+				var coast01 = (coastN + 1f) * .5f;
+				var radius = levelRadius * (1f + (coast01 - .5f) * 2f * _coastStrength);
 
-				float mask = 1f - (dist/radius);
+				var mask = 1f - (dist/radius);
 				mask = Mathf.Clamp(mask, 0f, 1f);
 				mask *= mask;
 
-				float n = Layer0_NoiseImage.GetNoise2D(x * InsideDetails, y * InsideDetails);
-				float inside01 = (n + 1f);
+				var n = _layer0NoiseImage.GetNoise2D(x * _insideDetails, y * _insideDetails);
+				var inside01 = (n + 1f);
 
-				float value = mask * (.65f + inside01 * .35f);
+				var value = mask * (.65f + inside01 * .35f);
 
-				switch (LevelBiome_ID)
+				switch (LevelBiomeId)
 				{
 					case (0): 
-						if (value > .45f)
+						switch (value)
 						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 0));
-						} else if (value > .40f && value < .45f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
+							case > .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 0));
+								break;
+							case > .40f and < .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+								break;
+							default:
+								SetCell(new Vector2I(x, y), 0);
+								break;
 						}
 						break;
 					case (1): 
-						if (value > .45f)
+						switch (value)
 						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 4));
-						} else if (value > .40f && value < .45f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
+							case > .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 4));
+								break;
+							case > .40f and < .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+								break;
+							default:
+								SetCell(new Vector2I(x, y), 0);
+								break;
 						}
 						break;
 					case (2): 
-						if (value > .45f)
+						switch (value)
 						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 3));
-						} else if (value > .40f && value < .45f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
+							case > .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 3));
+								break;
+							case > .40f and < .45f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+								break;
+							default:
+								SetCell(new Vector2I(x, y), 0);
+								break;
 						}
 						break;
-					case (3): 
-						FastNoiseLite SecondaryNoise = new FastNoiseLite();
-						SecondaryNoise.Seed = Layer0_Seed;
+					case (3):
+						using (var secondaryNoise = new FastNoiseLite())
+						{
+							secondaryNoise.Seed = _layer0Seed;
 						
-						if (value > .40f)
-						{						
-							if (SecondaryNoise.GetNoise2D(x, y) > .15f && SecondaryNoise.GetNoise2D(x, y) < .65f)
+							switch (value)
 							{
-								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
+								case > .40f when secondaryNoise.GetNoise2D(x, y) > .15f && secondaryNoise.GetNoise2D(x, y) < .65f:
+									SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
+									break;
+								case > .40f:
+									SetCell(new Vector2I(x, y), 0, new Vector2I(1, 4));
+									break;
+								case > .35f and < .40f:
+									SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+									break;
+								default:
+									SetCell(new Vector2I(x, y), 0);
+									break;
 							}
-							else
-							{
-								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 4));
-							}
-						} else if (value > .35f && value < .40f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+							break;
 						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
-						}
-						break;
+
 					case (4): 
 
-						FastNoiseLite IceNoise = new FastNoiseLite();
-						IceNoise.Seed = Layer0_Seed;
+						var iceNoise = new FastNoiseLite();
+						iceNoise.Seed = _layer0Seed;
 
-						if (value > .40f)
-						{						
-							if (IceNoise.GetNoise2D(x, y) > .35f)
+						switch (value)
 						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(2, 1));
-						} else if (IceNoise.GetNoise2D(x, y) > .25f && IceNoise.GetNoise2D(x, y) < .35f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
-						}
-						} else if (value > .35f && value < .40f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
+							case > .40f when iceNoise.GetNoise2D(x, y) > .35f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(2, 1));
+								break;
+							case > .40f when iceNoise.GetNoise2D(x, y) > .25f && iceNoise.GetNoise2D(x, y) < .35f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 1));
+								break;
+							case > .40f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(1, 2));
+								break;
+							case > .35f and < .40f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+								break;
+							default:
+								SetCell(new Vector2I(x, y), 0);
+								break;
 						}
 
 
 						break;
 					case (5): 
-						FastNoiseLite SecondaryBlockNoise = new FastNoiseLite();
-						SecondaryBlockNoise.Seed = Layer0_Seed;
+						var secondaryBlockNoise = new FastNoiseLite();
+						secondaryBlockNoise.Seed = _layer0Seed;
 
-						if (value > .40f)
+						switch (value)
 						{
-							if (SecondaryBlockNoise.GetNoise2D(x, y) > .35f)
-							{
+							case > .40f when secondaryBlockNoise.GetNoise2D(x, y) > .35f:
 								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 2));
-							} else if (SecondaryBlockNoise.GetNoise2D(x, y) > .27f && SecondaryBlockNoise.GetNoise2D(x, y) < .35f)
-							{
+								break;
+							case > .40f when secondaryBlockNoise.GetNoise2D(x, y) > .27f && secondaryBlockNoise.GetNoise2D(x, y) < .35f:
 								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 1));
-							}
-							else
-							{
+								break;
+							case > .40f:
 								SetCell(new Vector2I(x, y), 0, new Vector2I(3, 0));
-							}
-						} else if (value > .35f && value < .40f)
-						{
-							SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
-						}
-						else
-						{
-							SetCell(new Vector2I(x, y), -1);
+								break;
+							case > .35f and < .40f:
+								SetCell(new Vector2I(x, y), 0, new Vector2I(0, 1));
+								break;
+							default:
+								SetCell(new Vector2I(x, y), 0);
+								break;
 						}
 						break;
 				}
@@ -212,106 +208,76 @@ public partial class LevelGenerator : TileMapLayer
 		}
 
 		//Generate details layer - Layer1
-		for (int y = -halfY; y < halfY; y++)
+		for (var y = -halfY; y < halfY; y++)
 		{
-			for (int x = -halfX; x < halfX; x++)
+			for (var x = -halfX; x < halfX; x++)
 			{
-				float value = Layer1_NoiseImage.GetNoise2D(x, y);
+				var value = _layer1NoiseImage.GetNoise2D(x, y);
 
-				Vector2I cell_position = new (x, y);
+				Vector2I cellPosition = new (x, y);
 
-				var block_cell = GetCellSourceId(cell_position);
+				var blockCell = GetCellSourceId(cellPosition);
 
-				switch (LevelBiome_ID)
+				switch (LevelBiomeId)
 				{
 					case (0):
-						if (value > 0.2 && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 0))
+						if (value > 0.2 && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 0))
 						{
 							var rng = new RandomNumberGenerator();
-							if (rng.RandiRange(0, 2) == 1)
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 0));
-							}
-							else
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 1));
-							}
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0,
+								rng.RandiRange(0, 2) == 1 ? new Vector2I(17, 0) : new Vector2I(17, 1));
 						}
 						else
 						{
-							DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (1):
-						if (value > 0.15f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 4))
+						if (value > 0.15f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 4))
 						{
 							var rng = new RandomNumberGenerator();
-							if (rng.RandiRange(0, 2) == 1)
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 0));
-							}
-							else
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 1));
-							}
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0,
+								rng.RandiRange(0, 2) == 1 ? new Vector2I(17, 0) : new Vector2I(17, 1));
 						}
 						else
 						{
-							DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (2):
-						if (value > 0.1f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 3))
+						if (value > 0.1f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 3))
 						{
 							var rng = new RandomNumberGenerator();
-							if (rng.RandiRange(0, 2) == 1)
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 4));
-							}
-							else
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 5));
-							}
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0,
+								rng.RandiRange(0, 2) == 1 ? new Vector2I(17, 4) : new Vector2I(17, 5));
 						}
 						else
 						{
-							DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (3):
-						if (value > 0.2f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 4))
+						if (value > 0.2f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 4))
 						{
 							var rng = new RandomNumberGenerator();
-							if (rng.RandiRange(0, 2) == 1)
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 2));
-							}
-							else
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 3));
-							}
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0,
+								rng.RandiRange(0, 2) == 1 ? new Vector2I(17, 2) : new Vector2I(17, 3));
 						}
 						else
 						{
-							DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (4):
-						if (value > 0.2f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 0))
+						if (value > 0.2f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 0))
 						{
 							var rng = new RandomNumberGenerator();
-							if (rng.RandiRange(0, 2) == 1)
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 0));
-							}
-							else
-							{
-								DetailsTileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 1));
-							}
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0,
+								rng.RandiRange(0, 2) == 1 ? new Vector2I(17, 0) : new Vector2I(17, 1));
 						}
 						else
 						{
-							DetailsTileMap.SetCell(new Vector2I(x, y), -1);
+							_detailsTileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (5):
@@ -321,79 +287,80 @@ public partial class LevelGenerator : TileMapLayer
 		}
 		
 		//Generate details 2 layer - Layer2
-		for (int y = -halfY; y < halfY; y++)
+		for (var y = -halfY; y < halfY; y++)
 		{
-			for (int x = -halfX; x < halfX; x++)
+			for (var x = -halfX; x < halfX; x++)
 			{
-				float value = Layer2_NoiseImage.GetNoise2D(x, y);
+				var value = _layer2NoiseImage.GetNoise2D(x, y);
 
-				Vector2I cell_position = new (x, y);
+				Vector2I cellPosition = new (x, y);
 
-				var block_cell = GetCellSourceId(cell_position);
+				var blockCell = GetCellSourceId(cellPosition);
 
-				switch (LevelBiome_ID)
+				switch (LevelBiomeId)
 				{
 					case (0):
-						if (value > 0.5f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 0))
+						if (value > 0.5f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 0))
 						{
 							var rng = new RandomNumberGenerator();
-							int value2 = rng.RandiRange(0, 49);
-							if (value2 == 3)
+							var value2 = rng.RandiRange(0, 49);
+							switch (value2)
 							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(19, 17));
-							}
-							else if (value2 ==9)
-							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(19, 15));
+								case 3:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(19, 17));
+									break;
+								case 9:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(19, 15));
+									break;
 							}
 						}
 						else
 						{
-							Details2TileMap.SetCell(new Vector2I(x, y), -1);
+							_details2TileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (1):
-						if (value > 0.15f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 4))
+						if (value > 0.15f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 4))
 						{
 							var rng = new RandomNumberGenerator();
-							int value2 = rng.RandiRange(0, 49);
-							if (value2 == 3)
+							var value2 = rng.RandiRange(0, 49);
+							switch (value2)
 							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(18, 17));
-							}
-							else if (value2 ==9)
-							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(18, 15));
+								case 3:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(18, 17));
+									break;
+								case 9:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(18, 15));
+									break;
 							}
 						}
 						else
 						{
-							Details2TileMap.SetCell(new Vector2I(x, y), -1);
+							_details2TileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (2):
-						if (value > 0.1f && block_cell == 0 && GetCellAtlasCoords(cell_position) == new Vector2(1, 3))
+						if (value > 0.1f && blockCell == 0 && GetCellAtlasCoords(cellPosition) == new Vector2(1, 3))
 						{
 							var rng = new RandomNumberGenerator();
-							int value2 = rng.RandiRange(0, 49);
-							if (value2 == 3)
+							var value2 = rng.RandiRange(0, 49);
+							switch (value2)
 							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 17));
-							}
-							else if (value2 ==9)
-							{
-								Details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 15));
+								case 3:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 17));
+									break;
+								case 9:
+									_details2TileMap.SetCell(new Vector2I(x, y), 0, new Vector2I(17, 15));
+									break;
 							}
 						}
 						else
 						{
-							Details2TileMap.SetCell(new Vector2I(x, y), -1);
+							_details2TileMap.SetCell(new Vector2I(x, y), 0);
 						}
 						break;
 					case (3):
-						break;
 					case (4):
-						break;
 					case (5):
 						break;
 				}
@@ -401,28 +368,28 @@ public partial class LevelGenerator : TileMapLayer
 		}
 	}
 
-	public void SetNoises()
+	private void SetNoises()
 	{
-		Layer0_NoiseImage = new FastNoiseLite();
-		Layer0_NoiseImage.NoiseType = Layer0_NoiseType;
-		Layer1_NoiseImage = new FastNoiseLite();
-		Layer2_NoiseImage = new FastNoiseLite();
-		Layer2_NoiseImage.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
+		_layer0NoiseImage = new FastNoiseLite();
+		_layer0NoiseImage.NoiseType = _layer0NoiseType;
+		_layer1NoiseImage = new FastNoiseLite();
+		_layer2NoiseImage = new FastNoiseLite();
+		_layer2NoiseImage.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
 
-		var rng = new Godot.RandomNumberGenerator();
-		Layer0_Seed = rng.RandiRange(0, 99999999);
-		Layer0_NoiseImage.Seed = Layer0_Seed;
-		Layer0_NoiseImage.FractalOctaves = Layer0_FractalOctaves;
-		Layer0_NoiseImage.Frequency = Layer0_Frequency;
+		var rng = new RandomNumberGenerator();
+		_layer0Seed = rng.RandiRange(0, 99999999);
+		_layer0NoiseImage.Seed = _layer0Seed;
+		_layer0NoiseImage.FractalOctaves = _layer0FractalOctaves;
+		_layer0NoiseImage.Frequency = _layer0Frequency;
 
-		LevelSizeX = rng.RandiRange(400, 400*4);
-		LevelSizeY = rng.RandiRange(600, 600*4);
+		_levelSizeX = rng.RandiRange(400, 400*4);
+		_levelSizeY = rng.RandiRange(600, 600*4);
 	}
 
-	public void SetBiome()
+	private void SetBiome()
 	{
-		var rng = new Godot.RandomNumberGenerator();
-		LevelBiome_ID = rng.RandiRange(0, 5);
+		var rng = new RandomNumberGenerator();
+		LevelBiomeId = rng.RandiRange(0, 5);
 		//LevelBiome_ID = 1;
 	}
 }

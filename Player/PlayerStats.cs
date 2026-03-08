@@ -1,26 +1,27 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.Player;
 
 public partial class PlayerStats : Node
 {
-	public int BaseHealth = 10;
-	public int BaseMoveSpeed = 180;
+	private int _baseHealth = 10;
+	private int _baseMoveSpeed = 180;
 
-	public int ExtraHealth = 0;
-	public int ExtraMoveSpeed = 0;
+	private int _extraHealth;
+	private int _extraMoveSpeed;
 
-	public float BaseDashCooldown = 2.5f;
-	public float ExtraDashCooldown = 0;
+	private float _baseDashCooldown = 2.5f;
+	private float _extraDashCooldown;
 
-	public float BaseDashDuration = .05f;
-	public float ExtraDashDuration = 0;
+	private float _baseDashDuration = .05f;
+	private float _extraDashDuration;
 
-	public int BaseDashSpeed = 1000;
-	public int ExtraDashSpeed = 0;
-	public int BaseDashCharges = 0;
-	public int ExtraDashCharges = 0;
+	private int _baseDashSpeed = 1000;
+	private int _extraDashSpeed;
+	private int _baseDashCharges;
+	private int _extraDashCharges;
 
-	public int Health;
+	private int _health;
 	public int MoveSpeed;
 	public float DashDuration;
 	public float DashCooldown;
@@ -29,15 +30,15 @@ public partial class PlayerStats : Node
 
 	public override void _Ready()
 	{
-		Globals.I.DevModeUpdated += UpdateStats;
+		Autoload.Globals.I.DevModeUpdated += UpdateStats;
 		UpdateStats();
 	}
 
-	public void UpdateStats()
+	private void UpdateStats()
 	{
-		if (Globals.I.DevModeEnabled == true)
+		if (Autoload.Globals.I.DevModeEnabled)
 		{
-			Health = 3000;
+			_health = 3000;
 			MoveSpeed = 350;
 			DashDuration = 0.05f;
 			DashCooldown = .5f;
@@ -45,11 +46,11 @@ public partial class PlayerStats : Node
 			DashCharges = 5;
 			return;
 		}
-		Health = BaseHealth + ExtraHealth;
-		MoveSpeed = BaseMoveSpeed + ExtraMoveSpeed;
-		DashDuration = BaseDashDuration + ExtraDashDuration;
-		DashCooldown = BaseDashCooldown + ExtraDashCooldown;
-		DashSpeed = BaseDashSpeed + ExtraDashSpeed;
-		DashCharges = BaseDashCharges + ExtraDashCharges;
+		_health = _baseHealth + _extraHealth;
+		MoveSpeed = _baseMoveSpeed + _extraMoveSpeed;
+		DashDuration = _baseDashDuration + _extraDashDuration;
+		DashCooldown = _baseDashCooldown + _extraDashCooldown;
+		DashSpeed = _baseDashSpeed + _extraDashSpeed;
+		DashCharges = _baseDashCharges + _extraDashCharges;
 	}
 }

@@ -111,3 +111,5 @@ amount = 300
 texture = SubResource("AtlasTexture_522rg")
 lifetime = 5.029999999999999
 process_material = SubResource("ParticleProcessMaterial_aw3l6")
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1599067131]

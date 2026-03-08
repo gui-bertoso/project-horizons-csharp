@@ -1,22 +1,25 @@
 using System.IO;
 using Godot;
+using Godot.Collections;
+
+namespace projecthorizonscs.Autoload;
 
 public partial class DataManager : Node
 {
-	public const string SavePath = "user://save.dat";
-	public const string WorldSavesPath = "user://worldsaves/";
+	private const string SavePath = "user://save.dat";
+	private const string WorldSavesPath = "user://worldsaves/";
 
 	public static DataManager I {get; private set;}
-    public object CurrentSaveData { get; internal set; }
+	public object CurrentSaveData { get;}
 
-    public override void _Ready()
-    {
-        I = this;
-    }
+	public override void _Ready()
+	{
+		I = this;
+	}
 
-	public string CurrentSaveName = "";
+	private string _currentSaveName = "";
 
-	public Godot.Collections.Dictionary<string, Variant> GameDataDictionary = new()
+	public Dictionary<string, Variant> GameDataDictionary = new()
 	{
 		{"Settings.FrameRate", 1},
 		{"Settings.Fullscreen", 1},
@@ -31,10 +34,10 @@ public partial class DataManager : Node
 		{"Settings.PlayerVolume", 50},
 		{"Settings.EnemyVolume", 50},
 
-		{"Saves", new Godot.Collections.Array<string>()}
+		{"Saves", new Array<string>()}
 	};
 
-	public Godot.Collections.Dictionary<string, Variant> CurrentWorldData = new()
+	private Dictionary<string, Variant> _currentWorldData = new()
 	{
 		{"CurrentLevel", 1},
 		{"PlayedTime", 0f},
@@ -49,32 +52,42 @@ public partial class DataManager : Node
 		{"PlayerMoveSpeed", 50},
 		{"PlayerExtraMoveSpeed", 50},
 	};
-	
-	public void SaveGameData()
+
+	public DataManager(object currentSaveData)
+	{
+		CurrentSaveData = currentSaveData;
+	}
+
+	public DataManager()
+	{
+	}
+
+	private void SaveGameData()
 	{
 		GD.Print("Saving game data...");
 		using var file = Godot.FileAccess.Open(SavePath, Godot.FileAccess.ModeFlags.Write);
 		file.StoreVar(GameDataDictionary);
 		GD.Print("Saved game data");
 	}
-	public void LoadGameData()
+
+	private void LoadGameData()
 	{
 		GD.Print("Loading game data");
 		using var file = Godot.FileAccess.Open(SavePath, Godot.FileAccess.ModeFlags.Read);
-		Variant data = file.GetVar();
+		var data = file.GetVar();
 
-		var Dictionary = data.AsGodotDictionary();
+		var dictionary = data.AsGodotDictionary();
 
-		GameDataDictionary = new ();
+		GameDataDictionary = new Dictionary<string, Variant>();
 
-		foreach (var key in Dictionary.Keys)
+		foreach (var key in dictionary.Keys)
 		{
-			GameDataDictionary[key.AsString()] = Dictionary[key];
+			GameDataDictionary[key.AsString()] = dictionary[key];
 		}
 		GD.Print("Loaded game data");
 	}
 
-	public void SaveWorldData(string SaveName)
+	private void SaveWorldData(string saveName)
 	{
 		if (!Godot.FileAccess.FileExists(WorldSavesPath))
 		{
@@ -82,55 +95,55 @@ public partial class DataManager : Node
 		}
 
 		GD.Print("Saving world data...");
-		using var file = Godot.FileAccess.Open(WorldSavesPath + SaveName + ".dat", Godot.FileAccess.ModeFlags.Write);
-		file.StoreVar(CurrentWorldData);
+		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".dat", Godot.FileAccess.ModeFlags.Write);
+		file.StoreVar(_currentWorldData);
 		GD.Print("Saved world data");
 	}
 
-	public void QuickSaveWorldData()
+	private void QuickSaveWorldData()
 	{
-		if (CurrentSaveName == "")
+		if (_currentSaveName == "")
 		{
 			GD.Print("No save name set, cannot quicksave world data");
 			return;
 		}
-		SaveWorldData(CurrentSaveName);
+		SaveWorldData(_currentSaveName);
 	}
 
-	public void QuickLoadWorldData()
+	private void QuickLoadWorldData()
 	{
-		if (CurrentSaveName == "")
+		if (_currentSaveName == "")
 		{
 			GD.Print("No save name set, cannot quickload world data");
 			return;
 		}
-		LoadWorldData(CurrentSaveName);
+		LoadWorldData(_currentSaveName);
 	}
 	
-	public void LoadWorldData(string SaveName)
+	public void LoadWorldData(string saveName)
 	{
 		GD.Print("Loading world data...");
-		using var file = Godot.FileAccess.Open(WorldSavesPath + SaveName + ".dat", Godot.FileAccess.ModeFlags.Read);
-		Variant data = file.GetVar();
+		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".dat", Godot.FileAccess.ModeFlags.Read);
+		var data = file.GetVar();
 
-		var Dictionary = data.AsGodotDictionary();
+		var dictionary = data.AsGodotDictionary();
 
-		CurrentWorldData = new ();
+		_currentWorldData = new Dictionary<string, Variant>();
 
-		foreach (var key in Dictionary.Keys)
+		foreach (var key in dictionary.Keys)
 		{
-			CurrentWorldData[key.AsString()] = Dictionary[key];
+			_currentWorldData[key.AsString()] = dictionary[key];
 		}
 		GD.Print("Loaded world data");
 	}
 
-    public override void _EnterTree()
-    {
+	public override void _EnterTree()
+	{
 		if (Godot.FileAccess.FileExists(SavePath))
 		{
 			LoadGameData();
 		}
-    }
+	}
 
 	public override void _ExitTree()
 	{

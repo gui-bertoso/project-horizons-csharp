@@ -1,14 +1,15 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.Enemys.EnemyTemplate;
 
 public partial class EnemyTemplate : CharacterBody2D
 {
-	public AnimationPlayer _AnimationPlayer;
-	public Sprite2D _BodySprite;
-	public Label _DebugLabel;	
-	public Area2D _AttackArea;	
+	protected AnimationPlayer AnimPlayer;
+	private Sprite2D _bodySprite;
+	private Label _debugLabel;
+	private Area2D _attackArea;
 
-	public Player PlayerReference;
+	protected Player.Player PlayerReference;
 
 	[Export]
 	public string EnemyName = "EnemyName";
@@ -36,15 +37,15 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	public override void _Ready()
 	{
-		_AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-		_BodySprite = GetNode<Sprite2D>("Sprite");
-		_DebugLabel = GetNode<Label>("Label");
-		_AttackArea = GetNode<Area2D>("AttackArea");
+		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		_bodySprite = GetNode<Sprite2D>("Sprite");
+		_debugLabel = GetNode<Label>("Label");
+		_attackArea = GetNode<Area2D>("AttackArea");
 	}
 
 	public override void _Process(double delta)
 	{
-		if (Globals.I.LocalPlayer == null)
+		if (Autoload.Globals.I.LocalPlayer == null)
 		{
 			return;
 		}
@@ -53,7 +54,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		ApplyState();
 		ApplyStateAnimation();
 
-		_DebugLabel.Text = $"State: {CurrentState}\nDistanceToPlayer: {DistanceToPlayer}";
+		_debugLabel.Text = $"State: {CurrentState}\nDistanceToPlayer: {DistanceToPlayer}";
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -84,28 +85,19 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	public void UpdateDistanceToPlayer()
 	{
-		DistanceToPlayer = Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
+		DistanceToPlayer = Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
 	}
 
 	public void RotateAttackAreaTowardsPlayer()
 	{
-		if (PlayerReference != null)
-		{
-			Vector2 DirectionToPlayer = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
-			_AttackArea.Rotation = DirectionToPlayer.Angle();
-		}
+		if (PlayerReference == null) return;
+		var directionToPlayer = (PlayerReference.GlobalPosition - GlobalPosition).Normalized();
+		_attackArea.Rotation = directionToPlayer.Angle();
 	}
 
-	public void LookToTarget(Vector2 TargetPosition)
+	public void LookToTarget(Vector2 targetPosition)
 	{
-		if (TargetPosition.X < GlobalPosition.X)
-		{
-			_BodySprite.FlipH = true;
-		}
-		else
-		{
-			_BodySprite.FlipH = false;
-		}
+		_bodySprite.FlipH = targetPosition.X < GlobalPosition.X;
 	}
 
 }
