@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://6afjihoylen2"]
 
 [ext_resource type="Script" uid="uid://8qxqmrq2mua1" path="res://Interface/SavesManager/SaveSlot.cs" id="1_uutvi"]
+[ext_resource type="Texture2D" uid="uid://brblsqd8uxgf0" path="res://Assets/Interface/trash.png" id="2_rg4hg"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_kiwph"]
 
@@ -59,9 +60,15 @@ horizontal_alignment = 2
 layout_mode = 2
 
 [node name="Button" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1109307910]
-custom_minimum_size = Vector2(129, 0)
+custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
-text = "Delete"
+text = "+"
+
+[node name="Button3" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=149362617]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+icon = ExtResource("2_rg4hg")
+expand_icon = true
 
 [node name="Button2" type="Button" parent="VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1783031463]
 custom_minimum_size = Vector2(129, 0)
