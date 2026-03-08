@@ -55,26 +55,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -440.0
-offset_top = -254.0
-offset_right = 403.0
-offset_bottom = 254.0
+offset_left = -413.5
+offset_top = -204.5
+offset_right = 413.5
+offset_bottom = 204.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dsfsh")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=615134055]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -401.5
-offset_top = -236.0
-offset_right = 177.5
-offset_bottom = 231.0
-grow_horizontal = 2
+offset_left = 13.0
+offset_top = -193.5
+offset_right = 592.0
+offset_bottom = 273.5
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Panel/VBoxContainer" unique_id=1368208604]
@@ -169,15 +166,17 @@ text = "Antialising"
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
-item_count = 4
-popup/item_0/text = "msaa 2x"
+item_count = 5
+popup/item_0/text = "disabled"
 popup/item_0/id = 0
-popup/item_1/text = "msaa 8x"
+popup/item_1/text = "msaa 2x"
 popup/item_1/id = 1
-popup/item_2/text = "fxaa"
+popup/item_2/text = "msaa 8x"
 popup/item_2/id = 2
-popup/item_3/text = "taa"
+popup/item_3/text = "fxaa"
 popup/item_3/id = 3
+popup/item_4/text = "taa"
+popup/item_4/id = 4
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=449915720]
 layout_mode = 2
