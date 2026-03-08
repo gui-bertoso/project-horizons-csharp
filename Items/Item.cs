@@ -1,5 +1,6 @@
 using Godot;
-using System;
+
+namespace projecthorizonscs.Items;
 
 public partial class Item : Resource
 {

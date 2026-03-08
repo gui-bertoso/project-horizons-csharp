@@ -1,30 +1,30 @@
 using Godot;
-using System;
-using System.Data.Common;
+
+namespace projecthorizonscs.Player;
 
 public partial class Player : CharacterBody2D
 {
-	private PlayerStats _Stats;
+	private PlayerStats _stats;
 
 
-	private bool OnDash = false;
+	private bool _onDash;
 	public float DashDurationCountdown;
 	public float DashCooldownCount;
 	public int UsedDashCharges;
-	private Vector2 DashDirection;
+	private Vector2 _dashDirection;
 
 	public float NotDashingTime;
 	
 	public override void _Ready()
 	{
-		Globals.I.LocalPlayer = this;
+		Autoload.Globals.I.LocalPlayer = this;
 
-		_Stats = GetNode<PlayerStats>("Stats");
+		_stats = GetNode<PlayerStats>("Stats");
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Globals.I.InMenu)
+		if (Autoload.Globals.I.InMenu)
 		{
 			return;
 		}
@@ -35,17 +35,17 @@ public partial class Player : CharacterBody2D
 
 	private void MovementBehavior()
 	{
-		Vector2 velocity = Velocity;
+		var velocity = Velocity;
 
-		if (OnDash)
+		if (_onDash)
 		{
-			velocity = DashDirection * _Stats.DashSpeed;
+			velocity = _dashDirection * _stats.DashSpeed;
 		}
 		else
 		{
-			int speed = _Stats.MoveSpeed;
+			var speed = _stats.MoveSpeed;
 
-			Vector2 direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
+			var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
 
 			if (direction != Vector2.Zero)
 			{
@@ -63,41 +63,35 @@ public partial class Player : CharacterBody2D
 
 	private void DashBehavior(float delta)
 	{
-		if (OnDash)
+		if (_onDash)
 		{
 			DashDurationCountdown -= delta;
-			if (DashDurationCountdown <= 0)
+			if (!(DashDurationCountdown <= 0)) return;
+			DashDurationCountdown = 0;
+			_onDash = false;
+			if (UsedDashCharges == _stats.DashCharges)
 			{
-				DashDurationCountdown = 0;
-				OnDash = false;
-				if (UsedDashCharges == _Stats.DashCharges)
-				{
-					DashCooldownCount = _Stats.DashCooldown;
-				}
+				DashCooldownCount = _stats.DashCooldown;
 			}
 			return;
 		}
 
-		if (DashDurationCountdown == 0 && DashCooldownCount == 0 && !OnDash)
+		if (DashDurationCountdown == 0 && DashCooldownCount == 0 && !_onDash)
 		{
 			if (Input.IsActionJustPressed("dash"))
 			{
-				DashDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
-				DashDurationCountdown = _Stats.DashDuration;
-				OnDash = true;
+				_dashDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
+				DashDurationCountdown = _stats.DashDuration;
+				_onDash = true;
 				UsedDashCharges += 1;
 			}
 			else
 			{
-				if (UsedDashCharges > 0)
-				{
-					NotDashingTime += delta;
-					if (NotDashingTime > (_Stats.DashCooldown / _Stats.DashCharges)*2)
-					{
-						UsedDashCharges -= 1;
-						NotDashingTime = 0;
-					}
-				}
+				if (UsedDashCharges <= 0) return;
+				NotDashingTime += delta;
+				if (!(NotDashingTime > (_stats.DashCooldown / _stats.DashCharges) * 2)) return;
+				UsedDashCharges -= 1;
+				NotDashingTime = 0;
 			}
 		}
 		else
@@ -107,12 +101,10 @@ public partial class Player : CharacterBody2D
 				DashCooldownCount -= delta;
 			}
 
-			if (DashCooldownCount < 0 || DashDurationCountdown < 0)
-			{
-				DashCooldownCount = 0;
-				DashDurationCountdown = 0;
-				UsedDashCharges = 0;
-			}
+			if (!(DashCooldownCount < 0) && !(DashDurationCountdown < 0)) return;
+			DashCooldownCount = 0;
+			DashDurationCountdown = 0;
+			UsedDashCharges = 0;
 		}
 	}
 }

@@ -29,6 +29,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ks6hq"]
 bg_color = Color(0.15127608, 0.15127608, 0.15127605, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ikjep"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lix6m"]
 bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
 
@@ -75,7 +77,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_qo2gr")
 text = "BACK"
 
 [node name="Panel2" type="Panel" parent="." unique_id=2109386138]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -150,6 +151,7 @@ custom_minimum_size = Vector2(296, 20)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/line_spacing = -3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ikjep")
 placeholder_text = "A beaurilful world"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1871577999]
@@ -167,6 +169,7 @@ custom_minimum_size = Vector2(296, 20)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/line_spacing = -3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ikjep")
 placeholder_text = "MyHappyWorld"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1562060928]
@@ -220,6 +223,7 @@ layout_mode = 2
 icon = ExtResource("2_ikjep")
 
 [node name="Panel" type="Panel" parent="." unique_id=335505045]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

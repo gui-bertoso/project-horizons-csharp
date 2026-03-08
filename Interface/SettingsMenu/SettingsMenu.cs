@@ -1,75 +1,75 @@
 using Godot;
-using System;
-using System.Data;
+
+namespace projecthorizonscs.Interface.SettingsMenu;
 
 public partial class SettingsMenu : Control
 {
-	public OptionButton FrameRateOption;
-	public OptionButton VsyncOption;
-	public OptionButton BloomOption;
-	public OptionButton AntialiasingOption;
-	public OptionButton DetailsOption;
-	public OptionButton ParticlesOption;
-	public OptionButton PostProcessingOption;
+	private OptionButton _frameRateOption;
+	private OptionButton _vsyncOption;
+	private OptionButton _bloomOption;
+	private OptionButton _antialiasingOption;
+	private OptionButton _detailsOption;
+	private OptionButton _particlesOption;
+	private OptionButton _postProcessingOption;
 
-	public HSlider GeneralVolumeSlider;
-	public HSlider MusicVolumeSlider;
-	public HSlider PlayerVolumeSlider;
-	public HSlider EnemyVolumeSlider;
+	private HSlider _generalVolumeSlider;
+	private HSlider _musicVolumeSlider;
+	private HSlider _playerVolumeSlider;
+	private HSlider _enemyVolumeSlider;
 
 	public override void _Ready()
 	{
-		FrameRateOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/OptionButton");
-		VsyncOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer11/OptionButton");
-		BloomOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer10/OptionButton");
-		AntialiasingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2/OptionButton");
-		DetailsOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3/OptionButton");
-		ParticlesOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer4/OptionButton");
-		PostProcessingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OptionButton");
+		_frameRateOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/OptionButton");
+		_vsyncOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer11/OptionButton");
+		_bloomOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer10/OptionButton");
+		_antialiasingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2/OptionButton");
+		_detailsOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3/OptionButton");
+		_particlesOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer4/OptionButton");
+		_postProcessingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OptionButton");
 
-		GeneralVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer6/HSlider");
-		MusicVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer7/HSlider");
-		PlayerVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer8/HSlider");
-		EnemyVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer9/HSlider");
+		_generalVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer6/HSlider");
+		_musicVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer7/HSlider");
+		_playerVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer8/HSlider");
+		_enemyVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer9/HSlider");
 
 		LoadSettings();
 	}
 
-	public void _OnBackButtonUp()
+	private void _OnBackButtonUp()
 	{
 		GetTree().ChangeSceneToFile("uid://c25rg72x1rdir");
 		SaveSettings();
 	}
 
-	public void SaveSettings()
+	private void SaveSettings()
 	{
-		DataManager.I.GameDataDictionary["Settings.FrameRate"] = FrameRateOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.Vsync"] = VsyncOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.Bloom"] = BloomOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.Antialiasing"] = AntialiasingOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.Details"] = DetailsOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.Particles"] = ParticlesOption.Selected;
-		DataManager.I.GameDataDictionary["Settings.PostProcessing"] = PostProcessingOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.FrameRate"] = _frameRateOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Vsync"] = _vsyncOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Bloom"] = _bloomOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Antialiasing"] = _antialiasingOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Details"] = _detailsOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Particles"] = _particlesOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.PostProcessing"] = _postProcessingOption.Selected;
 
-		DataManager.I.GameDataDictionary["Settings.GeneralVolume"] = GeneralVolumeSlider.Value;
-		DataManager.I.GameDataDictionary["Settings.MusicVolume"] = MusicVolumeSlider.Value;
-		DataManager.I.GameDataDictionary["Settings.PlayerVolume"] = PlayerVolumeSlider.Value;
-		DataManager.I.GameDataDictionary["Settings.EnemyVolume"] = EnemyVolumeSlider.Value;
+		Autoload.DataManager.I.GameDataDictionary["Settings.GeneralVolume"] = _generalVolumeSlider.Value;
+		Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"] = _musicVolumeSlider.Value;
+		Autoload.DataManager.I.GameDataDictionary["Settings.PlayerVolume"] = _playerVolumeSlider.Value;
+		Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"] = _enemyVolumeSlider.Value;
 	}
 
-	public void LoadSettings()
+	private void LoadSettings()
 	{
-		FrameRateOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.FrameRate"];
-		VsyncOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.Vsync"];
-		BloomOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.Bloom"];
-		AntialiasingOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.Antialiasing"];
-		DetailsOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.Details"];
-		ParticlesOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.Particles"];
-		PostProcessingOption.Selected = (int)DataManager.I.GameDataDictionary["Settings.PostProcessing"];
+		_frameRateOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.FrameRate"];
+		_vsyncOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Vsync"];
+		_bloomOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Bloom"];
+		_antialiasingOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Antialiasing"];
+		_detailsOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Details"];
+		_particlesOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Particles"];
+		_postProcessingOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.PostProcessing"];
 
-		GeneralVolumeSlider.Value = (float)DataManager.I.GameDataDictionary["Settings.GeneralVolume"];
-		MusicVolumeSlider.Value = (float)DataManager.I.GameDataDictionary["Settings.MusicVolume"];
-		PlayerVolumeSlider.Value = (float)DataManager.I.GameDataDictionary["Settings.PlayerVolume"];
-		EnemyVolumeSlider.Value = (float)DataManager.I.GameDataDictionary["Settings.EnemyVolume"];
+		_generalVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.GeneralVolume"];
+		_musicVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"];
+		_playerVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.PlayerVolume"];
+		_enemyVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"];
 	}
 }
