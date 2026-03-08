@@ -161,6 +161,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel4" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=146432543 instance=ExtResource("1_lix6m")]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
