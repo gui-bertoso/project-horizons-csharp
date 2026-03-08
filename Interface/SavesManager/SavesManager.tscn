@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dd2nrqr1prju0"]
 
 [ext_resource type="PackedScene" uid="uid://6afjihoylen2" path="res://Interface/SavesManager/SaveSlot.tscn" id="1_lix6m"]
+[ext_resource type="Script" uid="uid://by0ayxdox0hs3" path="res://Interface/SavesManager/SavesManager.cs" id="1_ygjdw"]
+[ext_resource type="Texture2D" uid="uid://c5ntlgbn4myvp" path="res://Assets/Interface/given.png" id="2_ikjep"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ks6hq"]
 
@@ -30,9 +32,6 @@ bg_color = Color(0.15127608, 0.15127608, 0.15127605, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lix6m"]
 bg_color = Color(0.04303915, 0.043039158, 0.043039113, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygjdw"]
-bg_color = Color(0.1847857, 0.1847857, 0.18478557, 1)
-
 [node name="Control" type="Control" unique_id=610749935]
 layout_mode = 3
 anchors_preset = 15
@@ -40,6 +39,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ygjdw")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=536293881]
 layout_mode = 1
@@ -73,6 +73,151 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_efhhj")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_jrf4b")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qo2gr")
 text = "BACK"
+
+[node name="Panel2" type="Panel" parent="." unique_id=2109386138]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -212.5
+offset_top = -126.5
+offset_right = 212.5
+offset_bottom = 126.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ks6hq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel2" unique_id=1889680601]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.0
+offset_top = -118.5
+offset_right = 202.0
+offset_bottom = 118.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel2/HBoxContainer" unique_id=1075734133]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer" unique_id=1313040203]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Panel2/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=134605727]
+custom_minimum_size = Vector2(74.14, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9846037, 0.99999696, 0.77647364, 1)
+theme_override_colors/font_disabled_color = Color(0.32049134, 0.32049137, 0.32049137, 1)
+theme_override_font_sizes/font_size = 19
+text = "BACK"
+
+[node name="Label" type="Label" parent="Panel2/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1816896143]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Save Manager"
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="Panel2/HBoxContainer/VBoxContainer" unique_id=1313542971]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer" unique_id=855807131]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=531190698]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1026000094]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="TextEdit" type="TextEdit" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=1605272638]
+custom_minimum_size = Vector2(296, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/line_spacing = -3
+placeholder_text = "A beaurilful world"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1871577999]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=644553401]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Seed"
+
+[node name="TextEdit" type="TextEdit" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=2036648467]
+custom_minimum_size = Vector2(296, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/line_spacing = -3
+placeholder_text = "MyHappyWorld"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1562060928]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=1605930051]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Difficulty"
+
+[node name="OptionButton" type="OptionButton" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=9266248]
+layout_mode = 2
+selected = 1
+item_count = 4
+popup/item_0/text = "Easy"
+popup/item_0/id = 0
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+popup/item_3/text = "Hardcore"
+popup/item_3/id = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1329974399]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=737935049]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Multiplayer"
+
+[node name="CheckButton" type="CheckButton" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=828475895]
+layout_mode = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer" unique_id=1356971]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=262035922]
+custom_minimum_size = Vector2(174, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "CREATE"
+
+[node name="Button3" type="Button" parent="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=1096224709]
+layout_mode = 2
+icon = ExtResource("2_ikjep")
 
 [node name="Panel" type="Panel" parent="." unique_id=335505045]
 layout_mode = 1
@@ -131,6 +276,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_lix6m")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/HBoxContainer/VBoxContainer/Panel" unique_id=864262192]
+custom_minimum_size = Vector2(0.915, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -139,7 +285,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -303.75
 offset_top = -166.5
-offset_right = 303.75
+offset_right = 313.015
 offset_bottom = 166.5
 grow_horizontal = 2
 grow_vertical = 2
@@ -150,41 +296,37 @@ layout_mode = 2
 
 [node name="Panel" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=76235896 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel2" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1549491504 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel3" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=749384105 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel4" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=146432543 instance=ExtResource("1_lix6m")]
 visible = false
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel5" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=595297822 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel6" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1962474483 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel7" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=380468031 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel8" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1407702852 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel9" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1475869050 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
 
 [node name="Panel10" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=1351474623 instance=ExtResource("1_lix6m")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ygjdw")
+
+[connection signal="button_up" from="Button" to="." method="_OnBackButtonUp"]
+[connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="." method="_OnNewSaveBackButtonUp"]
+[connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Button2" to="." method="_OnNewSaveButtonUp"]
+[connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Button3" to="." method="_OnGivenNewSaveButtonUp"]
+[connection signal="button_up" from="Panel/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="." method="_OnNewSaveButtonUp"]
