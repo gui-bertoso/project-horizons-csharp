@@ -9,6 +9,10 @@ public partial class MainMenu : Control
         ContinueButton = GetNode<Button>("VBoxContainer/Button2");
 		ContinueButton.Disabled = true;
     }
+	public void _OnPlayButtonUp()
+	{
+		GetTree().ChangeSceneToFile("uid://dd2nrqr1prju0");
+	}
 	public void _OnQuitButtonUp()
 	{
 		GetTree().Quit();
