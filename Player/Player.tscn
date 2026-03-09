@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cuw4tdtx3empe" path="res://Player/Player.cs" id="1_rkbax"]
 [ext_resource type="Script" uid="uid://dx3hu0b46cma4" path="res://Player/PlayerStats.cs" id="3_g1dw6"]
 [ext_resource type="Script" uid="uid://djb7nm4fgr2p" path="res://Player/PlayerHand.cs" id="4_ddoul"]
+[ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Mellee/Branch.png" id="5_8g4oa"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tok1r"]
 radius = 7.9999943
@@ -35,6 +36,12 @@ position_smoothing_speed = 8.0
 script = ExtResource("3_g1dw6")
 
 [node name="HandOffset" type="Node2D" parent="." unique_id=407417303]
+position = Vector2(0, -16)
 
 [node name="Hand" type="Marker2D" parent="HandOffset" unique_id=398830428]
+position = Vector2(23, 0)
 script = ExtResource("4_ddoul")
+
+[node name="Branch" type="Sprite2D" parent="HandOffset/Hand" unique_id=2050690535]
+position = Vector2(0, -12)
+texture = ExtResource("5_8g4oa")
