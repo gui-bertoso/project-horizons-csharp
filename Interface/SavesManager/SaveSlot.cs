@@ -1,4 +1,6 @@
 using Godot;
+using Godot.Collections;
+using projecthorizonscs.Autoload;
 
 namespace projecthorizonscs.Interface.SavesManager;
 
@@ -16,6 +18,8 @@ public partial class SaveSlot : VBoxContainer
 	private Label _levelNameLabel;
 	private Label _levelDifficultyLabel;
 	private Label _seedLabel;
+
+	private Dictionary<string, Variant> _saveData;
 
 	public override void _Ready()
 	{
@@ -52,12 +56,14 @@ public partial class SaveSlot : VBoxContainer
 		
 	}
 
-	private static void _OnPlayButtonUp()
+	private void _OnPlayButtonUp()
 	{
-		
+		var saveName = _levelNameLabel.Text;
+		DataManager.I.LoadWorldData(saveName.ToSnakeCase());
+		GetTree().ChangeSceneToFile("uid://caeqsflrr74fw");
 	}
 
-	public void SetData(Godot.Collections.Dictionary<string, Variant> saveData)
+	public void SetData(Dictionary<string, Variant> saveData)
 	{
 		var playedTime = (int)saveData["PlayedTime"];
 		var hours = playedTime / 3600;
@@ -70,5 +76,6 @@ public partial class SaveSlot : VBoxContainer
 
 		_currentLevelLabel.Text = saveData["CurrentLevel"].ToString();
 		_seedLabel.Text = saveData["SaveSeed"].ToString();
+		_levelNameLabel.Text = saveData["SaveName"].ToString();
 	}
 }
