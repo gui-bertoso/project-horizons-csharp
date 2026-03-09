@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://br5t1lo3wng1y"]
 
-[ext_resource type="Texture2D" uid="uid://co3n7k6sa3cy1" path="res://Assets/Player/Player.png" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://cuw4tdtx3empe" path="res://Player/Player.cs" id="1_rkbax"]
+[ext_resource type="Texture2D" uid="uid://bwl25n3waon7" path="res://Assets/Player/Player3.png" id="2_8g4oa"]
 [ext_resource type="Script" uid="uid://dx3hu0b46cma4" path="res://Player/PlayerStats.cs" id="3_g1dw6"]
 [ext_resource type="Script" uid="uid://djb7nm4fgr2p" path="res://Player/PlayerHand.cs" id="4_ddoul"]
 [ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Mellee/Branch.png" id="5_8g4oa"]
@@ -17,10 +17,51 @@ collision_mask = 11
 script = ExtResource("1_rkbax")
 
 [node name="Body" type="Node2D" parent="." unique_id=709355021]
+scale = Vector2(2, 2)
 
-[node name="Sprite" type="Sprite2D" parent="Body" unique_id=1382078403]
-position = Vector2(0, -16)
-texture = ExtResource("1_oul6g")
+[node name="B" type="Sprite2D" parent="Body" unique_id=1245431840]
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="LA" type="Sprite2D" parent="Body" unique_id=2000869556]
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(64, 0, 64, 64)
+
+[node name="LL" type="Sprite2D" parent="Body" unique_id=153436741]
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(192, 0, 64, 64)
+
+[node name="RL" type="Sprite2D" parent="Body" unique_id=202352974]
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(256, 0, 64, 64)
+
+[node name="H" type="Sprite2D" parent="Body" unique_id=1670540864]
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(320, 0, 64, 64)
+
+[node name="Node2D" type="Node2D" parent="Body" unique_id=1675792708]
+position = Vector2(5.5, 11)
+rotation = -1.5879637
+
+[node name="RA" type="Sprite2D" parent="Body/Node2D" unique_id=1807329821]
+position = Vector2(-7.5, -8)
+texture = ExtResource("2_8g4oa")
+region_enabled = true
+region_rect = Rect2(128, 0, 64, 64)
+
+[node name="Hand" type="Marker2D" parent="Body/Node2D/RA" unique_id=398830428]
+position = Vector2(8, 22.5)
+rotation = 1.5821875
+script = ExtResource("4_ddoul")
+
+[node name="Branch" type="Sprite2D" parent="Body/Node2D/RA/Hand" unique_id=2050690535]
+position = Vector2(0, -12)
+texture = ExtResource("5_8g4oa")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=1253244374]
 position = Vector2(0, -8)
@@ -37,11 +78,3 @@ script = ExtResource("3_g1dw6")
 
 [node name="HandOffset" type="Node2D" parent="." unique_id=407417303]
 position = Vector2(0, -16)
-
-[node name="Hand" type="Marker2D" parent="HandOffset" unique_id=398830428]
-position = Vector2(23, 0)
-script = ExtResource("4_ddoul")
-
-[node name="Branch" type="Sprite2D" parent="HandOffset/Hand" unique_id=2050690535]
-position = Vector2(0, -12)
-texture = ExtResource("5_8g4oa")
