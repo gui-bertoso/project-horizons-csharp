@@ -7,11 +7,13 @@ public partial class PlayerHand : Marker2D
 	private Items.Item _equippedItem;
 	private Node _equippedItemReference;
 	private Node2D _handOffset;
+	private Node2D _body;
 
 	public override void _Ready()
 	{
 		Autoload.Globals.I.LocalPlayerHand = this;
-		_handOffset = (Node2D)GetParent();
+		_handOffset = (Node2D)GetParent().GetParent();
+		_body = (Node2D)GetParent().GetParent().GetNode("Body");
 	}
 
 	public override void _Process(double delta)
@@ -19,14 +21,8 @@ public partial class PlayerHand : Marker2D
 		var mousePosition = GetGlobalMousePosition();
 		var mouseAngle = (mousePosition - GlobalPosition).Normalized();
 		_handOffset.Rotation = mouseAngle.Angle();
-		if (_handOffset.Rotation is < -1f or > 1.5f)
-		{
-			Scale = new Vector2(-1f, -1f);
-		}
-		else
-		{
-			Scale = new Vector2(1f, 1f);
-		}
+		Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-.5f, .5f) : new Vector2(.5f, .5f);
+		_body.Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
 		GD.Print(_handOffset.Rotation);
 	}
 
@@ -48,7 +44,7 @@ public partial class PlayerHand : Marker2D
 
 	private void ClearEquippedItem()
 	{
-		for (var i = 0; i < GetChildCount(); i++)
+		for (var i = 0; i >= GetChildCount(); i++)
 		{
 			var child = GetChild(i);
 			if (child != _equippedItemReference) continue;
