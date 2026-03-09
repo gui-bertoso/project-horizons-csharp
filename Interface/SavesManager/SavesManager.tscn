@@ -223,7 +223,6 @@ layout_mode = 2
 icon = ExtResource("2_ikjep")
 
 [node name="Panel" type="Panel" parent="." unique_id=335505045]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -308,7 +307,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Panel4" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=146432543 instance=ExtResource("1_lix6m")]
-visible = false
 layout_mode = 2
 
 [node name="Panel5" parent="Panel/HBoxContainer/VBoxContainer/Panel/ScrollContainer/VBoxContainer" unique_id=595297822 instance=ExtResource("1_lix6m")]
@@ -333,4 +331,4 @@ layout_mode = 2
 [connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="." method="_OnNewSaveBackButtonUp"]
 [connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Button2" to="." method="_OnNewSaveButtonUp"]
 [connection signal="button_up" from="Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer5/Button3" to="." method="_OnGivenNewSaveButtonUp"]
-[connection signal="button_up" from="Panel/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="." method="_OnNewSaveButtonUp"]
+[connection signal="button_up" from="Panel/HBoxContainer/VBoxContainer/HBoxContainer/Button" to="." method="_OnCreateNewSaveButtonUp"]

@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using projecthorizonscs.Autoload;
 
 namespace projecthorizonscs.Interface.SavesManager;
 
@@ -38,7 +39,7 @@ public partial class SavesManager : Control
 		"",
 		"Crazy",
 		"Wild",
-		"Beauriful",
+		"Beautiful",
 		"Epic",
 		"Legendary",
 		"Strange",
@@ -94,15 +95,6 @@ public partial class SavesManager : Control
 		"Metropolis"
 	];
 
-	public SavesManager(VBoxContainer savesVBoxContainer)
-	{
-		_savesVBoxContainer = savesVBoxContainer;
-	}
-
-	public SavesManager()
-	{
-	}
-
 	public override void _Ready()
 	{
 		_saveSlotScene = GD.Load<PackedScene>("uid://6afjihoylen2");
@@ -114,10 +106,11 @@ public partial class SavesManager : Control
 
 		_newSaveNameTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/TextEdit");
 		_newSaveSeedTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/TextEdit");
-		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/OptionButton");	
+		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/OptionButton");	
 		_newSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");	
 
 		ClearPlaceholderSaveSlots();
+		LoadSaves();
 	}
 
 	private void ClearPlaceholderSaveSlots()
@@ -146,10 +139,29 @@ public partial class SavesManager : Control
 		_newSaveSeedTextEdit.Text = CreateRandomSeed().ToString();
 	}
 
+	private void _OnCreateNewSaveButtonUp()
+	{
+		_savesPanel.Visible = false;
+		_newSavePanel.Visible = true;
+		_newSaveNameTextEdit.Text = "";
+		_newSaveSeedTextEdit.Text = "";
+		_newSaveDifficultyOptionButton.Selected = 1;
+		_newSaveMultiplayerEnabledCheckButton.ButtonPressed = false;
+	}
+
 	private void _OnNewSaveButtonUp()
 	{
-		_newSavePanel.Visible = true;
-		_savesPanel.Visible = false;
+		GD.Print("Creating new save");
+		DataManager.I.CurrentWorldData["SaveName"] = _newSaveNameTextEdit.Text;
+		DataManager.I.CurrentWorldData["SaveDifficulty"] = _newSaveDifficultyOptionButton.Selected;
+		DataManager.I.CurrentWorldData["SaveSeed"] = _newSaveSeedTextEdit.Text;
+		DataManager.I.CurrentWorldData["Multiplayer"] = _newSaveMultiplayerEnabledCheckButton.ButtonPressed;
+		((Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"]).Add(_newSaveNameTextEdit.Text.ToSnakeCase());
+		DataManager.I.SaveWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
+		DataManager.I.SaveGameData();
+		GD.Print($"New save created {DataManager.I.CurrentWorldData}");
+		_newSavePanel.Visible = false;
+		_savesPanel.Visible = true;
 	}
 
 	public override void _Process(double delta)
@@ -189,17 +201,22 @@ public partial class SavesManager : Control
 
 	private void LoadSaves()
 	{
-		for (var i = 0; i < Autoload.DataManager.I.GameDataDictionary["Saves"].AsGodotArray().Count; i++)
+		GD.Print("Loading saves");
+		foreach (string saveName in (Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"])
 		{
-			var saveName = Autoload.DataManager.I.GameDataDictionary["Saves"].AsGodotArray()[i].ToString();
-			Autoload.DataManager.I.LoadWorldData(saveName);
-			var saveData = (Godot.Collections.Dictionary<string, Variant>)Autoload.DataManager.I.CurrentSaveData;
+			GD.Print($"Loading slot >{saveName}<");
+			DataManager.I.LoadWorldData(saveName);
+			var saveData = DataManager.I.CurrentWorldData;
+			GD.Print($"Loaded save slot data: {saveName}");
 
 			var saveSlot = _saveSlotScene.Instantiate<SaveSlot>();
-			saveSlot.SetData(saveData);
 			_savesVBoxContainer.AddChild(saveSlot);
 			saveSlot.Name = saveName;
+			saveSlot.SetData(saveData);
+			GD.Print($"Loaded save slot: {saveSlot}");
+			
 		}
+		GD.Print("Saves loaded");
 	}
 
 	private static int CreateRandomSeed()
