@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="project-horizons-cs"
+config/name="projectHorizonsCS"
 run/main_scene="uid://crb8neqw233bw"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://Icon.svg"
