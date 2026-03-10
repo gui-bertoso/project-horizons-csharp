@@ -6,6 +6,9 @@ public partial class Player : CharacterBody2D
 {
 	private PlayerStats _stats;
 
+	private Sprite2D _topSprite;
+	private Sprite2D _bottomSprite;
+
 
 	private bool _onDash;
 	public float DashDurationCountdown;
@@ -19,6 +22,9 @@ public partial class Player : CharacterBody2D
 	{
 		Autoload.Globals.I.LocalPlayer = this;
 
+		_topSprite = GetNode<Sprite2D>("Body/TopSprite");
+		_bottomSprite = GetNode<Sprite2D>("Body/BottomSprite");
+
 		_stats = GetNode<PlayerStats>("Stats");
 	}
 
@@ -30,8 +36,15 @@ public partial class Player : CharacterBody2D
 		}
 		MovementBehavior();
 		DashBehavior((float)delta);
+		FlipToDirection();
 		MoveAndSlide();
 	}
+	/*
+	public override void _Process(float _delta)
+	{
+		FlipToDirection();
+	}
+	*/
 
 	private void MovementBehavior()
 	{
@@ -59,6 +72,35 @@ public partial class Player : CharacterBody2D
 		}
 
 		Velocity = velocity;
+	}
+
+	public void FlipToDirection()
+	{
+		var velocity = Velocity;
+		if (velocity != Vector2.Zero)
+		{
+			if (velocity.Y < 0f)
+			{
+				_topSprite.Visible = true;
+				_bottomSprite.Visible = false;
+			}
+			else if (velocity.Y > 0f)
+			{
+				_topSprite.Visible = false;
+				_bottomSprite.Visible = true;
+			}
+	
+			if (velocity.X < 0f)
+			{
+				_topSprite.FlipH = false;
+				_bottomSprite.FlipH = false;
+			}
+			else if (velocity.X > 0f)
+			{
+				_topSprite.FlipH = true;
+				_bottomSprite.FlipH = true;
+			}
+		}
 	}
 
 	private void DashBehavior(float delta)
