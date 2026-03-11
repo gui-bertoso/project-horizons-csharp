@@ -6,8 +6,9 @@ public partial class Player : CharacterBody2D
 {
 	private PlayerStats _stats;
 
-	private Sprite2D _topSprite;
-	private Sprite2D _bottomSprite;
+	private Node2D _topSprite;
+	private Node2D _bottomSprite;
+	private AnimationPlayer _animationPlayer;
 
 
 	private bool _onDash;
@@ -22,8 +23,9 @@ public partial class Player : CharacterBody2D
 	{
 		Autoload.Globals.I.LocalPlayer = this;
 
-		_topSprite = GetNode<Sprite2D>("Body/TopSprite");
-		_bottomSprite = GetNode<Sprite2D>("Body/BottomSprite");
+		_topSprite = GetNode<Node2D>("Body/TopSprite");
+		_bottomSprite = GetNode<Node2D>("Body/BottomSprite");
+		_animationPlayer = GetNode<AnimationPlayer>("Body/BottomSprite/AnimationPlayer");
 
 		_stats = GetNode<PlayerStats>("Stats");
 	}
@@ -36,15 +38,27 @@ public partial class Player : CharacterBody2D
 		}
 		MovementBehavior();
 		DashBehavior((float)delta);
-		FlipToDirection();
 		MoveAndSlide();
 	}
-	/*
-	public override void _Process(float _delta)
+
+	public override void _Process(double delta)
 	{
 		FlipToDirection();
+		AnimationBehavior();
 	}
-	*/
+
+	private void AnimationBehavior()
+	{
+		var velocity = Velocity;
+		if (velocity != Vector2.Zero)
+		{
+			_animationPlayer.Play("walk");
+		}
+		else
+		{
+			_animationPlayer.Play("idle");
+		}
+	}
 
 	private void MovementBehavior()
 	{
@@ -92,13 +106,13 @@ public partial class Player : CharacterBody2D
 	
 			if (velocity.X < 0f)
 			{
-				_topSprite.FlipH = false;
-				_bottomSprite.FlipH = false;
+				_topSprite.Scale = new Vector2(1f, 1f);
+				_bottomSprite.Scale = new Vector2(1f, 1f);
 			}
 			else if (velocity.X > 0f)
 			{
-				_topSprite.FlipH = true;
-				_bottomSprite.FlipH = true;
+				_topSprite.Scale = new Vector2(-1f, 1f);
+				_bottomSprite.Scale = new Vector2(-1f, 1f);
 			}
 		}
 	}
