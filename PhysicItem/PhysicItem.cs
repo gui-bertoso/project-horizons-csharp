@@ -14,6 +14,8 @@ public partial class PhysicItem : Node2D
 	private int _tickCounter;
 	private int _ticksToLive = 300;
 
+	private bool collected = false;
+
 	[Export]
 	public Items.Item Item;
 
@@ -35,8 +37,15 @@ public partial class PhysicItem : Node2D
 	{
 		UpdateCanCollect();
 		if (!Input.IsActionJustPressed("collect") || !_canCollect) return;
+		Autoload.Globals.I.LocalPlayer.CollectItem(this);
+		GD.Print("Collect 1");
+	}
+
+	public void Collect()
+	{
 		Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
 		QueueFree();
+		GD.Print("Collect 5");
 	}
 
 	private void UpdateCanCollect()
