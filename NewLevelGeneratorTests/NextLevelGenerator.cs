@@ -1,193 +1,289 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 
 namespace projecthorizonscs.NewLevelGeneratorTests;
 
 public sealed class ChunkData(List<int> layer0, List<int> layer1)
 {
-	public readonly List<int> Layer0 = layer0;
-	public List<int> Layer1 = layer1;
+    public readonly List<int> Layer0 = layer0;
+    public readonly List<int> Layer1 = layer1;
 }
+
+public readonly record struct GeneratedChunk(Vector2I Position, ChunkData Data);
 
 public partial class NextLevelGenerator : TileMapLayer
 {
+    private FastNoiseLite.NoiseTypeEnum _layer0NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
+    private int _layer0Seed;
+    private float _layer0Frequency = .01f;
+    private int _layer0FractalOctaves = 8;
 
-	private FastNoiseLite _layer0NoiseImage;
-	private FastNoiseLite.NoiseTypeEnum _layer0NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
-	private int _layer0Seed;
-	private float _layer0Frequency = .01f;
-	private int _layer0FractalOctaves = 8;
+    private float _insideDetails = 40f;
+    private float _coastDetails = 90.0f;
+    private float _coastStrength = .55f;
+    private float _threshold = .45f;
 
-	private float _insideDetails = 40f;
-	private float _coastDetails = 90.0f;
-	private float _coastStrength = .55f;
-	private float _threshould = .45f;
+    private int _chunkSizeX = 24;
+    private int _chunkSizeY = 74;
 
-	private double _delta;
+    private int _levelSizeX = 2000;
+    private int _levelSizeY = 2800;
 
-	private int _chunkSizeX = 25;
-	private int _chunkSizeY = 75;
+    private Vector2I _currentPlayerChunk = Vector2I.Zero;
+    private Vector2I _lastRenderedChunk = new(int.MinValue, int.MinValue);
 
-	private int _levelSizeX = 2000;
-	private int _levelSizeY = 2800;
+    private const int SourceId = 0;
+    private const int RenderDistance = 1;
+    private const int MaxChunkThreads = 2;
 
-	private Vector2I _playerPosition;
-	private Vector2I _currentPlayerChunk = new (0, 0);
+    private readonly Dictionary<Vector2I, ChunkData> _chunksDataDictionary = new();
+    private readonly HashSet<Vector2I> _renderedChunks = new();
 
-	private const int SourceId = 0;
+    // chunks sendo gerados agora
+    private readonly HashSet<Vector2I> _pendingChunks = new();
+    private readonly object _pendingChunksLock = new();
 
-	private Vector2I _lastRenderedChunk;
+    // fila thread-safe de chunks prontos
+    private readonly ConcurrentQueue<GeneratedChunk> _generatedChunksQueue = new();
 
-	private readonly Dictionary<Vector2I, ChunkData> _chunksDataDictionary = new ();
+    // só pra limitar quantas tasks rodam ao mesmo tempo
+    private int _runningChunkThreads = 0;
+    private readonly object _threadCountLock = new();
 
-	private readonly Dictionary<int, Vector2I> _blockIDs = new()
-	{
-		{0, new Vector2I(0, 0)}, //void
-		{1, new Vector2I(1, 0)}, //half-void
-		{2, new Vector2I(0, 1)}, //grass
-		{3, new Vector2I(0, 2)}, //dirt
-	};
+    private readonly Dictionary<int, Vector2I> _blockIDs = new()
+    {
+        { 0, new Vector2I(0, 0) }, // void
+        { 1, new Vector2I(1, 0) }, // half-void
+        { 2, new Vector2I(0, 1) }, // grass
+        { 3, new Vector2I(0, 2) }, // dirt
+    };
 
-	public override void _Process(double delta)
-	{
-		_delta = delta;
+    public override void _Ready()
+    {
+        SetNoiseSeed();
+        UpdatePlayerChunk();
+        RequestChunksAroundPlayer(forceRenderLoaded: true);
+    }
 
-		var (x, y) = LocalToMap(ToLocal(Autoload.Globals.I.LocalPlayer.Position));
-		Vector2I currentPlayerChunk = new (Mathf.FloorToInt(x / _chunkSizeX), Mathf.FloorToInt(y / _chunkSizeY));
-		Autoload.Globals.I.CurrentPlayerChunk = currentPlayerChunk;
+    public override void _Process(double delta)
+    {
+        UpdatePlayerChunk();
+        ConsumeGeneratedChunks();
 
-		RenderChunks();
-		
-	}
+        if (_currentPlayerChunk != _lastRenderedChunk)
+        {
+            RequestChunksAroundPlayer(forceRenderLoaded: false);
+            _lastRenderedChunk = _currentPlayerChunk;
+        }
+    }
 
-	private void RenderChunks()
-	{
-		const int renderDistance = 1;
-		for (var y = -renderDistance; y <= renderDistance; y++)
-		for(var x = -renderDistance; x <= renderDistance; x++)
-			RenderChunk(_currentPlayerChunk + new Vector2I(x, y));
-	}
+    private void UpdatePlayerChunk()
+    {
+        if (Autoload.Globals.I?.LocalPlayer == null)
+            return;
 
-	private void RenderChunk(Vector2I chunkPosition)
-	{
-		var halfX = _chunkSizeX / 2;
-		var halfY = _chunkSizeY / 2;
+        Vector2I playerMapPos = LocalToMap(ToLocal(Autoload.Globals.I.LocalPlayer.GlobalPosition));
 
-		var originX = chunkPosition.X * _chunkSizeX;
-		var originY = chunkPosition.Y * _chunkSizeY;
+        _currentPlayerChunk = new Vector2I(
+            Mathf.FloorToInt((float)playerMapPos.X / _chunkSizeX),
+            Mathf.FloorToInt((float)playerMapPos.Y / _chunkSizeY)
+        );
 
-		var i = 0;
-		for (var y = -halfY; y < halfY; y++)
-		{
-			for (var x = -halfX; x < halfX; x++)
-			{
-				var currentChunk = _chunksDataDictionary[chunkPosition];
-				var id = currentChunk.Layer0[i++];
-				
-				Vector2I cell = new (originX + x, originY + y);
+        Autoload.Globals.I.CurrentPlayerChunk = _currentPlayerChunk;
+    }
 
-				if (id == -1)
-				{
-					SetCell(cell, 0);
-					continue;
-				}
+    private void RequestChunksAroundPlayer(bool forceRenderLoaded)
+    {
+        HashSet<Vector2I> desiredChunks = new();
 
-				SetCell(cell, SourceId, _blockIDs[id]);
+        for (int y = -RenderDistance; y <= RenderDistance; y++)
+        {
+            for (int x = -RenderDistance; x <= RenderDistance; x++)
+            {
+                Vector2I chunkPos = _currentPlayerChunk + new Vector2I(x, y);
+                desiredChunks.Add(chunkPos);
 
-			}
-		}
-	}
+                if (!IsChunkInsideBounds(chunkPos))
+                    continue;
 
-	public override void _Ready()
-	{
-		SetNoises();
-		GenerateLevel();
-	}
+                if (_chunksDataDictionary.ContainsKey(chunkPos))
+                {
+                    if (forceRenderLoaded || !_renderedChunks.Contains(chunkPos))
+                        RenderChunk(chunkPos);
 
-	private void GenerateLevel()
-	{
-		var chunksX = _levelSizeX / _chunkSizeX;
-		var chunksY = _levelSizeY / _chunkSizeY;
-		
-		for (var y = -chunksY; y < chunksY; y++)
-		{
-			for (var x = -chunksX; x < chunksX; x++)
-			{
-				Vector2I gridCoordinade = new (x, y);
-				GenerateChunkData(gridCoordinade);
-			}
-		}
-	}
+                    continue;
+                }
 
-	private void GenerateChunkData(Vector2I gridCoordinades)
-	{
+                RequestChunkGeneration(chunkPos);
+            }
+        }
 
-		GD.Print($"CHUNK SYSTEM: creating new in {gridCoordinades}");
+        _renderedChunks.Clear();
+        foreach (Vector2I chunk in desiredChunks)
+            _renderedChunks.Add(chunk);
+    }
 
-		List<int> newChunkLayer0Data = [];
+    private bool IsChunkInsideBounds(Vector2I chunkPos)
+    {
+        int chunksX = _levelSizeX / _chunkSizeX;
+        int chunksY = _levelSizeY / _chunkSizeY;
 
-		var levelRadius = Mathf.Min(_levelSizeX, _levelSizeY) * .42f;
+        return chunkPos.X >= -chunksX && chunkPos.X < chunksX &&
+               chunkPos.Y >= -chunksY && chunkPos.Y < chunksY;
+    }
 
-		var halfX = _chunkSizeX / 2;
-		var halfY = _chunkSizeY / 2;
+    private void RequestChunkGeneration(Vector2I chunkPos)
+    {
+        if (_chunksDataDictionary.ContainsKey(chunkPos))
+            return;
 
-		for (var y = -halfY; y < halfY; y++)
-		{
-			for (var x = -halfX; x < halfX; x++)
-			{
-				Vector2I global = new(
-					gridCoordinades.X * _chunkSizeX + x,
-					gridCoordinades.Y * _chunkSizeY + y
-				);
+        lock (_pendingChunksLock)
+        {
+            if (_pendingChunks.Contains(chunkPos))
+                return;
+        }
 
-				var dist = global.Length();
-				var angle = Mathf.Atan2(global.Y, global.X);
-				var ax = Mathf.Cos(angle) * _coastDetails;
-				var ay = Mathf.Sin(angle) * _coastDetails;
+        lock (_threadCountLock)
+        {
+            if (_runningChunkThreads >= MaxChunkThreads)
+                return;
 
-				var coastN = _layer0NoiseImage.GetNoise2D(ax + 123.4f, ay - 567.8f);
-				var coast01 = (coastN + 1f) * .5f;
-				var radius = levelRadius * (1f + (coast01 - .5f) * 2f * _coastStrength);
+            _runningChunkThreads++;
+        }
 
-				var mask = 1f - (dist/radius);
-				mask = Mathf.Clamp(mask, 0f, 1f);
-				mask = mask * mask;
+        lock (_pendingChunksLock)
+        {
+            _pendingChunks.Add(chunkPos);
+        }
 
-				var n = _layer0NoiseImage.GetNoise2D(global.X * _insideDetails, global.Y * _insideDetails);
-				var inside01 = (n + 1f) * .5f;
+        Task.Run(() =>
+        {
+            try
+            {
+                ChunkData data = GenerateChunkDataThreadSafe(chunkPos);
+                _generatedChunksQueue.Enqueue(new GeneratedChunk(chunkPos, data));
+            }
+            finally
+            {
+                lock (_pendingChunksLock)
+                {
+                    _pendingChunks.Remove(chunkPos);
+                }
 
-				var value = mask * (.65f + inside01 * .35f);
+                lock (_threadCountLock)
+                {
+                    _runningChunkThreads--;
+                }
+            }
+        });
+    }
 
-				if (value > _threshould)
-				{
-					newChunkLayer0Data.Add(1);
-				} else if (value > _threshould - .05f && value < _threshould)
-				{
-					newChunkLayer0Data.Add(2);
-				}
-				else
-				{
-					newChunkLayer0Data.Add(-1);
-				}
-			}
-		}
-		GD.Print($"CHUNK SYSTEM: created in {_delta}ms");
+    private void ConsumeGeneratedChunks()
+    {
+        while (_generatedChunksQueue.TryDequeue(out GeneratedChunk generated))
+        {
+            if (_chunksDataDictionary.ContainsKey(generated.Position))
+                continue;
 
-		ChunkData newChunkData = new(newChunkLayer0Data, []);
+            _chunksDataDictionary[generated.Position] = generated.Data;
+            RenderChunk(generated.Position);
+        }
+    }
 
-		_chunksDataDictionary[gridCoordinades] = newChunkData;
-	}
+    private void RenderChunk(Vector2I chunkPosition)
+    {
+        if (!_chunksDataDictionary.TryGetValue(chunkPosition, out ChunkData currentChunk))
+            return;
 
+        int originX = chunkPosition.X * _chunkSizeX;
+        int originY = chunkPosition.Y * _chunkSizeY;
 
-	private void SetNoises()
-	{
-		_layer0NoiseImage = new FastNoiseLite();
-		_layer0NoiseImage.NoiseType = _layer0NoiseType;
+        int i = 0;
 
-		var rng = new RandomNumberGenerator();
-		_layer0Seed = rng.RandiRange(0, 99999999);
-		_layer0NoiseImage.Seed = _layer0Seed;
-		_layer0NoiseImage.FractalOctaves = _layer0FractalOctaves;
-		_layer0NoiseImage.Frequency = _layer0Frequency;
-	}
+        for (int y = 0; y < _chunkSizeY; y++)
+        {
+            for (int x = 0; x < _chunkSizeX; x++)
+            {
+                int id = currentChunk.Layer0[i++];
+                Vector2I cell = new(originX + x, originY + y);
+
+                if (id == -1)
+                {
+                    EraseCell(cell);
+                    continue;
+                }
+
+                if (_blockIDs.TryGetValue(id, out Vector2I atlasCoords))
+                    SetCell(cell, SourceId, atlasCoords);
+            }
+        }
+    }
+
+    private ChunkData GenerateChunkDataThreadSafe(Vector2I gridCoordinates)
+    {
+        long start = Time.GetTicksMsec();
+
+        // cria noise local da thread
+        FastNoiseLite threadNoise = new()
+        {
+            NoiseType = _layer0NoiseType,
+            Seed = _layer0Seed,
+            FractalOctaves = _layer0FractalOctaves,
+            Frequency = _layer0Frequency
+        };
+
+        List<int> newChunkLayer0Data = new(_chunkSizeX * _chunkSizeY);
+
+        float levelRadius = Mathf.Min(_levelSizeX, _levelSizeY) * .42f;
+
+        int originX = gridCoordinates.X * _chunkSizeX;
+        int originY = gridCoordinates.Y * _chunkSizeY;
+
+        for (int y = 0; y < _chunkSizeY; y++)
+        {
+            for (int x = 0; x < _chunkSizeX; x++)
+            {
+                Vector2I global = new(originX + x, originY + y);
+
+                float dist = global.Length();
+                float angle = Mathf.Atan2(global.Y, global.X);
+
+                float ax = Mathf.Cos(angle) * _coastDetails;
+                float ay = Mathf.Sin(angle) * _coastDetails;
+
+                float coastN = threadNoise.GetNoise2D(ax + 123.4f, ay - 567.8f);
+                float coast01 = (coastN + 1f) * .5f;
+                float radius = levelRadius * (1f + (coast01 - .5f) * 2f * _coastStrength);
+
+                float mask = 1f - (dist / radius);
+                mask = Mathf.Clamp(mask, 0f, 1f);
+                mask *= mask;
+
+                float n = threadNoise.GetNoise2D(global.X * _insideDetails, global.Y * _insideDetails);
+                float inside01 = (n + 1f) * .5f;
+
+                float value = mask * (.65f + inside01 * .35f);
+
+                if (value > _threshold)
+                    newChunkLayer0Data.Add(1);
+                else if (value > _threshold - .05f)
+                    newChunkLayer0Data.Add(2);
+                else
+                    newChunkLayer0Data.Add(-1);
+            }
+        }
+
+        long end = Time.GetTicksMsec();
+        GD.Print($"chunk system: chunk {gridCoordinates} generated in background in {end - start} ms");
+
+        return new ChunkData(newChunkLayer0Data, new List<int>());
+    }
+
+    private void SetNoiseSeed()
+    {
+        RandomNumberGenerator rng = new();
+        _layer0Seed = rng.RandiRange(0, 99999999);
+    }
 }
