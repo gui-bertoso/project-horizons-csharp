@@ -4,6 +4,7 @@ namespace projecthorizonscs.Player;
 
 public partial class Player : CharacterBody2D
 {
+	
 	private PlayerStats _stats;
 
 	private Node2D _topSprite;
@@ -52,12 +53,23 @@ public partial class Player : CharacterBody2D
 		var velocity = Velocity;
 		if (velocity != Vector2.Zero)
 		{
-			_animationPlayer.Play("walk");
+			_animationPlayer.Play("walk_forward");
 		}
 		else
 		{
 			_animationPlayer.Play("idle");
 		}
+	}
+
+	public async void CollectItem(PhysicItem.PhysicItem node)
+	{
+		GD.Print("Collect 1");
+		_animationPlayer.Play("collect");
+
+		await ToSignal(GetTree().CreateTimer(_animationPlayer.CurrentAnimationLength), SceneTreeTimer.SignalName.Timeout);
+
+		GD.Print("Collect 2");
+		node.Collect();
 	}
 
 	private void MovementBehavior()
