@@ -57,7 +57,7 @@ public partial class PlayerHand : Marker2D
 
 	private void UnequipItem()
 	{
-		var droppedItem = (projecthorizonscs.PhysicItem.PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
+		var droppedItem = (PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
 		droppedItem.GlobalPosition = GlobalPosition;
 		droppedItem.Item = _equippedItem;
 		ClearEquippedItem();

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace projecthorizonscs.PhysicItem;
+namespace projecthorizonscs;
 
 public partial class PhysicItem : Node2D
 {
@@ -43,9 +43,9 @@ public partial class PhysicItem : Node2D
 
 	public void Collect()
 	{
-		Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
-		QueueFree();
 		GD.Print("Collect 5");
+		//Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
+		QueueFree();
 	}
 
 	private void UpdateCanCollect()
