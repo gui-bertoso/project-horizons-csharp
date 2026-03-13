@@ -17,7 +17,7 @@ public partial class PhysicItem : Node2D
 	private bool collected = false;
 
 	[Export]
-	public Items.Item Item;
+	public Item Item;
 
 	public override void _Ready()
 	{
@@ -44,7 +44,7 @@ public partial class PhysicItem : Node2D
 	public void Collect()
 	{
 		GD.Print("Collect 5");
-		//Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
+		Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
 		QueueFree();
 	}
 
