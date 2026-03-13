@@ -5,7 +5,33 @@
 [ext_resource type="Texture2D" uid="uid://yyi1q74ymvve" path="res://Assets/Player/Player5.png" id="3_6ysni"]
 [ext_resource type="Script" uid="uid://dx3hu0b46cma4" path="res://Player/PlayerStats.cs" id="3_g1dw6"]
 [ext_resource type="Script" uid="uid://djb7nm4fgr2p" path="res://Player/PlayerHand.cs" id="4_ddoul"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="7_s1rgi"]
 [ext_resource type="Script" uid="uid://lmufyh7oepsw" path="res://Player/ClassManager.cs" id="7_vlldt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j23h2"]
+atlas = ExtResource("7_s1rgi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6ysni"]
+lifetime_randomness = 0.06
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(9.095, 2.55, 1)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 0.099999994
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vlldt"]
+atlas = ExtResource("7_s1rgi")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vlldt"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(10.65, 24.57, 1)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.049999997
+scale_max = 0.19999999
 
 [sub_resource type="Animation" id="Animation_vlldt"]
 length = 0.001
@@ -4050,6 +4076,25 @@ z_index = 1
 collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_rkbax")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=350102370]
+
+[node name="WalkParticles" type="GPUParticles2D" parent="Node2D" unique_id=1775637287]
+position = Vector2(2, -5)
+rotation = 0.0059543247
+emitting = false
+amount = 3
+texture = SubResource("AtlasTexture_j23h2")
+lifetime = 0.12
+process_material = SubResource("ParticleProcessMaterial_6ysni")
+
+[node name="DashParticles" type="GPUParticles2D" parent="Node2D" unique_id=841256577]
+position = Vector2(3, -25)
+emitting = false
+amount = 32
+texture = SubResource("AtlasTexture_vlldt")
+speed_scale = 10.86
+process_material = SubResource("ParticleProcessMaterial_vlldt")
 
 [node name="Body" type="Node2D" parent="." unique_id=709355021]
 

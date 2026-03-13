@@ -9,6 +9,8 @@ public partial class Player : CharacterBody2D
 	private Node2D _topSprite;
 	private Node2D _bottomSprite;
 	private AnimationPlayer _animationPlayer;
+	private GpuParticles2D _walkParticles;
+	private GpuParticles2D _dashParticles;
 
 	private bool _onDash;
 	public float DashDurationCountdown;
@@ -28,6 +30,8 @@ public partial class Player : CharacterBody2D
 		_topSprite = GetNode<Node2D>("Body/TopSprite");
 		_bottomSprite = GetNode<Node2D>("Body/BottomSprite");
 		_animationPlayer = GetNode<AnimationPlayer>("Body/AnimationPlayer");
+		_walkParticles = GetNode<GpuParticles2D>("Node2D/WalkParticles");
+		_dashParticles = GetNode<GpuParticles2D>("Node2D/DashParticles");
 
 		_stats = GetNode<PlayerStats>("Stats");
 	}
@@ -98,10 +102,12 @@ public partial class Player : CharacterBody2D
 
 			if (direction != Vector2.Zero)
 			{
+				_walkParticles.Emitting = true;
 				velocity = direction * speed;
 			}
 			else
 			{
+				_walkParticles.Emitting = false;
 				velocity.X = Mathf.MoveToward(velocity.X, 0, speed);
 				velocity.Y = Mathf.MoveToward(velocity.Y, 0, speed);
 			}
@@ -151,6 +157,7 @@ public partial class Player : CharacterBody2D
 			if (!(DashDurationCountdown <= 0)) return;
 			DashDurationCountdown = 0;
 			_onDash = false;
+			_dashParticles.Emitting = false;
 			if (UsedDashCharges == _stats.DashCharges)
 			{
 				DashCooldownCount = _stats.DashCooldown;
@@ -162,6 +169,7 @@ public partial class Player : CharacterBody2D
 		{
 			if (Input.IsActionJustPressed("dash"))
 			{
+				_dashParticles.Emitting = true;
 				_dashDirection = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
 				DashDurationCountdown = _stats.DashDuration;
 				_onDash = true;
