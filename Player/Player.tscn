@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://yyi1q74ymvve" path="res://Assets/Player/Player5.png" id="3_6ysni"]
 [ext_resource type="Script" uid="uid://dx3hu0b46cma4" path="res://Player/PlayerStats.cs" id="3_g1dw6"]
 [ext_resource type="Script" uid="uid://djb7nm4fgr2p" path="res://Player/PlayerHand.cs" id="4_ddoul"]
-[ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Mellee/Branch.png" id="5_8g4oa"]
 [ext_resource type="Script" uid="uid://lmufyh7oepsw" path="res://Player/ClassManager.cs" id="7_vlldt"]
 
 [sub_resource type="Animation" id="Animation_vlldt"]
@@ -4148,10 +4147,6 @@ rotation = -0.6859667
 
 [node name="Hand" type="Marker2D" parent="Body/Node2D" unique_id=398830428]
 script = ExtResource("4_ddoul")
-
-[node name="Branch" type="Sprite2D" parent="Body/Node2D/Hand" unique_id=2050690535]
-position = Vector2(0, -12)
-texture = ExtResource("5_8g4oa")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Body" unique_id=427851913]
 root_node = NodePath("../TopSprite")

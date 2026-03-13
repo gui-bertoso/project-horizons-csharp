@@ -10,7 +10,7 @@ public partial class Globals : Node
 	public Player.Player LocalPlayer {get; set;}
 	public Player.PlayerHand LocalPlayerHand {get; set;}
 	public LevelGenerator.LevelGenerator LocalLevelGenerator {get; set;}
-	public Interface.ItemsDisplay.ItemsDisplay LocalItemsDisplay {get; set;}
+	public Interface.ItemsDisplay LocalItemsDisplay {get; set;}
 	public bool DevModeEnabled = false;
 	public bool InMenu = false;
 
