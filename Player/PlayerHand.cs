@@ -2,9 +2,15 @@ using Godot;
 
 namespace projecthorizonscs.Player;
 
+[Tool]
 public partial class PlayerHand : Marker2D
 {
-	private Items.Item _equippedItem;
+	[Export]
+	public bool setItem;
+	[Export]
+	public bool cleanItem;
+
+	private Item _equippedItem;
 	private Node _equippedItemReference;
 	private Node2D _handOffset;
 	private Node2D _body;
@@ -18,6 +24,12 @@ public partial class PlayerHand : Marker2D
 
 	public override void _Process(double delta)
 	{
+/*
+		if (setItem) setItem = false; EquipItem((Item)ResourceLoader.Load("res://Items/BrokenSword.tres"));
+		if (cleanItem) cleanItem = false; ClearEquippedItem();
+
+		return;
+*/
 		var mousePosition = GetGlobalMousePosition();
 		var mouseAngle = (mousePosition - GlobalPosition).Normalized();
 		_handOffset.Rotation = mouseAngle.Angle();
@@ -26,8 +38,9 @@ public partial class PlayerHand : Marker2D
 		GD.Print(_handOffset.Rotation);
 	}
 
-	public void EquipItem(Items.Item item)
+	public void EquipItem(Item item)
 	{
+		ClearEquippedItem();
 		_equippedItem = item;
 		if (_equippedItem.ItemScene != null)
 		{
@@ -35,8 +48,8 @@ public partial class PlayerHand : Marker2D
 		}
 		else
 		{
-			_equippedItemReference = new TextureRect();
-			((TextureRect)_equippedItemReference).Texture = _equippedItem.ItemTexture;
+			_equippedItemReference = new Sprite2D();
+			((Sprite2D)_equippedItemReference).Texture = _equippedItem.ItemTexture;
 		}
 
 		AddChild(_equippedItemReference);

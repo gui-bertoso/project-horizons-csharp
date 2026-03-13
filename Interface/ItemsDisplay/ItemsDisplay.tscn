@@ -61,7 +61,8 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect" unique_id=491044915]
+[node name="HeadArmorTextureRect" type="TextureRect" parent="Control/TextureRect" unique_id=491044915]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -76,7 +77,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect" unique_id=831601184]
+[node name="HeadArmorPlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect" unique_id=831601184]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -100,7 +102,8 @@ offset_right = 40.0
 offset_bottom = 83.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect2" unique_id=84986280]
+[node name="BodyArmorTextureRect" type="TextureRect" parent="Control/TextureRect2" unique_id=84986280]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -115,7 +118,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect2" unique_id=1454592592]
+[node name="BodyArmorPlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect2" unique_id=1454592592]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -139,7 +143,8 @@ offset_right = 40.0
 offset_bottom = 129.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2012574464]
+[node name="FootArmorTextureTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2012574464]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -154,7 +159,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect3" unique_id=2052195972]
+[node name="FootArmorPlaceholderTextureTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2052195972]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -179,7 +185,8 @@ offset_right = 89.0
 offset_bottom = 129.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect4" unique_id=964902001]
+[node name="Acessory1TextureRect" type="TextureRect" parent="Control/TextureRect4" unique_id=964902001]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -194,7 +201,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect4" unique_id=1577801390]
+[node name="Acessory1PlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect4" unique_id=1577801390]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -219,7 +227,8 @@ offset_right = 89.0
 offset_bottom = 175.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect5" unique_id=2027219832]
+[node name="Acessory2TextureRect" type="TextureRect" parent="Control/TextureRect5" unique_id=2027219832]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -234,7 +243,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect5" unique_id=174769220]
+[node name="Acessory2PlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect5" unique_id=174769220]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -259,7 +269,8 @@ offset_right = 89.0
 offset_bottom = 63.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect6" unique_id=899406567]
+[node name="ConsumableTextureRect" type="TextureRect" parent="Control/TextureRect6" unique_id=899406567]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -274,7 +285,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect6" unique_id=76912981]
+[node name="ConsumablePlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect6" unique_id=76912981]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -299,7 +311,8 @@ offset_right = -17.0
 offset_bottom = 105.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="TextureRect" type="TextureRect" parent="Control/TextureRect7" unique_id=918196304]
+[node name="WeaponTextureRect" type="TextureRect" parent="Control/TextureRect7" unique_id=918196304]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 8
@@ -314,7 +327,8 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Control/TextureRect7" unique_id=583130747]
+[node name="WeaponPlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect7" unique_id=583130747]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1

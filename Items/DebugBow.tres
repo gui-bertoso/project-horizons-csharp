@@ -6,6 +6,5 @@
 [resource]
 script = ExtResource("2_xy66g")
 ItemName = "Orange"
-ItemType = 5
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_uyvq1")
