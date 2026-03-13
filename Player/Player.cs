@@ -8,6 +8,7 @@ public partial class Player : CharacterBody2D
 
 	private Node2D _topSprite;
 	private Node2D _bottomSprite;
+	private Node2D _body;
 	private AnimationPlayer _animationPlayer;
 	private GpuParticles2D _walkParticles;
 	private GpuParticles2D _dashParticles;
@@ -19,7 +20,6 @@ public partial class Player : CharacterBody2D
 	private Vector2 _dashDirection;
 
 	public int _currentSide = -1;
-	public string _currentDirection = "_left";
 
 	public float NotDashingTime;
 	
@@ -32,6 +32,7 @@ public partial class Player : CharacterBody2D
 		_animationPlayer = GetNode<AnimationPlayer>("Body/AnimationPlayer");
 		_walkParticles = GetNode<GpuParticles2D>("Node2D/WalkParticles");
 		_dashParticles = GetNode<GpuParticles2D>("Node2D/DashParticles");
+		_body = GetNode<Node2D>("Body");
 
 		_stats = GetNode<PlayerStats>("Stats");
 	}
@@ -56,29 +57,27 @@ public partial class Player : CharacterBody2D
 	private void AnimationBehavior()
 	{
 		if (
-			_animationPlayer.CurrentAnimation == "collect_side_left" ||
-			_animationPlayer.CurrentAnimation == "collect_side_right" ||
-			 _animationPlayer.CurrentAnimation == "collect_back_left" ||
-			 _animationPlayer.CurrentAnimation == "collect_back_right"
+			_animationPlayer.CurrentAnimation == "collect_side" ||
+			 _animationPlayer.CurrentAnimation == "collect_back"
 		) return;
 		var velocity = Velocity;
 		if (velocity != Vector2.Zero)
 		{
-			if (_currentSide == 1) _animationPlayer.Play("walk_forward_side" + _currentDirection);
-			else _animationPlayer.Play("walk_forward_back" + _currentDirection);
+			if (_currentSide == 1) _animationPlayer.Play("walk_forward_side");
+			else _animationPlayer.Play("walk_forward_back");
 		}
 		else
 		{
-			if (_currentSide == 1) _animationPlayer.Play("idle_side" + _currentDirection);
-			else _animationPlayer.Play("idle_back" + _currentDirection);
+			if (_currentSide == 1) _animationPlayer.Play("idle_side");
+			else _animationPlayer.Play("idle_back");
 		}
 	}
 
 	public async void CollectItem(PhysicItem node)
 	{
 		GD.Print("Collect 1");
-		if (_currentSide == 1) _animationPlayer.Play("collect_side" + _currentDirection);
-		else _animationPlayer.Play("collect_back" + _currentDirection);
+		if (_currentSide == 1) _animationPlayer.Play("collect_side");
+		else _animationPlayer.Play("collect_back");
 
 		await ToSignal(GetTree().CreateTimer(_animationPlayer.CurrentAnimationLength), SceneTreeTimer.SignalName.Timeout);
 
@@ -136,15 +135,11 @@ public partial class Player : CharacterBody2D
 	
 			if (velocity.X < 0f)
 			{
-				_topSprite.Scale = new Vector2(1f, 1f);
-				_bottomSprite.Scale = new Vector2(1f, 1f);
-				_currentDirection = "_left";
+				_body.Scale = new Vector2(1f, 1f);
 			}
 			else if (velocity.X > 0f)
 			{
-				_topSprite.Scale = new Vector2(-1f, 1f);
-				_bottomSprite.Scale = new Vector2(-1f, 1f);
-				_currentDirection = "_right";
+				_body.Scale = new Vector2(-1f, 1f);
 			}
 		}
 	}
