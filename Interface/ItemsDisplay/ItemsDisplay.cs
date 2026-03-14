@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using projecthorizonscs.Autoload;
 
 namespace projecthorizonscs.Interface;
 
@@ -59,16 +60,26 @@ public partial class ItemsDisplay : Control
 				_headArmorTextureRect.Texture = item.ItemTexture;
 				_headArmorPlaceholderTextureRect.Visible = false;
 				_equippedHeadArmor = item;
+
+				Globals.I.LocalPlayerBody.SetArmorTexture(item);
 				break;
 			case Item.ITEM_TYPE.BodyArmor:
 				_bodyArmorTextureRect.Texture = item.ItemTexture;
 				_bodyArmorPlaceholderTextureRect.Visible = false;
 				_equippedBodyArmor = item;
+
+				Globals.I.LocalPlayerBody.SetArmorTexture(item);
 				break;
 			case Item.ITEM_TYPE.FootArmor:
+				GD.Print("Test 000");
 				_footArmorTextureRect.Texture = item.ItemTexture;
+				GD.Print("Test 111");
 				_footArmorPlaceholderTextureRect.Visible = false;
+				GD.Print("Test 222");
 				_equippedFootArmor = item;
+				GD.Print("Test 333");
+
+				Globals.I.LocalPlayerBody.SetArmorTexture(item);
 				break;
 			case Item.ITEM_TYPE.Weapon:
 				_weaponTextureRect.Texture = item.ItemTexture;
