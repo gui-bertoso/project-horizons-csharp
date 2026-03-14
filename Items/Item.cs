@@ -41,4 +41,6 @@ public partial class Item : Resource
 	public CompressedTexture2D ItemTexture;
 	[Export]
 	public PackedScene ItemScene;
+	[Export]
+	public CompressedTexture2D ArmorSpriteSheet;
 }

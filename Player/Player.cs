@@ -19,16 +19,18 @@ public partial class Player : CharacterBody2D
 	public int UsedDashCharges;
 	private Vector2 _dashDirection;
 
-	public int _currentSide = -1;
+	public int currentSide = -1;
 
 	public float NotDashingTime;
+
+	private bool _isCollecting = false;
 	
 	public override void _Ready()
 	{
 		Autoload.Globals.I.LocalPlayer = this;
 
-		_topSprite = GetNode<Node2D>("Body/TopSprite");
-		_bottomSprite = GetNode<Node2D>("Body/BottomSprite");
+		_topSprite = GetNode<Node2D>("Body/Back");
+		_bottomSprite = GetNode<Node2D>("Body/Side");
 		_animationPlayer = GetNode<AnimationPlayer>("Body/AnimationPlayer");
 		_walkParticles = GetNode<GpuParticles2D>("Node2D/WalkParticles");
 		_dashParticles = GetNode<GpuParticles2D>("Node2D/DashParticles");
@@ -51,43 +53,34 @@ public partial class Player : CharacterBody2D
 	public override void _Process(double delta)
 	{
 		FlipToDirection();
-		AnimationBehavior();
-	}
-
-	private void AnimationBehavior()
-	{
-		if (
-			_animationPlayer.CurrentAnimation == "collect_side" ||
-			 _animationPlayer.CurrentAnimation == "collect_back"
-		) return;
-		var velocity = Velocity;
-		if (velocity != Vector2.Zero)
-		{
-			if (_currentSide == 1) _animationPlayer.Play("walk_forward_side");
-			else _animationPlayer.Play("walk_forward_back");
-		}
-		else
-		{
-			if (_currentSide == 1) _animationPlayer.Play("idle_side");
-			else _animationPlayer.Play("idle_back");
-		}
 	}
 
 	public async void CollectItem(PhysicItem node)
 	{
 		GD.Print("Collect 1");
-		if (_currentSide == 1) _animationPlayer.Play("collect_side");
+		_isCollecting = true;
+		if (currentSide == 1) _animationPlayer.Play("collect_side");
 		else _animationPlayer.Play("collect_back");
 
 		await ToSignal(GetTree().CreateTimer(_animationPlayer.CurrentAnimationLength), SceneTreeTimer.SignalName.Timeout);
 
 		GD.Print("Collect 2");
+		_isCollecting = false;
 		node.Collect();
 	}
 
 	private void MovementBehavior()
 	{
 		var velocity = Velocity;
+		var speed = _stats.MoveSpeed;
+
+		if (_isCollecting)
+		{
+			velocity.X = Mathf.MoveToward(velocity.X, 0, speed);
+			velocity.Y = Mathf.MoveToward(velocity.Y, 0, speed);
+			Velocity = velocity;
+			return;
+		}
 
 		if (_onDash)
 		{
@@ -95,8 +88,6 @@ public partial class Player : CharacterBody2D
 		}
 		else
 		{
-			var speed = _stats.MoveSpeed;
-
 			var direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
 
 			if (direction != Vector2.Zero)
@@ -124,13 +115,13 @@ public partial class Player : CharacterBody2D
 			{
 				_topSprite.Visible = true;
 				_bottomSprite.Visible = false;
-				_currentSide = -1;
+				currentSide = -1;
 			}
 			else if (velocity.Y > 0f)
 			{
 				_topSprite.Visible = false;
 				_bottomSprite.Visible = true;
-				_currentSide = 1;
+				currentSide = 1;
 			}
 	
 			if (velocity.X < 0f)

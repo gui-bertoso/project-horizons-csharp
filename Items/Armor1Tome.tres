@@ -1,0 +1,12 @@
+[gd_resource type="Resource" format=3 uid="uid://8oj0ycrlf0r"]
+
+[ext_resource type="Texture2D" uid="uid://dd6nod6x5iu8n" path="res://Assets/Armors/Armor1.png" id="1_g6g53"]
+[ext_resource type="Texture2D" uid="uid://boh4nd5iei4p2" path="res://Assets/Armors/Armor0Tome.png" id="2_t6852"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="3_rw051"]
+
+[resource]
+script = ExtResource("3_rw051")
+ItemName = "Armor1Tome"
+ItemType = 2
+ItemTexture = ExtResource("2_t6852")
+ArmorSpriteSheet = ExtResource("1_g6g53")
