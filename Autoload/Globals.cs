@@ -9,6 +9,8 @@ public partial class Globals : Node
 	public static Globals I {get; private set;}
 	public Player.Player LocalPlayer {get; set;}
 	public Player.PlayerHand LocalPlayerHand {get; set;}
+
+	public Player.Body LocalPlayerBody {get; set;}
 	public LevelGenerator.LevelGenerator LocalLevelGenerator {get; set;}
 	public Interface.ItemsDisplay LocalItemsDisplay {get; set;}
 	public bool DevModeEnabled = false;

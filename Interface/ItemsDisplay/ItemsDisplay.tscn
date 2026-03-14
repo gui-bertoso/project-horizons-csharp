@@ -143,7 +143,7 @@ offset_right = 40.0
 offset_bottom = 129.0
 texture = SubResource("AtlasTexture_15uhm")
 
-[node name="FootArmorTextureTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2012574464]
+[node name="FootArmorTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2012574464]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
@@ -159,7 +159,7 @@ offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FootArmorPlaceholderTextureTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2052195972]
+[node name="FootArmorPlaceholderTextureRect" type="TextureRect" parent="Control/TextureRect3" unique_id=2052195972]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.20392157)
 custom_minimum_size = Vector2(32, 32)
