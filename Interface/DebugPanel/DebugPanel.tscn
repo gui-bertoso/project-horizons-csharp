@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://b5drm8sdmjdi5" path="res://Interface/DebugPanel/DebugPanel.cs" id="1_v6rdo"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hco1y"]
+bg_color = Color(0.1173548, 0.11735482, 0.11735474, 1)
+
 [node name="DebugPanel" type="Control" unique_id=1513264503]
 layout_mode = 3
 anchors_preset = 15
@@ -12,19 +15,20 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_v6rdo")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2137798317]
-visible = false
+[node name="BaseContainer" type="VBoxContainer" parent="." unique_id=2137798317]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 287.0
 offset_bottom = 275.0
 
-[node name="Panel2" type="Panel" parent="VBoxContainer" unique_id=2059157216]
+[node name="Panel2" type="Panel" parent="BaseContainer" unique_id=2059157216]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hco1y")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel2" unique_id=1411078809]
+[node name="VBoxContainer" type="VBoxContainer" parent="BaseContainer/Panel2" unique_id=1411078809]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -35,29 +39,31 @@ offset_right = 57.0
 offset_bottom = 6.5
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel2/VBoxContainer" unique_id=1247949694]
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseContainer/Panel2/VBoxContainer" unique_id=1247949694]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1180534629]
+[node name="Label" type="Label" parent="BaseContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1180534629]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "FPS"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=606266455]
+[node name="Label2" type="Label" parent="BaseContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=606266455]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1951741817]
+[node name="FPS" type="Label" parent="BaseContainer/Panel2/VBoxContainer/HBoxContainer" unique_id=1951741817]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="Panel" type="Panel" parent="VBoxContainer" unique_id=1522970460]
+[node name="Panel" type="Panel" parent="BaseContainer" unique_id=1522970460]
 custom_minimum_size = Vector2(176, 161)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hco1y")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel" unique_id=1623783731]
+[node name="VBoxContainer" type="VBoxContainer" parent="BaseContainer/Panel" unique_id=1623783731]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -68,126 +74,134 @@ offset_right = 156.0
 offset_bottom = 57.5
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer" unique_id=479068654]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer" unique_id=479068654]
 layout_mode = 2
 text = "Player"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Panel/VBoxContainer" unique_id=1396560253]
+[node name="HSeparator" type="HSeparator" parent="BaseContainer/Panel/VBoxContainer" unique_id=1396560253]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=1621498412]
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=1621498412]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer" unique_id=1132475430]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer" unique_id=1132475430]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Position"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer" unique_id=1432955984]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer" unique_id=1432955984]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer" unique_id=150148753]
+[node name="PlayerPosition" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer" unique_id=150148753]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=1218618757]
+[node name="HBoxContainer2" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=1218618757]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=1518046620]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=1518046620]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Velocity"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=140991463]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=140991463]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=2027627168]
+[node name="Velocity" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer2" unique_id=2027627168]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=968249381]
+[node name="HBoxContainer3" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=968249381]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1948612472]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1948612472]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "DashDurationCountdown"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1793395831]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1793395831]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1396814139]
+[node name="DashDurationCountdown" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer3" unique_id=1396814139]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=1471535159]
+[node name="HBoxContainer4" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=1471535159]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=1437085126]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=1437085126]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "DashCooldownCount"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=1385778310]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=1385778310]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=2125686639]
+[node name="DashCooldownCount" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer4" unique_id=2125686639]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=168051738]
+[node name="HBoxContainer5" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=168051738]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1986435320]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1986435320]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "UsedDashCharges"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1181574815]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1181574815]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1314129838]
+[node name="UsedDashCharges" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer5" unique_id=1314129838]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer" unique_id=391465883]
+[node name="HBoxContainer6" type="HBoxContainer" parent="BaseContainer/Panel/VBoxContainer" unique_id=391465883]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=439716571]
+[node name="Label" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=439716571]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "NotDashingTime"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=45265777]
+[node name="Label2" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=45265777]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=1093002986]
+[node name="NotDashingTime" type="Label" parent="BaseContainer/Panel/VBoxContainer/HBoxContainer6" unique_id=1093002986]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="Panel3" type="Panel" parent="VBoxContainer" unique_id=1759222649]
+[node name="Panel3" type="Panel" parent="BaseContainer" unique_id=1759222649]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 142)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hco1y")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel3" unique_id=2097629678]
+[node name="VBoxContainer" type="VBoxContainer" parent="BaseContainer/Panel3" unique_id=2097629678]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -198,109 +212,115 @@ offset_right = 95.0
 offset_bottom = 32.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1295856672]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1295856672]
 layout_mode = 2
 text = "LevelGenerator"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1949480930]
+[node name="HSeparator" type="HSeparator" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1949480930]
 custom_minimum_size = Vector2(266, 0)
 layout_mode = 2
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=598698910]
+[node name="HBoxContainer7" type="HBoxContainer" parent="BaseContainer/Panel3/VBoxContainer" unique_id=598698910]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=55259290]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=55259290]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "CurrentChunk"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=1692449012]
+[node name="Label2" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=1692449012]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=1384177325]
+[node name="CurrentChunk" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer7" unique_id=1384177325]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1168992158]
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1168992158]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=1034265253]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=1034265253]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "CurrentCell"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=271212048]
+[node name="Label2" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=271212048]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=934764454]
+[node name="CurrentCell" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer" unique_id=934764454]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1110440797]
+[node name="HBoxContainer3" type="HBoxContainer" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1110440797]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1222462768]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1222462768]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "CellType"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1765416549]
+[node name="Label2" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1765416549]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1052157256]
+[node name="CellType" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer3" unique_id=1052157256]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1888091661]
+[node name="HBoxContainer2" type="HBoxContainer" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1888091661]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=1256261744]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=1256261744]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "LevelBiome"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=254477192]
+[node name="Label2" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=254477192]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=1234825478]
+[node name="LevelBiome" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer2" unique_id=1234825478]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/Panel3/VBoxContainer" unique_id=1433391518]
+[node name="HBoxContainer4" type="HBoxContainer" parent="BaseContainer/Panel3/VBoxContainer" unique_id=1433391518]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=1460894028]
+[node name="Label" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=1460894028]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "CurrentLevel"
 
-[node name="Label2" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=575843933]
+[node name="Label2" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=575843933]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = ":"
 
-[node name="Value" type="Label" parent="VBoxContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=377558978]
+[node name="CurrentLevel" type="Label" parent="BaseContainer/Panel3/VBoxContainer/HBoxContainer4" unique_id=377558978]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value"
 
-[node name="Panel4" type="Panel" parent="VBoxContainer" unique_id=1922507592]
+[node name="Panel4" type="Panel" parent="BaseContainer" unique_id=1922507592]
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hco1y")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel4" unique_id=252668821]
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseContainer/Panel4" unique_id=252668821]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -314,23 +334,25 @@ offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Panel4/HBoxContainer" unique_id=874637811]
+[node name="CheatInput" type="TextEdit" parent="BaseContainer/Panel4/HBoxContainer" unique_id=874637811]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/line_spacing = -5
 theme_override_font_sizes/font_size = 14
 placeholder_text = "code.codename.value"
 
-[node name="Button" type="Button" parent="VBoxContainer/Panel4/HBoxContainer" unique_id=80652854]
+[node name="Button" type="Button" parent="BaseContainer/Panel4/HBoxContainer" unique_id=80652854]
 custom_minimum_size = Vector2(43, 0)
 layout_mode = 2
 text = "?"
 
-[node name="Panel5" type="Panel" parent="VBoxContainer" unique_id=819950296]
+[node name="Panel5" type="Panel" parent="BaseContainer" unique_id=819950296]
 custom_minimum_size = Vector2(0, 91)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hco1y")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel5" unique_id=702606887]
+[node name="VBoxContainer" type="VBoxContainer" parent="BaseContainer/Panel5" unique_id=702606887]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -344,23 +366,23 @@ offset_bottom = 22.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel5/VBoxContainer" unique_id=236255526]
+[node name="Label" type="Label" parent="BaseContainer/Panel5/VBoxContainer" unique_id=236255526]
 layout_mode = 2
 text = "CodesMenu"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Panel5/VBoxContainer" unique_id=170034380]
+[node name="HSeparator" type="HSeparator" parent="BaseContainer/Panel5/VBoxContainer" unique_id=170034380]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel5/VBoxContainer" unique_id=167667043]
+[node name="HBoxContainer" type="HBoxContainer" parent="BaseContainer/Panel5/VBoxContainer" unique_id=167667043]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel5/VBoxContainer/HBoxContainer" unique_id=1130184938]
+[node name="Label" type="Label" parent="BaseContainer/Panel5/VBoxContainer/HBoxContainer" unique_id=1130184938]
 layout_mode = 2
 text = "code.devmode.true"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel5/VBoxContainer" unique_id=1189956761]
+[node name="HBoxContainer2" type="HBoxContainer" parent="BaseContainer/Panel5/VBoxContainer" unique_id=1189956761]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/Panel5/VBoxContainer/HBoxContainer2" unique_id=2118360961]
+[node name="Label" type="Label" parent="BaseContainer/Panel5/VBoxContainer/HBoxContainer2" unique_id=2118360961]
 layout_mode = 2
 text = "code.devmode.false"
