@@ -1,25 +1,17 @@
 using System.Globalization;
 using Godot;
 
-namespace projecthorizonscs.Interface.DebugPanel;
+namespace projecthorizonscs.Interface;
 
-public partial class DebugPanel(
-	Label playerPositionLabel,
-	Label dashDurationCountdownLabel,
-	Label usedDashChargesLabel,
-	Label framesPerSecondLabel)
-	: Control
+public partial class DebugPanel : Control
 {
-	private float _updateCooldown = 0.5f;
-	private float _updateCountdown;
-
-	private Label _playerPositionLabel = playerPositionLabel;
+	private Label _playerPositionLabel;
 	private Label _playerVelocityLabel;
-	private Label _dashDurationCountdownLabel = dashDurationCountdownLabel;
+	private Label _dashDurationCountdownLabel;
 	private Label _dashCooldownCountLabel;
-	private Label _usedDashChargesLabel = usedDashChargesLabel;
+	private Label _usedDashChargesLabel;
 	private Label _notDashingTimeLabel;
-	private Label _framesPerSecondLabel = framesPerSecondLabel;
+	private Label _framesPerSecondLabel;
 	private Label _currentChunkLabel;
 	private TextEdit _cheatInput;
 
@@ -29,30 +21,13 @@ public partial class DebugPanel(
 	private Label _currentLevelLabel;
 
 	private Panel _panel3;
-
-	private VBoxContainer VContainer => GetNode<VBoxContainer>("VBoxContainer");
-
-	private static Player.Player LocalPlayer => Autoload.Globals.I.LocalPlayer;
-	private static LevelGenerator.LevelGenerator LocalLevelGenerator => Autoload.Globals.I.LocalLevelGenerator;
+	private VBoxContainer _vContainer;
 
 	private bool _enabled;
 
-	/*
-Biome IDS
-	- 0 = Forest
-	- 1 = Dark Forest
-	- 2 = Dry Forest
-	- 3 = Snowlands
-	- 4 = Icelands
-	- 5 = Desert
-	- 6 = Beach
-	- 7 = Old Beach
-	- 8 = Vulcanic
-*/
-
 	private static string GetBiomeById(int id)
 	{
-		var biomeName = id switch
+		return id switch
 		{
 			0 => "Forest",
 			1 => "Dark Forest",
@@ -63,14 +38,13 @@ Biome IDS
 			6 => "Beach",
 			7 => "Old Beach",
 			8 => "Vulcanic",
-			_ => ""
+			_ => "Unknown"
 		};
-		return biomeName;
 	}
 
 	private static string GetBlockByCoords(Vector2I coords)
 	{
-		var blockName = coords switch
+		return coords switch
 		{
 			(0, 0) => "Void Block",
 			(0, 1) => "Half Void Block",
@@ -87,29 +61,31 @@ Biome IDS
 			(4, 0) => "Sand",
 			(4, 1) => "Half Sand",
 			(4, 2) => "Half Sand 2",
-			_ => ""
+			_ => "Unknown"
 		};
-		return blockName;
 	}
 
 	public override void _Ready()
 	{
-		_playerPositionLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer/Value");
-		_playerVelocityLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer2/Value");
-		_dashDurationCountdownLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer3/Value");
-		_dashCooldownCountLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer4/Value");
-		_usedDashChargesLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer5/Value");
-		_notDashingTimeLabel = GetNode<Label>("VBoxContainer/Panel/VBoxContainer/HBoxContainer6/Value");
-		_framesPerSecondLabel = GetNode<Label>("VBoxContainer/Panel2/VBoxContainer/HBoxContainer/Value");
-		_currentChunkLabel = GetNode<Label>("VBoxContainer/Panel3/VBoxContainer/HBoxContainer7/Value");
-		_cheatInput = GetNode<TextEdit>("VBoxContainer/Panel4/TextEdit");
+		_vContainer = GetNode<VBoxContainer>("%BaseContainer");
+		_playerPositionLabel = GetNode<Label>("%PlayerPosition");
+		_playerVelocityLabel = GetNode<Label>("%Velocity");
+		_dashDurationCountdownLabel = GetNode<Label>("%DashDurationCountdown");
+		_dashCooldownCountLabel = GetNode<Label>("%DashCooldownCount");
+		_usedDashChargesLabel = GetNode<Label>("%UsedDashCharges");
+		_notDashingTimeLabel = GetNode<Label>("%NotDashingTime");
+		_framesPerSecondLabel = GetNode<Label>("%FPS");
+		_currentChunkLabel = GetNode<Label>("%CurrentChunk");
+		_cheatInput = GetNode<TextEdit>("%CheatInput");
 
-		_currentCellLabel = GetNode<Label>("VBoxContainer/Panel3/VBoxContainer/HBoxContainer4/Value");
-		_cellTypeLabel = GetNode<Label>("VBoxContainer/Panel3/VBoxContainer/HBoxContainer3/Value");
-		_levelBiomeLabel = GetNode<Label>("VBoxContainer/Panel3/VBoxContainer/HBoxContainer2/Value");
-		_currentLevelLabel = GetNode<Label>("VBoxContainer/Panel3/VBoxContainer/HBoxContainer4/Value");
-		_panel3 = GetNode<Panel>("VBoxContainer/Panel3");
-		
+		_currentCellLabel = GetNode<Label>("%CurrentCell");
+		_cellTypeLabel = GetNode<Label>("%CellType");
+		_levelBiomeLabel = GetNode<Label>("%LevelBiome");
+		_currentLevelLabel = GetNode<Label>("%CurrentLevel");
+		_panel3 = GetNode<Panel>("%Panel3");
+
+		_enabled = false;
+		_vContainer.Visible = false;
 	}
 
 	public override void _Process(double delta)
@@ -117,70 +93,87 @@ Biome IDS
 		if (Input.IsActionJustPressed("debug"))
 		{
 			_enabled = !_enabled;
-			VContainer.Visible = _enabled;
+			_vContainer.Visible = _enabled;
 		}
 
-		if (!_enabled) return;
+		if (!_enabled)
+			return;
+
 		UpdateData();
 		UpdateCheatEditor();
 	}
 
 	private void UpdateData()
 	{
-		if (LocalLevelGenerator != null)
+		var player = Autoload.Globals.I.LocalPlayer;
+		var levelGenerator = Autoload.Globals.I.LocalLevelGenerator;
+
+		if (player == null)
+			return;
+
+		_playerPositionLabel.Text = player.GlobalPosition.ToString();
+		_currentChunkLabel.Text = Autoload.Globals.I.CurrentPlayerChunk.ToString();
+		_playerVelocityLabel.Text = player.Velocity.ToString();
+		_dashDurationCountdownLabel.Text = player.DashDurationCountdown.ToString(CultureInfo.CurrentCulture);
+		_dashCooldownCountLabel.Text = player.DashCooldownCount.ToString(CultureInfo.CurrentCulture);
+		_usedDashChargesLabel.Text = player.UsedDashCharges.ToString();
+		_notDashingTimeLabel.Text = player.NotDashingTime.ToString(CultureInfo.CurrentCulture);
+		_framesPerSecondLabel.Text = Engine.GetFramesPerSecond().ToString(CultureInfo.CurrentCulture);
+
+		if (levelGenerator != null)
 		{
-			_currentCellLabel.Text = LocalLevelGenerator.LocalToMap(LocalPlayer.GlobalPosition).ToString();
-			_cellTypeLabel.Text = GetBlockByCoords(LocalLevelGenerator.GetCellAtlasCoords(LocalLevelGenerator.LocalToMap(LocalPlayer.Position)));
-			_levelBiomeLabel.Text = GetBiomeById(LocalLevelGenerator.LevelBiomeId);
+			var localPlayerPos = levelGenerator.ToLocal(player.GlobalPosition);
+			var playerCell = levelGenerator.LocalToMap(localPlayerPos);
+
+			_currentCellLabel.Text = playerCell.ToString();
+			_cellTypeLabel.Text = GetBlockByCoords(levelGenerator.GetCellAtlasCoords(playerCell));
+			_levelBiomeLabel.Text = GetBiomeById(levelGenerator.LevelBiomeId);
 			_currentLevelLabel.Text = Autoload.Globals.I.CurrentLevel.ToString();
-			if (!_panel3.Visible)
-			{
-				_panel3.Visible = true;
-			}
+			_panel3.Visible = true;
 		}
 		else
 		{
-			if (_panel3.Visible)
-			{
-				_panel3.Visible = false;
-			}
+			_panel3.Visible = false;
 		}
-
-
-		_playerPositionLabel.Text = LocalPlayer.GlobalPosition.ToString();
-		_currentChunkLabel.Text = Autoload.Globals.I.CurrentPlayerChunk.ToString();
-		_playerVelocityLabel.Text = LocalPlayer.Velocity.ToString();
-		_dashDurationCountdownLabel.Text = LocalPlayer.DashDurationCountdown.ToString(CultureInfo.CurrentCulture);
-		_dashCooldownCountLabel.Text = LocalPlayer.DashCooldownCount.ToString(CultureInfo.CurrentCulture);
-		_usedDashChargesLabel.Text = LocalPlayer.UsedDashCharges.ToString();
-		_notDashingTimeLabel.Text = LocalPlayer.NotDashingTime.ToString(CultureInfo.CurrentCulture);
-		_framesPerSecondLabel.Text = Engine.GetFramesPerSecond().ToString(CultureInfo.CurrentCulture);
 	}
 
 	private void UpdateCheatEditor()
 	{
-		if (!_cheatInput.HasFocus()) return;
+		if (_cheatInput == null)
+		{
+			Autoload.Globals.I.InMenu = false;
+			return;
+		}
+
+		if (!_cheatInput.HasFocus())
+		{
+			Autoload.Globals.I.InMenu = false;
+			return;
+		}
+
+		Autoload.Globals.I.InMenu = true;
+
 		if (Input.IsActionJustPressed("ui_accept"))
 		{
 			VerifyCheatCode();
 			_cheatInput.Text = "";
 			_cheatInput.ReleaseFocus();
-			Autoload.Globals.I.InMenu= false;
+			Autoload.Globals.I.InMenu = false;
 		}
-		Autoload.Globals.I.InMenu= true;
 	}
-
 
 	private void VerifyCheatCode()
 	{
-		var input = _cheatInput.Text.ToLower();
+		var input = _cheatInput.Text.ToLower().StripEdges();
+
 		switch (input)
 		{
-			case ("code.devmode.true"):
+			case "code.devmode.true":
 				Autoload.Globals.I.DevModeEnabled = true;
 				Autoload.Globals.I.EmitSignal(Autoload.Globals.SignalName.DevModeUpdated);
 				break;
-			case ("code.devmode.false"):
+
+			case "code.devmode.false":
 				Autoload.Globals.I.DevModeEnabled = false;
 				Autoload.Globals.I.EmitSignal(Autoload.Globals.SignalName.DevModeUpdated);
 				break;

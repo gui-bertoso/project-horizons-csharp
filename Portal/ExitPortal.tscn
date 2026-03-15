@@ -1,9 +1,10 @@
-[gd_scene format=3 uid="uid://cmf7ih3a23rst"]
+[gd_scene format=3 uid="uid://c7803a2oexevv"]
 
-[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="1_squw6"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="1_b6ilk"]
+[ext_resource type="Script" uid="uid://dt6bq68mtp2k3" path="res://Portal/ExitPortal.cs" id="1_i5ll7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wkxvt"]
-atlas = ExtResource("1_squw6")
+atlas = ExtResource("1_b6ilk")
 region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="Gradient" id="Gradient_oj4a0"]
@@ -16,8 +17,6 @@ gradient = SubResource("Gradient_oj4a0")
 [sub_resource type="Curve" id="Curve_squw6"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
-point_0/position = Vector2(0, 1)
-point_1/position = Vector2(1, 0)
 
 [sub_resource type="CurveTexture" id="CurveTexture_mduat"]
 curve = SubResource("Curve_squw6")
@@ -36,17 +35,33 @@ scale_max = 0.84999996
 color_ramp = SubResource("GradientTexture1D_7wdhh")
 emission_curve = SubResource("CurveTexture_mduat")
 
-[node name="Node2D" type="Node2D" unique_id=1591361011]
+[sub_resource type="CircleShape2D" id="CircleShape2D_i5ll7"]
+radius = 68.69348
+
+[node name="A" type="Node2D" unique_id=1591361011]
 scale = Vector2(0.335, 0.445)
+script = ExtResource("1_i5ll7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=2030958380]
+z_index = 1
 amount = 59
 texture = SubResource("AtlasTexture_wkxvt")
 lifetime = 0.52
 process_material = SubResource("ParticleProcessMaterial_e2qe2")
 
 [node name="GPUParticles2D2" type="GPUParticles2D" parent="." unique_id=1831830862]
+z_index = 1
 amount = 100
 texture = SubResource("AtlasTexture_wkxvt")
 lifetime = 0.52
 process_material = SubResource("ParticleProcessMaterial_e2qe2")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1589646962]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=490283098]
+scale = Vector2(1, 0.9999999)
+shape = SubResource("CircleShape2D_i5ll7")
+
+[connection signal="body_entered" from="Area2D" to="." method="_OnAreaBodyEntered"]

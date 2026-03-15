@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://lbt34dfemles" path="res://Interface/Hud/Hud.tscn" id="2_0bju4"]
 [ext_resource type="Texture2D" uid="uid://cocd2lhvugjap" path="res://Assets/background.png" id="3_t4nej"]
 [ext_resource type="PackedScene" uid="uid://batl3kqaga0xt" path="res://Envinroment/Environment.tscn" id="4_ersrp"]
-[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="5_kv2lc"]
 
 [node name="LevelTemplate" type="Node2D" unique_id=1049057679]
 
@@ -21,5 +20,3 @@ texture = ExtResource("3_t4nej")
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=935659105]
 
 [node name="WorldEnvironment" parent="." unique_id=10120490 instance=ExtResource("4_ersrp")]
-
-[node name="Player" parent="." unique_id=621873643 instance=ExtResource("5_kv2lc")]

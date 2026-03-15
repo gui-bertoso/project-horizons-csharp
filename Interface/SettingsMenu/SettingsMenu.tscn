@@ -358,6 +358,12 @@ tile_set = ExtResource("1_6ienh")
 
 [node name="WorldEnvironment" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D" unique_id=1273801706 instance=ExtResource("3_mhvid")]
 
+[node name="DirectionalLight" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D/WorldEnvironment" index="1" unique_id=461681002]
+visible = false
+
+[node name="CanvasModulate" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D/WorldEnvironment" index="2" unique_id=748544833]
+visible = false
+
 [node name="Button" type="Button" parent="." unique_id=1429176744]
 layout_mode = 0
 offset_left = 12.0
@@ -383,3 +389,5 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_84gtq")
 text = "BACK"
 
 [connection signal="button_up" from="Button" to="." method="_OnBackButtonUp"]
+
+[editable path="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D/WorldEnvironment"]

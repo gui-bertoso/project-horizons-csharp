@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://xvuy4nrq8uyd"]
 
-[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/Portal.tscn" id="1_65e70"]
+[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="1_65e70"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=622922478]
 
