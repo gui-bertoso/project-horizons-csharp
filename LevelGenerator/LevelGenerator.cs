@@ -1,9 +1,17 @@
 using Godot;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-namespace projecthorizonscs.LevelGenerator;
+namespace projecthorizonscs;
 
 public partial class LevelGenerator : TileMapLayer
 {
+	private PackedScene _initialPortalScene;
+	private Node2D _initialPortalReference;
+	private PackedScene _exitPortalScene;
+	private Node2D _exitPortalReference;
 
 	private TileMapLayer _detailsTileMap;
 	private TileMapLayer _details2TileMap;
@@ -37,9 +45,25 @@ Biome IDS
 	private float _coastDetails = 90.0f;
 	private float _coastStrength = .55f;
 
+	private Vector2I _initialPortalCell;
+
+	private static readonly Vector2I[] NeighborDirections =
+	{
+		new(0, -1),
+		new(0, 1),
+		new(-1, 0),
+		new(1, 0),
+		new(-1, -1),
+		new(1, -1),
+		new(-1, 1),
+		new(1, 1)
+	};
+
 
 	public override void _Ready()
 	{
+		_initialPortalScene = (PackedScene)ResourceLoader.Load("res://Portal/InitialPortal.tscn");
+		_exitPortalScene = (PackedScene)ResourceLoader.Load("res://Portal/ExitPortal.tscn");
 		Autoload.Globals.I.LocalLevelGenerator = this;
 		_detailsTileMap = GetNode<TileMapLayer>("Details");
 		_details2TileMap = GetNode<TileMapLayer>("Details2");
@@ -366,6 +390,242 @@ Biome IDS
 				}
 			}
 		}
+
+		SpawnInitialPortal();
+		SpawnExitPortal();
+	}
+
+	private void SpawnInitialPortal()
+	{
+		var candidates = GetInitialPortalCandidates();
+		if (candidates.Count == 0)
+		{
+			GD.Print("ERROR 001: Initial Portal Locations not exists");
+			return;
+		}
+
+		var center = Vector2I.Zero;
+
+		candidates.Sort((a, b) =>
+		{
+			var distA = a.DistanceSquaredTo(center);
+			var distB = b.DistanceSquaredTo(center);
+			return distA.CompareTo(distB); // mais perto do centro
+		});
+
+		var rng = new RandomNumberGenerator();
+		var topCount = Mathf.Min(12, candidates.Count);
+		var chosen = candidates[rng.RandiRange(0, topCount - 1)];
+
+		_initialPortalCell = chosen;
+		SpawnInitialPortalSceneAt(chosen);
+		GD.Print($"Initial portal generated in: {chosen}");
+	}
+
+	private void SpawnExitPortal()
+	{
+		var candidates = GetExitPortalCandidates();
+		if (candidates.Count == 0)
+		{
+			GD.Print("ERROR 002: Exit Portal Locations not exists");
+			return;
+		}
+
+		var rng = new RandomNumberGenerator();
+		var chosen = candidates[rng.RandiRange(0, candidates.Count - 1)];
+
+		SpawnExitPortalSceneAt(chosen);
+		GD.Print($"Exit portal generated in: {chosen}");
+	}
+
+	private bool IsInnerEdgeCell(Vector2I cell)
+	{
+		int invalidNearby = 0;
+		int validNearby = 0;
+
+		for (var y = -4; y <= 4; y++)
+		{
+			for (var x = -4; x <= 4; x++)
+			{
+				var check = cell + new Vector2I(x, y);
+
+				if (IsValidCell(check))
+					validNearby++;
+				else
+					invalidNearby++;
+			}
+		}
+
+		return invalidNearby >= 8 && invalidNearby <= 18 && validNearby >= 45;
+	}
+
+	private List<Vector2I> GetInitialPortalCandidates()
+	{
+		var candidates = new List<Vector2I>();
+
+		var halfX = _levelSizeX / 2;
+		var halfY = _levelSizeY / 2;
+
+		for (var y = -halfY; y < halfY; y++)
+		{
+			for (var x = -halfX; x < halfX; x++)
+			{
+				var cell = new Vector2I(x, y);
+
+				if (!IsValidCell(cell))
+					continue;
+
+				// initial portal fica menos perto do void
+				if (IsInnerEdgeCell(cell))
+					continue;
+
+				if (!HasLargeEnoughFreeSpaceForInitialPortal(cell))
+					continue;
+
+				candidates.Add(cell);
+			}
+		}
+
+		return candidates;
+	}
+	
+	private List<Vector2I> GetExitPortalCandidates()
+	{
+		var candidates = new List<Vector2I>();
+
+		var halfX = _levelSizeX / 2;
+		var halfY = _levelSizeY / 2;
+
+		for (var y = -halfY; y < halfY; y++)
+		{
+			for (var x = -halfX; x < halfX; x++)
+			{
+				var cell = new Vector2I(x, y);
+
+				if (!IsValidCell(cell))
+					continue;
+
+				if (!IsInnerEdgeCell(cell))
+					continue;
+
+				if (!HasEnoughFreeSpaceForPortal(cell))
+					continue;
+
+				if (cell.DistanceSquaredTo(_initialPortalCell) < 2500) // 50 tiles
+					continue;
+
+				candidates.Add(cell);
+			}
+		}
+
+		return candidates;
+	}
+	
+	private bool HasLargeEnoughFreeSpaceForInitialPortal(Vector2I centerCell)
+	{
+		for (var y = -3; y <= 3; y++)
+		{
+			for (var x = -3; x <= 3; x++)
+			{
+				var cell = centerCell + new Vector2I(x, y);
+
+				if (!IsValidCell(cell))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	private bool IsValidCell(Vector2I cell)
+	{
+		var sourceId = GetCellSourceId(cell);
+		if (sourceId == -1)
+			return false;
+
+		var atlas = GetCellAtlasCoords(cell);
+
+		return LevelBiomeId switch
+		{
+			0 => atlas == new Vector2I(1, 0),
+			1 => atlas == new Vector2I(1, 4),
+			2 => atlas == new Vector2I(1, 3),
+			3 => atlas == new Vector2I(1, 2) || atlas == new Vector2I(1, 4),
+			4 => atlas == new Vector2I(2, 1) || atlas == new Vector2I(1, 1) || atlas == new Vector2I(1, 2),
+			5 => atlas == new Vector2I(3, 0) || atlas == new Vector2I(3, 1) || atlas == new Vector2I(3, 2),
+			_ => false
+		};
+	}
+
+	private bool IsNearEdgeCell(Vector2I cell)
+	{
+		bool foundInvalidNearby = false;
+		for (var y = -2; y <= 2; y++)
+		{
+			for (var x = -2; x <= 2; x++)
+			{
+				var check = cell + new Vector2I(x, y);
+				if (!IsValidCell(check))
+				{
+					foundInvalidNearby = true;
+					break;
+				}
+			}
+
+			if (foundInvalidNearby)
+				break;
+		}
+		return foundInvalidNearby;
+	}
+
+	private bool HasEnoughFreeSpaceForPortal(Vector2I centerCell)
+	{
+		for (var y = -2; y <= 2; y++)
+		{
+			for (var x = -2; x <= 2; x++)
+			{
+				var cell = centerCell + new Vector2I(x, y);
+
+				if (!IsValidCell(cell))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void SpawnInitialPortalSceneAt(Vector2I mapCell)
+	{
+		if (_initialPortalScene == null)
+		{
+			GD.Print("ERRO 002: Initial portal scene is null");
+			return;
+		}
+
+		var portalInstance = _initialPortalScene.Instantiate<Node2D>();
+		_initialPortalReference = portalInstance;
+
+		var localPos = MapToLocal(mapCell);
+		portalInstance.Position = localPos;
+
+		AddChild(portalInstance);
+	}
+
+	private void SpawnExitPortalSceneAt(Vector2I mapCell)
+	{
+		if (_exitPortalScene == null)
+		{
+			GD.Print("ERRO 003: Exit portal scene is null");
+			return;
+		}
+
+		var portalInstance = _exitPortalScene.Instantiate<Node2D>();
+		_exitPortalReference = portalInstance;
+
+		var localPos = MapToLocal(mapCell);
+		portalInstance.Position = localPos;
+
+		AddChild(portalInstance);
 	}
 
 	private void SetNoises()

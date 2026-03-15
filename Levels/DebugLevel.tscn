@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bmcuyjc015a3i"]
 
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_mowe0"]
-[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/Portal.tscn" id="2_aq0ab"]
+[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="2_aq0ab"]
 [ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="3_raufk"]
 [ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="4_aq0ab"]
 [ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="5_afn2h"]
@@ -295,6 +295,3 @@ position = Vector2(1176, 670)
 
 [node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
 environment = SubResource("Environment_raufk")
-
-[node name="Player" parent="." index="7" unique_id=621873643]
-position = Vector2(-98, 258)
