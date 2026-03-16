@@ -358,6 +358,9 @@ tile_set = ExtResource("1_6ienh")
 
 [node name="WorldEnvironment" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D" unique_id=1273801706 instance=ExtResource("3_mhvid")]
 
+[node name="Particles" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D/WorldEnvironment" index="0" unique_id=1507437179]
+visible = false
+
 [node name="DirectionalLight" parent="Panel/PreviewBackground/SubViewportContainer/SubViewport/Node2D/WorldEnvironment" index="1" unique_id=461681002]
 visible = false
 

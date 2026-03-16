@@ -9,6 +9,7 @@ public partial class Globals : Node
 	public static Globals I {get; private set;}
 	public Player.Player LocalPlayer {get; set;}
 	public Player.PlayerHand LocalPlayerHand {get; set;}
+	public AchievementsOverlay LocalAchievementsOverlay {get; set;}
 
 	public Player.Body LocalPlayerBody {get; set;}
 	public LevelGenerator LocalLevelGenerator {get; set;}

@@ -33,8 +33,8 @@ public partial class Item : Resource
 	public ITEM_TYPE ItemType;
 	[Export]
 	public ITEM_CLASS ItemClass;
-	[Export]
-	public string ItemDescription;
+	[Export(PropertyHint.MultilineText)]
+	public string ItemDescription = "";
 	[Export]
 	public int ItemAmount = 1;
 	[Export]

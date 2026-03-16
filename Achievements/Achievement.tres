@@ -1,0 +1,6 @@
+[gd_resource type="Resource" format=3 uid="uid://sq2na2w1hy6k"]
+
+[ext_resource type="Script" uid="uid://b0e1s7j0b2652" path="res://Achievements/Achievement.cs" id="1_q2o7p"]
+
+[resource]
+script = ExtResource("1_q2o7p")

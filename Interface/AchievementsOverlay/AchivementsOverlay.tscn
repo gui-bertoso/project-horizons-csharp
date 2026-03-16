@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://wet0wmm7xxec"]
+
+[ext_resource type="Script" uid="uid://w74rxucf0181" path="res://Interface/AchievementsOverlay/AchivementsOverlay.cs" id="1_qikqi"]
+
+[node name="AchivementsOverlay" type="Control" unique_id=1802108655]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qikqi")
+
+[node name="NotificationsContainer" type="VBoxContainer" parent="." unique_id=2008807480]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -264.0
+offset_top = -379.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
