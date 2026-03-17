@@ -7,6 +7,7 @@ namespace projecthorizonscs;
 
 public partial class AchievementsManager : Node
 {
+	public static AchievementsManager I {get; private set;}
 	public Dictionary<string, int> EnemiesKilled = new();
 	public int CurrentLevel = 0;
 	public int PlayerDeathsCount = 0;
@@ -15,8 +16,31 @@ public partial class AchievementsManager : Node
 	public Array<string> DiscoveredBiomes = new();
 	public Array<string> DiscoveredBiomeEvents = new();
 
-	[Export]
-	public Array<Achievement> Achievements = new();
+	public Array<Achievement> Achievements = new(){};
+
+	public Array<string> AchievementsPath = new()
+	{
+		"res://Achievements/Hunt_01.tres",
+		"res://Achievements/Exploration_01.tres",
+		"res://Achievements/Exploration_02.tres",
+		"res://Achievements/Exploration_03.tres"
+	};
+
+	public override void _Ready()
+	{
+		I = this;
+		LoadAchievements();
+	}
+
+	public void LoadAchievements()
+	{
+		foreach (string i in AchievementsPath)
+		{
+			Achievement achievement = GD.Load<Achievement>(i);
+			Achievements.Add(achievement);
+		}
+	}
+
 
 	public void RegisterEnemyKilled(string enemyName, int amount = 1)
 	{
@@ -80,6 +104,7 @@ public partial class AchievementsManager : Node
 			if (achievement.IsUnlocked(this))
 			{
 				achievement.Unlocked = true;
+				NotifyAchievementUnlocked(achievement);
 				GD.Print($"achievement unlocked: {achievement.AchievementName}");
 			}
 		}
@@ -91,7 +116,8 @@ public partial class AchievementsManager : Node
 		{
 			return;
 		}
-
+		GD.Print($"overlay: {Globals.I.LocalAchievementsOverlay}");
+		GD.Print($"notifiyng achievement: {achievement.AchievementName}");
 		Globals.I.LocalAchievementsOverlay.Notify(achievement);
 	}
 }

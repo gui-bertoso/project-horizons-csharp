@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_mowe0"]
 [ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="2_aq0ab"]
+[ext_resource type="Script" uid="uid://5no4o07fkorj" path="res://Levels/DebugLevel.cs" id="2_wilel"]
 [ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="3_raufk"]
 [ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="4_aq0ab"]
 [ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="5_afn2h"]
@@ -69,6 +70,7 @@ adjustment_contrast = 1.075
 adjustment_saturation = 1.29
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
+script = ExtResource("2_wilel")
 
 [node name="Node2D" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=1591361011 instance=ExtResource("2_aq0ab")]
 position = Vector2(1422, 108.00001)

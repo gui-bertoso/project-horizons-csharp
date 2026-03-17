@@ -29,6 +29,7 @@ offset_right = 296.5
 offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 11
 
 [node name="TextureRect" type="TextureRect" parent="Panel2/VBoxContainer" unique_id=1167092038]
 custom_minimum_size = Vector2(68, 68)
@@ -40,12 +41,14 @@ expand_mode = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Panel2/VBoxContainer/VBoxContainer" unique_id=1879918837]
+[node name="Name" type="Label" parent="Panel2/VBoxContainer/VBoxContainer" unique_id=1879918837]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 text = "LevelNameHere"
 
-[node name="Label2" type="Label" parent="Panel2/VBoxContainer/VBoxContainer" unique_id=1047014343]
+[node name="Difficulty" type="Label" parent="Panel2/VBoxContainer/VBoxContainer" unique_id=1047014343]
+unique_name_in_owner = true
 layout_mode = 2
 text = "LevelDifficultyHere"
 
@@ -63,7 +66,8 @@ layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="Label2" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=785467111]
+[node name="Hours" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=785467111]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "00"
@@ -75,7 +79,8 @@ theme_override_font_sizes/font_size = 12
 text = "h"
 horizontal_alignment = 2
 
-[node name="Label4" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=29003329]
+[node name="Minutes" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=29003329]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "00"
@@ -87,7 +92,8 @@ theme_override_font_sizes/font_size = 12
 text = "m"
 horizontal_alignment = 2
 
-[node name="Label6" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1514013287]
+[node name="Seconds" type="Label" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=1514013287]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "00"
@@ -102,12 +108,14 @@ horizontal_alignment = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel2/VBoxContainer/VBoxContainer2" unique_id=1119422091]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1109307910]
+[node name="ShowData" type="Button" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=1109307910]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 text = "+"
 
-[node name="Button4" type="Button" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=556262634]
+[node name="HideData" type="Button" parent="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer" unique_id=556262634]
+unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
@@ -150,7 +158,8 @@ text = "Seed"
 layout_mode = 2
 text = ":"
 
-[node name="Label3" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer4" unique_id=1293284606]
+[node name="Seed" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer4" unique_id=1293284606]
+unique_name_in_owner = true
 layout_mode = 2
 text = "aaaaaaaaaaaaaa"
 
@@ -165,7 +174,8 @@ text = "Current Level"
 layout_mode = 2
 text = ":"
 
-[node name="Label3" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=1837407650]
+[node name="CurrentLevel" type="Label" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer3" unique_id=1837407650]
+unique_name_in_owner = true
 layout_mode = 2
 text = "aaaaaaaaaaaaaa"
 
@@ -180,10 +190,11 @@ text = "Multiplayer"
 layout_mode = 2
 text = ":"
 
-[node name="CheckButton" type="CheckButton" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=889499715]
+[node name="MultiplayerEnabled" type="CheckButton" parent="Panel/HBoxContainer/VBoxContainer2/HBoxContainer2" unique_id=889499715]
+unique_name_in_owner = true
 layout_mode = 2
 
-[connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button" to="." method="_OnShowDataButtonUp"]
-[connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button4" to="." method="_OnHideDataButtonUp"]
+[connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/ShowData" to="." method="_OnShowDataButtonUp"]
+[connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/HideData" to="." method="_OnHideDataButtonUp"]
 [connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button3" to="." method="_OnDeleteButtonUp"]
 [connection signal="button_up" from="Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button2" to="." method="_OnPlayButtonUp"]
