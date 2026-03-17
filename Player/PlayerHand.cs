@@ -13,7 +13,7 @@ public partial class PlayerHand : Marker2D
 	{
 		Autoload.Globals.I.LocalPlayerHand = this;
 		_handOffset = (Node2D)GetParent().GetParent().GetNode("Node2D");
-		_body = (Node2D)GetParent().GetParent().GetNode("Body");
+		_body = (Node2D)GetParent();
 	}
 
 	public override void _Process(double delta)
@@ -23,7 +23,7 @@ public partial class PlayerHand : Marker2D
 		_handOffset.Rotation = mouseAngle.Angle();
 		Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
 		_body.Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
-		GD.Print(_handOffset.Rotation);
+		//GD.Print(_handOffset.Rotation);
 	}
 
 	public void EquipItem(Item item)

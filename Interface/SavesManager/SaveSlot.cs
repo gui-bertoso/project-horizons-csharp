@@ -24,17 +24,17 @@ public partial class SaveSlot : VBoxContainer
 	public override void _Ready()
 	{
 		_dataPanel = GetNode<Panel>("Panel");
-		_showDataButton = GetNode<Button>("Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button");
-		_hideDataButton = GetNode<Button>("Panel2/VBoxContainer/VBoxContainer2/HBoxContainer/Button4");
+		_showDataButton = GetNode<Button>("%ShowData");
+		_hideDataButton = GetNode<Button>("%HideData");
 
-		_playedHoursLabel = GetNode<Label>("Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2/Label2");
-		_playedMinutesLabel = GetNode<Label>("Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2/Label4");
-		_playedSecondsLabel = GetNode<Label>("Panel2/VBoxContainer/VBoxContainer2/HBoxContainer2/Label6");
+		_playedHoursLabel = GetNode<Label>("%Hours");
+		_playedMinutesLabel = GetNode<Label>("%Minutes");
+		_playedSecondsLabel = GetNode<Label>("%Seconds");
 
-		_seedLabel = GetNode<Label>("Panel/HBoxContainer/VBoxContainer2/HBoxContainer4/Label3");
-		_currentLevelLabel = GetNode<Label>("Panel/HBoxContainer/VBoxContainer2/HBoxContainer3/Label3");
-		_levelNameLabel = GetNode<Label>("Panel2/VBoxContainer/VBoxContainer/Label");
-		_levelDifficultyLabel = GetNode<Label>("Panel2/VBoxContainer/VBoxContainer/Label2");
+		_seedLabel = GetNode<Label>("%Seed");
+		_currentLevelLabel = GetNode<Label>("%CurrentLevel");
+		_levelNameLabel = GetNode<Label>("%Name");
+		_levelDifficultyLabel = GetNode<Label>("%Difficulty");
 	}
 
 	private void _OnShowDataButtonUp()
@@ -67,7 +67,7 @@ public partial class SaveSlot : VBoxContainer
 	{
 		var playedTime = (int)saveData["PlayedTime"];
 		var hours = playedTime / 3600;
-		var minutes = (playedTime % 3600) / 60;
+		var minutes = playedTime % 3600 / 60;
 		var seconds = playedTime % 60;
 
 		_playedHoursLabel.Text = hours.ToString("D2");
@@ -77,5 +77,32 @@ public partial class SaveSlot : VBoxContainer
 		_currentLevelLabel.Text = saveData["CurrentLevel"].ToString();
 		_seedLabel.Text = saveData["SaveSeed"].ToString();
 		_levelNameLabel.Text = saveData["SaveName"].ToString();
+
+		var difficultyId = (int)saveData["SaveDifficulty"];
+		_levelDifficultyLabel.Text = GetDifficultyText(difficultyId);
+		_levelDifficultyLabel.Modulate = GetDifficultyColor(difficultyId);
+	}
+
+	private string GetDifficultyText(int difficultyId)
+	{
+		switch (difficultyId)
+		{
+			case 0: return "Easy";
+			case 1: return "Normal";
+			case 2: return "Hard";
+			case 3: return "Hardcore";
+		}
+		return "";
+	}
+	private Color GetDifficultyColor(int difficultyId)
+	{
+		switch (difficultyId)
+		{
+			case 0: return new Color(0, 1, 0);
+			case 1: return new Color(1, 1, 0);
+			case 2: return new Color(1, 0, 0);
+			case 3: return new Color(.5f, .5f, .5f);
+		}
+		return new Color();
 	}
 }

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3 uid="uid://b06cijjyyplgo"]
+
+[ext_resource type="Texture2D" uid="uid://ita1q72a7d3i" path="res://Assets/Achievements/Exploration_02.png" id="1_6y5ef"]
+[ext_resource type="Script" uid="uid://b0e1s7j0b2652" path="res://Achievements/Achievement.cs" id="2_p11ix"]
+
+[resource]
+script = ExtResource("2_p11ix")
+Id = "Exploration_02"
+AchievementName = "Begginer explorer"
+ClassType = 1
+AchievementDescription = "Discover 12 sland fragment"
+AchievementTexture = ExtResource("1_6y5ef")
+Type = 1
+TriggerEvent = "CurrentLevel"
+RequiredAmount = 12

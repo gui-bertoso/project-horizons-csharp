@@ -1,14 +1,17 @@
 [gd_scene format=3 uid="uid://wet0wmm7xxec"]
 
-[ext_resource type="Script" uid="uid://w74rxucf0181" path="res://Interface/AchievementsOverlay/AchivementsOverlay.cs" id="1_qikqi"]
+[ext_resource type="Script" uid="uid://w74rxucf0181" path="res://Interface/AchievementsOverlay/AchievementsOverlay.cs" id="1_qikqi"]
+[ext_resource type="PackedScene" uid="uid://bap1fxae03lej" path="res://Interface/AchievementsOverlay/AchievementNotification.tscn" id="2_qikqi"]
 
-[node name="AchivementsOverlay" type="Control" unique_id=1802108655]
+[node name="AchievementsOverlay" type="Control" unique_id=1802108655]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_qikqi")
 
 [node name="NotificationsContainer" type="VBoxContainer" parent="." unique_id=2008807480]
@@ -24,3 +27,6 @@ offset_top = -379.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
+
+[node name="ColorRect" parent="NotificationsContainer" unique_id=334807360 instance=ExtResource("2_qikqi")]
+layout_mode = 2

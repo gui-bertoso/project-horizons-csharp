@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3 uid="uid://7ryh16jn6cx3"]
+
+[ext_resource type="Texture2D" uid="uid://co7om1ru2u5gx" path="res://Assets/Achievements/Exploration_03.png" id="1_1qfxk"]
+[ext_resource type="Script" uid="uid://b0e1s7j0b2652" path="res://Achievements/Achievement.cs" id="2_o37im"]
+
+[resource]
+script = ExtResource("2_o37im")
+Id = "Exploration_03"
+AchievementName = "Island discoverer"
+ClassType = 1
+AchievementDescription = "Discover 60 sland fragments"
+AchievementTexture = ExtResource("1_1qfxk")
+Type = 1
+TriggerEvent = "CurrentLevel"
+RequiredAmount = 60
