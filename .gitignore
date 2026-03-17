@@ -3,5 +3,6 @@
 .godot/
 /android/
 
-.idea/
-.vscode/
+.idea
+.vscode
+.vs
