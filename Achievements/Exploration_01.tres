@@ -1,0 +1,14 @@
+[gd_resource type="Resource" format=3 uid="uid://bk8v1voydyecl"]
+
+[ext_resource type="Texture2D" uid="uid://drs4ty0o163nx" path="res://Assets/Achievements/Exploration_01.png" id="1_7as3q"]
+[ext_resource type="Script" uid="uid://b0e1s7j0b2652" path="res://Achievements/Achievement.cs" id="1_e86j1"]
+
+[resource]
+script = ExtResource("1_e86j1")
+Id = "Exploration_01"
+AchievementName = "A shy, curious person"
+ClassType = 1
+AchievementDescription = "Discover your first sland fragment"
+AchievementTexture = ExtResource("1_7as3q")
+Type = 1
+TriggerEvent = "CurrentLevel"

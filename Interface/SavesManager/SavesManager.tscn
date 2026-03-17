@@ -77,6 +77,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_qo2gr")
 text = "BACK"
 
 [node name="Panel2" type="Panel" parent="." unique_id=2109386138]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

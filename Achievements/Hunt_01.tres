@@ -1,0 +1,10 @@
+[gd_resource type="Resource" format=3 uid="uid://bto0sgt7qbf4p"]
+
+[ext_resource type="Script" uid="uid://b0e1s7j0b2652" path="res://Achievements/Achievement.cs" id="1_m2uq3"]
+
+[resource]
+script = ExtResource("1_m2uq3")
+Id = "Hunt_01"
+AchievementName = "Manslaughter"
+AchievementDescription = "Kill your first enemy"
+TriggerEvent = "EnemyKilled"

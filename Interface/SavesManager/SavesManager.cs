@@ -109,11 +109,11 @@ public partial class SavesManager : Control
 		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/OptionButton");	
 		_newSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");	
 
-		ClearPlaceholderSaveSlots();
+		ClearSaveSlots();
 		LoadSaves();
 	}
 
-	private void ClearPlaceholderSaveSlots()
+	private void ClearSaveSlots()
 	{
 		var placeholderSaveSlots = _savesVBoxContainer.GetChildren();
 		foreach (var child in placeholderSaveSlots)
@@ -162,6 +162,8 @@ public partial class SavesManager : Control
 		GD.Print($"New save created {DataManager.I.CurrentWorldData}");
 		_newSavePanel.Visible = false;
 		_savesPanel.Visible = true;
+		ClearSaveSlots();
+		LoadSaves();
 	}
 
 	public override void _Process(double delta)
