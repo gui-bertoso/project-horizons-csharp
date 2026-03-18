@@ -38,6 +38,7 @@ public partial class PlayerHand : Marker2D
 		{
 			_equippedItemReference = new Sprite2D();
 			((Sprite2D)_equippedItemReference).Texture = _equippedItem.ItemTexture;
+			((Sprite2D)_equippedItemReference).Offset = new Vector2(0, -(_equippedItem.ItemTexture.GetSize().Y/2)+4);
 		}
 
 		AddChild(_equippedItemReference);
@@ -45,12 +46,9 @@ public partial class PlayerHand : Marker2D
 
 	private void ClearEquippedItem()
 	{
-		for (var i = 0; i >= GetChildCount(); i++)
+		foreach (var i in GetChildren())
 		{
-			var child = GetChild(i);
-			if (child != _equippedItemReference) continue;
-			child.QueueFree();
-			break;
+			i.QueueFree();
 		}
 		_equippedItem = null;
 		_equippedItemReference = null;
