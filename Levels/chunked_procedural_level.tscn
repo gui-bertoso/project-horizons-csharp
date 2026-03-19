@@ -8,4 +8,5 @@
 [node name="NewTilemapGenerator" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=426732340 instance=ExtResource("2_h1gj5")]
 
 [node name="MapCam" type="Camera2D" parent="." index="5" unique_id=195108495]
+enabled = false
 zoom = Vector2(0.09, 0.09)
