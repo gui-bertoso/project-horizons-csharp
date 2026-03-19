@@ -1,6 +1,8 @@
 using Godot;
 using Godot.Collections;
+using projecthorizonscs.Autoload;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Array = Godot.Collections.Array;
 
@@ -18,9 +20,9 @@ public partial class NextLevelGenerator : TileMapLayer
 	private FastNoiseLite _blocksNoiseImage;
 	private FastNoiseLite _detailsNoiseImage;
 
-    public int chunkSize = 112;
-    public int chunksX = 12;
-    public int chunksY = 16;
+    public int chunkSize = 10;
+    public int chunksX = 125;
+    public int chunksY = 250;
 
 	private float _insideDetails = 40f;
 	private float _coastDetails = 90.0f;
@@ -32,9 +34,13 @@ public partial class NextLevelGenerator : TileMapLayer
 
     private int _levelBiomeId = 0;
     private FastNoiseLite _secondaryBlocksNoise;
-    
 
 	public int LevelBiomeId;
+
+    private HashSet<Vector2I> _loadedChunks = new();
+    private Vector2I _currentCenterChunk = new Vector2I(int.MinValue, int.MinValue);
+
+    public int tileSize = 32;
 
     /*
     Blocks translation - I need to create this, I don't want to create this, I stay confuse
@@ -49,20 +55,141 @@ public partial class NextLevelGenerator : TileMapLayer
 
     */
     
-    public Dictionary<Vector2I, ChunkData> chunksDictionary = new();
+    public Godot.Collections.Dictionary<Vector2I, ChunkData> chunksDictionary = new();
 
     public override void _Ready()
     {
         GD.Print("Setting Seeds");
         SetSeeds();
+
         GD.Print("Setting noises");
         SetNoises();
 
         GD.Print("Generating Chunk grid");
         CreateChunksGrid();
+
         GD.Print("Generating Chunk data");
         GenerateChunksData();
         GD.Print("Chunk data generated");
+
+        UpdateVisibleChunks(Vector2.Zero);
+        GD.Print("Visible chunks loaded");
+    }
+
+    public override void _Process(double delta)
+    {
+        var player = Globals.I.LocalPlayer;
+
+        Vector2I playerCell = LocalToMap(ToLocal(player.GlobalPosition));
+        Vector2I newCenterChunk = WorldToChunk(playerCell);
+
+        if (newCenterChunk != _currentCenterChunk)
+        {
+            _currentCenterChunk = newCenterChunk;
+            UpdateVisibleChunks(playerCell);
+        }
+    }
+
+
+    private Vector2I WorldToChunk(Vector2 worldCellPosition)
+    {
+        return new Vector2I(
+            Mathf.FloorToInt(worldCellPosition.X / chunkSize),
+            Mathf.FloorToInt(worldCellPosition.Y / chunkSize)
+        );
+    }
+
+    private HashSet<Vector2I> GetNeededChunks(Vector2 centerWorldPosition)
+    {
+        HashSet<Vector2I> neededChunks = new();
+
+        Vector2I centerChunk = WorldToChunk(centerWorldPosition);
+        Vector2 viewportSize = GetViewportRect().Size;
+
+        int visibleCellsX = Mathf.CeilToInt(viewportSize.X / tileSize);
+        int visibleCellsY = Mathf.CeilToInt(viewportSize.Y / tileSize);
+
+        int horizontalRadius = 2;
+        int verticalRadius = 6;
+
+        for (int y = -verticalRadius; y <= verticalRadius; y++)
+        {
+            for (int x = -horizontalRadius; x <= horizontalRadius; x++)
+            {
+                Vector2I chunkCoordinade = new Vector2I(centerChunk.X + x, centerChunk.Y + y);
+
+                if (chunksDictionary.ContainsKey(chunkCoordinade))
+                    neededChunks.Add(chunkCoordinade);
+            }
+        }
+
+        return neededChunks;
+    }
+
+    private void LoadChunk(Vector2I chunkCoordinade)
+    {
+        if (!chunksDictionary.ContainsKey(chunkCoordinade))
+            return;
+        
+        var chunkData = chunksDictionary[chunkCoordinade];
+
+        for (int index = 0; index < chunkData.blocksID.Count; index++)
+        {
+            int localX = index % chunkSize;
+            int localY = index / chunkSize;
+
+            int worldX = chunkCoordinade.X * chunkSize + localX;
+            int worldY = chunkCoordinade.Y * chunkSize + localY;
+
+            int blockId = (int)chunkData.blocksID[index];
+
+            if (blockId == -1)
+                continue;
+            
+            Vector2I atlasCoordinades = GetAtlasFromBlockId(blockId);
+
+            if (atlasCoordinades.X == -1)
+                continue;
+            
+            SetCell(new Vector2I(worldX, worldY), 0, atlasCoordinades);
+        }
+    }
+
+    private void UnloadChunk(Vector2I chunkCoordinade)
+    {
+        for (int localY = 0; localY < chunkSize; localY++)
+        {
+            for (int localX = 0; localX < chunkSize; localX++)
+            {
+                int worldX = chunkCoordinade.X * chunkSize + localX;
+                int worldY = chunkCoordinade.Y * chunkSize + localY;
+
+                EraseCell(new Vector2I(worldX, worldY));
+            }
+        }
+    }
+
+    private void UpdateVisibleChunks(Vector2 centerWorldPosition)
+    {
+        var neededChunks = GetNeededChunks(centerWorldPosition);
+
+        foreach (var chunkCoordinade in neededChunks)
+        {
+            if (!_loadedChunks.Contains(chunkCoordinade))
+            {
+                LoadChunk(chunkCoordinade);
+                _loadedChunks.Add(chunkCoordinade);
+            }
+        }
+
+        foreach (var chunkCoordinade in _loadedChunks.ToList())
+        {
+            if (!neededChunks.Contains(chunkCoordinade))
+            {
+                UnloadChunk(chunkCoordinade);
+                _loadedChunks.Remove(chunkCoordinade);
+            }
+        }
     }
 
     public void SetSeeds()
@@ -178,28 +305,20 @@ public partial class NextLevelGenerator : TileMapLayer
                 if (value > .40f) return 101;
                 return -1;
             case 3:
-                var secondaryNoise = new FastNoiseLite();
-                secondaryNoise.Seed = _blocksSeed;
 
-                if (value > .40f && secondaryNoise.GetNoise2D(x, y) > .15f && secondaryNoise.GetNoise2D(x, y) < .65f) return 130;
+                if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .15f && _secondaryBlocksNoise.GetNoise2D(x, y) < .65f) return 130;
                 if (value > .40f) return 110;
                 if (value > .35f) return 101;
                 return -1;
             case 4:
-                var secondaryNoise2 = new FastNoiseLite();
-                secondaryNoise2.Seed = _blocksSeed;
-
-                if (value > .40f && secondaryNoise2.GetNoise2D(x, y) > .35f) return 140;
-                if (value > .40f && secondaryNoise2.GetNoise2D(x, y) > .25f && secondaryNoise2.GetNoise2D(x, y) < .35f) return 141;
+                if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .35f) return 140;
+                if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .25f && _secondaryBlocksNoise.GetNoise2D(x, y) < .35f) return 141;
                 if (value > .40f) return 130;
                 if (value > .35f) return 101;
                 return -1;
             case 5:
-                var secondaryNoise3 = new FastNoiseLite();
-                secondaryNoise3.Seed = _blocksSeed;
-
-                if (value > .40f && secondaryNoise3.GetNoise2D(x, y) > .35f) return 150;
-                if (value > .40f && secondaryNoise3.GetNoise2D(x, y) > .27f && secondaryNoise3.GetNoise2D(x, y) < .35f) return 151;
+                if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .35f) return 150;
+                if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .27f && _secondaryBlocksNoise.GetNoise2D(x, y) < .35f) return 151;
                 if (value > .40f) return 152;
                 if (value > .35f) return 101;
                 return -1;
