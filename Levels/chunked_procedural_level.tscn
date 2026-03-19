@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dh018q6kbew0o"]
+
+[ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_hw4kv"]
+[ext_resource type="PackedScene" uid="uid://b1shirisnhtrs" path="res://NewLevelGeneratorTests/NextLevelGenerator.tscn" id="2_h1gj5"]
+[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="3_h1gj5"]
+
+[node name="ChunkedProceduralLevel" unique_id=1049057679 instance=ExtResource("1_hw4kv")]
+
+[node name="NewTilemapGenerator" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=426732340 instance=ExtResource("2_h1gj5")]
+
+[node name="Player" parent="." index="5" unique_id=621873643 instance=ExtResource("3_h1gj5")]
+
+[node name="Camera2D" type="Camera2D" parent="." index="6" unique_id=195108495]
+zoom = Vector2(0.09, 0.09)
