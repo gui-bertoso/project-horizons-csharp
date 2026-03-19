@@ -104,7 +104,8 @@ public partial class NextLevelGenerator : TileMapLayer
 
     public void SetBiome()
     {
-        _levelBiomeId = new RandomNumberGenerator().RandiRange(0, 5);
+        //_levelBiomeId = new RandomNumberGenerator().RandiRange(0, 5);
+        _levelBiomeId = 0;
     }
 
     public void SetNoises()
@@ -261,6 +262,8 @@ public partial class NextLevelGenerator : TileMapLayer
             150 => new Vector2I(3, 2), // half2 sand
             151 => new Vector2I(3, 1), // half sand
             152 => new Vector2I(3, 0), // sand
+            160 => new Vector2I(0, 19), // water
+            161 => new Vector2I(0, 19), // deep water
             _ => new Vector2I(-1, -1)
         };
     }
@@ -339,8 +342,17 @@ public partial class NextLevelGenerator : TileMapLayer
         switch (_levelBiomeId)
         {
             case 0:
-                if (value > .45f) return 100;
-                if (value > .40f) return 101;
+                float lakeNoise = _secondaryBlocksNoise.GetNoise2D(x * 0.35f, y * 0.35f);
+
+                if (value > .40f)
+                {
+                    if (lakeNoise > .55f) return 161; // deep water
+                    if (lakeNoise > .35f) return 160; // water
+
+                    if (value > .45f) return 100;
+                    return 101;
+                }
+
                 return -1;
             case 1:
                 if (value > .45f) return 110;
