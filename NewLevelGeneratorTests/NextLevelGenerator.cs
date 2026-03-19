@@ -17,9 +17,16 @@ public partial class ChunkData: Node
 
 public partial class NextLevelGenerator : TileMapLayer
 {
+	private PackedScene _initialPortalScene;
+	private Node2D _initialPortalReference;
+	private PackedScene _exitPortalScene;
+	private Node2D _exitPortalReference;
+
     private TileMapLayer _detailsTileMap;
 	private FastNoiseLite _blocksNoiseImage;
 	private FastNoiseLite _detailsNoiseImage;
+    
+    private Godot.Collections.Dictionary<Vector2I, bool> _validCellCache = new();
 
     public int chunkSize = 10;
     public int chunksX = 125;
@@ -43,6 +50,8 @@ public partial class NextLevelGenerator : TileMapLayer
 
     public int tileSize = 32;
 
+	private Vector2I _initialPortalCell;
+
     /*
     Blocks translation - I need to create this, I don't want to create this, I stay confuse
 
@@ -60,6 +69,10 @@ public partial class NextLevelGenerator : TileMapLayer
 
     public override void _Ready()
     {
+        GD.Print("Loading packed scenes and references");
+		_initialPortalScene = (PackedScene)ResourceLoader.Load("res://Portal/InitialPortal.tscn");
+		_exitPortalScene = (PackedScene)ResourceLoader.Load("res://Portal/ExitPortal.tscn");
+
         _detailsTileMap = GetNode<TileMapLayer>("Details");
 
         GD.Print("Setting Biome");
@@ -77,6 +90,10 @@ public partial class NextLevelGenerator : TileMapLayer
         GD.Print("Generating Chunk data");
         GenerateChunksData();
         GD.Print("Chunk data generated");
+
+        GD.Print("Creating portals");
+        SpawnInitialPortal();
+        SpawnExitPortal();
 
         UpdateVisibleChunks(Vector2.Zero);
         GD.Print("Visible chunks loaded");
@@ -438,5 +455,499 @@ public partial class NextLevelGenerator : TileMapLayer
         }
 
         return -1;
+    }
+    private bool IsPortalValidBlock(int blockId)
+    {
+        return LevelBiomeId switch
+        {
+            0 => blockId == 100,
+            1 => blockId == 110,
+            2 => blockId == 120,
+            3 => blockId == 130 || blockId == 110,
+            4 => blockId == 140 || blockId == 141 || blockId == 130,
+            5 => blockId == 150 || blockId == 151 || blockId == 152,
+            _ => false
+        };
+    }
+    private int GetBlockIdAtCell(Vector2I worldCell)
+    {
+        Vector2I chunkCoord = new Vector2I(
+            Mathf.FloorToInt((float)worldCell.X / chunkSize),
+            Mathf.FloorToInt((float)worldCell.Y / chunkSize)
+        );
+
+        if (!chunksDictionary.ContainsKey(chunkCoord))
+            return -1;
+
+        var chunkData = chunksDictionary[chunkCoord];
+
+        int localX = worldCell.X - chunkCoord.X * chunkSize;
+        int localY = worldCell.Y - chunkCoord.Y * chunkSize;
+
+        if (localX < 0 || localX >= chunkSize || localY < 0 || localY >= chunkSize)
+            return -1;
+
+        int index = localY * chunkSize + localX;
+
+        if (index < 0 || index >= chunkData.blocksID.Count)
+            return -1;
+
+        return (int)chunkData.blocksID[index];
+    }
+
+    private bool HasEnoughSpaceForPortal(Vector2I centerCell, int radius)
+    {
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2I cell = centerCell + new Vector2I(x, y);
+                int blockId = GetBlockIdAtCell(cell);
+
+                if (!IsPortalValidBlock(blockId))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private List<Vector2I> GetCentralChunkCandidates(int maxChunks = 12)
+    {
+        var chunks = chunksDictionary.Keys.ToList();
+
+        chunks.Sort((a, b) =>
+        {
+            int distA = a.DistanceSquaredTo(Vector2I.Zero);
+            int distB = b.DistanceSquaredTo(Vector2I.Zero);
+            return distA.CompareTo(distB);
+        });
+
+        return chunks.Take(Mathf.Min(maxChunks, chunks.Count)).ToList();
+    }
+
+    private List<Vector2I> GetValidPortalCellsInChunk(Vector2I chunkCoord, int sampleStep = 2, int portalRadius = 2)
+    {
+        var validCells = new List<Vector2I>();
+
+        int startX = chunkCoord.X * chunkSize;
+        int startY = chunkCoord.Y * chunkSize;
+
+        for (int localY = portalRadius; localY < chunkSize - portalRadius; localY += sampleStep)
+        {
+            for (int localX = portalRadius; localX < chunkSize - portalRadius; localX += sampleStep)
+            {
+                Vector2I worldCell = new Vector2I(startX + localX, startY + localY);
+                int blockId = GetBlockIdAtCell(worldCell);
+
+                if (!IsPortalValidBlock(blockId))
+                    continue;
+
+                if (!HasEnoughSpaceForPortal(worldCell, portalRadius))
+                    continue;
+
+                validCells.Add(worldCell);
+            }
+        }
+
+        return validCells;
+    }
+
+    private void SpawnInitialPortal()
+    {
+        var rng = new RandomNumberGenerator();
+
+        var candidateChunks = GetCentralChunkCandidates(12);
+        var candidateCells = new List<Vector2I>();
+
+        foreach (var chunkCoord in candidateChunks)
+        {
+            candidateCells.AddRange(GetValidPortalCellsInChunk(chunkCoord, 2, 3));
+        }
+
+        if (candidateCells.Count == 0)
+        {
+            GD.Print("ERROR: no valid initial portal position found");
+            return;
+        }
+
+        candidateCells.Sort((a, b) =>
+            a.DistanceSquaredTo(Vector2I.Zero).CompareTo(b.DistanceSquaredTo(Vector2I.Zero)));
+
+        int topCount = Mathf.Min(12, candidateCells.Count);
+        Vector2I chosen = candidateCells[rng.RandiRange(0, topCount - 1)];
+
+        _initialPortalCell = chosen;
+        SpawnInitialPortalSceneAt(chosen);
+
+        GD.Print($"Initial portal generated in: {chosen}");
+    }
+
+    private List<Vector2I> GetOuterChunkCandidates(int maxChunks = 20)
+    {
+        var chunks = chunksDictionary.Keys.ToList();
+
+        chunks.Sort((a, b) =>
+        {
+            int distA = b.DistanceSquaredTo(Vector2I.Zero);
+            int distB = a.DistanceSquaredTo(Vector2I.Zero);
+            return distA.CompareTo(distB);
+        });
+
+        return chunks.Take(Mathf.Min(maxChunks, chunks.Count)).ToList();
+    }
+
+    private void SpawnExitPortal()
+    {
+        var rng = new RandomNumberGenerator();
+
+        // fase 1: perto do void
+        var candidates = CollectExitCandidates(true, 25);
+        GD.Print($"exit candidates near void: {candidates.Count}");
+
+        // fase 2: só longe do initial
+        if (candidates.Count == 0)
+        {
+            candidates = CollectExitCandidates(false, 20);
+            GD.Print($"exit candidates fallback outer: {candidates.Count}");
+        }
+
+        // fase 3: mais longe possível
+        if (candidates.Count == 0)
+        {
+            var fallback = GetFarthestValidCellFromInitial2();
+
+            if (fallback == null)
+            {
+                GD.Print("ERROR: no valid exit portal position found");
+                return;
+            }
+
+            SpawnExitPortalSceneAt(fallback.Value);
+            GD.Print($"Exit portal generated in fallback: {fallback.Value}");
+            return;
+        }
+
+        var chosen = candidates[rng.RandiRange(0, candidates.Count - 1)];
+        SpawnExitPortalSceneAt(chosen);
+        GD.Print($"Exit portal generated in: {chosen}");
+    }
+
+    private List<Vector2I> GetExitPortalCandidatesInChunk(
+        Vector2I chunkCoord,
+        int sampleStep,
+        int portalRadius,
+        int minInvalidNearby,
+        int maxInvalidNearby,
+        int minDistanceFromInitial)
+    {
+        var result = new List<Vector2I>();
+
+        int startX = chunkCoord.X * chunkSize;
+        int startY = chunkCoord.Y * chunkSize;
+
+        for (int localY = portalRadius; localY < chunkSize - portalRadius; localY += sampleStep)
+        {
+            for (int localX = portalRadius; localX < chunkSize - portalRadius; localX += sampleStep)
+            {
+                Vector2I worldCell = new Vector2I(startX + localX, startY + localY);
+
+                int blockId = GetBlockIdAtCell(worldCell);
+                if (!IsPortalValidBlock(blockId))
+                    continue;
+
+                if (worldCell.DistanceSquaredTo(_initialPortalCell) < minDistanceFromInitial * minDistanceFromInitial)
+                    continue;
+
+                if (!HasEnoughSpaceForPortal(worldCell, portalRadius))
+                    continue;
+
+                int invalidNearby = CountInvalidNearbyCellsForExit(worldCell, 3);
+
+                if (invalidNearby < minInvalidNearby || invalidNearby > maxInvalidNearby)
+                    continue;
+
+                result.Add(worldCell);
+            }
+        }
+
+        return result;
+    }
+
+    private Vector2I? GetFarthestValidCellFromInitial()
+    {
+        Vector2I? bestCell = null;
+        int bestDistance = -1;
+
+        foreach (var chunkCoord in chunksDictionary.Keys)
+        {
+            int startX = chunkCoord.X * chunkSize;
+            int startY = chunkCoord.Y * chunkSize;
+
+            for (int localY = 1; localY < chunkSize - 1; localY += 2)
+            {
+                for (int localX = 1; localX < chunkSize - 1; localX += 2)
+                {
+                    Vector2I worldCell = new Vector2I(startX + localX, startY + localY);
+
+                    int blockId = GetBlockIdAtCell(worldCell);
+                    if (!IsPortalValidBlock(blockId))
+                        continue;
+
+                    if (!HasEnoughSpaceForPortal(worldCell, 1))
+                        continue;
+
+                    int dist = worldCell.DistanceSquaredTo(_initialPortalCell);
+
+                    if (dist > bestDistance)
+                    {
+                        bestDistance = dist;
+                        bestCell = worldCell;
+                    }
+                }
+            }
+        }
+
+        return bestCell;
+    }
+
+    private List<Vector2I> GetCornerChunkCandidates()
+    {
+        var result = new List<Vector2I>();
+
+        int minCornerDistance = Mathf.Min(chunksX, chunksY) / 3;
+
+        foreach (var chunk in chunksDictionary.Keys)
+        {
+            if (Mathf.Abs(chunk.X) >= minCornerDistance && Mathf.Abs(chunk.Y) >= minCornerDistance)
+                result.Add(chunk);
+        }
+
+        result.Sort((a, b) =>
+            b.DistanceSquaredTo(Vector2I.Zero).CompareTo(a.DistanceSquaredTo(Vector2I.Zero)));
+
+        return result;
+    }
+
+    
+    private void SpawnExitPortalSceneAt(Vector2I mapCell)
+    {
+        if (_exitPortalScene == null)
+        {
+            GD.Print("ERROR: exit portal scene null");
+            return;
+        }
+
+        var portal = _exitPortalScene.Instantiate<Node2D>();
+        _exitPortalReference = portal;
+
+        Vector2 pos = MapToLocal(mapCell);
+        portal.Position = pos;
+
+        AddChild(portal);
+    }
+
+    private void SpawnInitialPortalSceneAt(Vector2I mapCell)
+    {
+        if (_initialPortalScene == null)
+        {
+            GD.Print("ERROR: initial portal scene null");
+            return;
+        }
+
+        var portal = _initialPortalScene.Instantiate<Node2D>();
+        _initialPortalReference = portal;
+
+        Vector2 pos = MapToLocal(mapCell);
+        portal.Position = pos;
+
+        AddChild(portal);
+    }
+
+    private int CountInvalidNearbyCells(Vector2I cell, int radius)
+    {
+        int invalidCount = 0;
+
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2I check = cell + new Vector2I(x, y);
+
+                if (!IsPortalValidBlock(GetBlockIdAtCell(check)))
+                    invalidCount++;
+            }
+        }
+
+        return invalidCount;
+    }
+
+    private int CountInvalidNearbyCellsForExit(Vector2I cell, int radius)
+    {
+        int invalidCount = 0;
+
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2I check = cell + new Vector2I(x, y);
+
+                if (!IsPortalValidBlock(GetBlockIdAtCell(check)))
+                    invalidCount++;
+            }
+        }
+
+        return invalidCount;
+    }
+
+    private bool IsGoodExitPortalCell(Vector2I cell)
+    {
+        int invalidNearby = 0;
+        int validNearby = 0;
+
+        for (int y = -3; y <= 3; y++)
+        {
+            for (int x = -3; x <= 3; x++)
+            {
+                Vector2I check = cell + new Vector2I(x, y);
+
+                if (IsPortalValidBlock(GetBlockIdAtCell(check)))
+                    validNearby++;
+                else
+                    invalidNearby++;
+            }
+        }
+
+        // mais perto do void, mas ainda seguro
+        return invalidNearby >= 10 && invalidNearby <= 20 && validNearby >= 24;
+    }
+
+    private bool IsNearVoidButStillSafe(Vector2I cell)
+    {
+        bool foundVoid = false;
+
+        for (int y = -6; y <= 6; y++)
+        {
+            for (int x = -6; x <= 6; x++)
+            {
+                Vector2I check = cell + new Vector2I(x, y);
+
+                if (!IsPortalValidBlock(GetBlockIdAtCell(check)))
+                {
+                    foundVoid = true;
+                    break;
+                }
+            }
+
+            if (foundVoid)
+                break;
+        }
+
+        return foundVoid;
+    }
+
+    private bool IsNearVoid(Vector2I cell, int radius = 6)
+    {
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2I check = cell + new Vector2I(x, y);
+
+                if (!IsPortalValidBlock(GetBlockIdAtCell(check)))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    private bool HasEnoughFreeSpaceForExitPortal(Vector2I centerCell, int radius = 2)
+    {
+        for (int y = -radius; y <= radius; y++)
+        {
+            for (int x = -radius; x <= radius; x++)
+            {
+                Vector2I cell = centerCell + new Vector2I(x, y);
+
+                if (!IsPortalValidBlock(GetBlockIdAtCell(cell)))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private List<Vector2I> CollectExitCandidates(bool requireNearVoid, int minDistanceFromInitial)
+    {
+        var result = new List<Vector2I>();
+
+        foreach (var chunkCoord in GetOuterChunkCandidates(30))
+        {
+            int startX = chunkCoord.X * chunkSize;
+            int startY = chunkCoord.Y * chunkSize;
+
+            for (int localY = 2; localY < chunkSize - 2; localY += 2)
+            {
+                for (int localX = 2; localX < chunkSize - 2; localX += 2)
+                {
+                    Vector2I worldCell = new Vector2I(startX + localX, startY + localY);
+
+                    int blockId = GetBlockIdAtCell(worldCell);
+                    if (!IsPortalValidBlock(blockId))
+                        continue;
+
+                    if (worldCell.DistanceSquaredTo(_initialPortalCell) < minDistanceFromInitial * minDistanceFromInitial)
+                        continue;
+
+                    if (!HasEnoughFreeSpaceForExitPortal(worldCell, 2))
+                        continue;
+
+                    if (requireNearVoid && !IsNearVoid(worldCell, 6))
+                        continue;
+
+                    result.Add(worldCell);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    private Vector2I? GetFarthestValidCellFromInitial2()
+    {
+        Vector2I? bestCell = null;
+        int bestDistance = -1;
+
+        foreach (var chunkCoord in chunksDictionary.Keys)
+        {
+            int startX = chunkCoord.X * chunkSize;
+            int startY = chunkCoord.Y * chunkSize;
+
+            for (int localY = 2; localY < chunkSize - 2; localY += 2)
+            {
+                for (int localX = 2; localX < chunkSize - 2; localX += 2)
+                {
+                    Vector2I worldCell = new Vector2I(startX + localX, startY + localY);
+
+                    int blockId = GetBlockIdAtCell(worldCell);
+                    if (!IsPortalValidBlock(blockId))
+                        continue;
+
+                    if (!HasEnoughFreeSpaceForExitPortal(worldCell, 2))
+                        continue;
+
+                    int dist = worldCell.DistanceSquaredTo(_initialPortalCell);
+
+                    if (dist > bestDistance)
+                    {
+                        bestDistance = dist;
+                        bestCell = worldCell;
+                    }
+                }
+            }
+        }
+
+        return bestCell;
     }
 }
