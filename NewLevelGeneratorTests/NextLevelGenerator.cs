@@ -17,6 +17,7 @@ public partial class ChunkData: Node
 
 public partial class NextLevelGenerator : TileMapLayer
 {
+    private TileMapLayer _detailsTileMap;
 	private FastNoiseLite _blocksNoiseImage;
 	private FastNoiseLite _detailsNoiseImage;
 
@@ -28,7 +29,7 @@ public partial class NextLevelGenerator : TileMapLayer
 	private float _coastDetails = 90.0f;
 	private float _coastStrength = .55f;
 
-    private int _blocksSeed = 0;
+    private int _levelSeed = 0;
 	private float _blocksFrequency = .01f;
 	private int _blocksFractalOctaves = 8;
 
@@ -59,6 +60,11 @@ public partial class NextLevelGenerator : TileMapLayer
 
     public override void _Ready()
     {
+        _detailsTileMap = GetNode<TileMapLayer>("Details");
+
+        GD.Print("Setting Biome");
+        SetBiome();
+
         GD.Print("Setting Seeds");
         SetSeeds();
 
@@ -88,6 +94,35 @@ public partial class NextLevelGenerator : TileMapLayer
             _currentCenterChunk = newCenterChunk;
             UpdateVisibleChunks(playerCell);
         }
+    }
+
+    public void SetSeeds()
+    {
+		var rng = new RandomNumberGenerator();
+		_levelSeed = rng.RandiRange(0, 99999999);
+    }
+
+    public void SetBiome()
+    {
+        _levelBiomeId = new RandomNumberGenerator().RandiRange(0, 5);
+    }
+
+    public void SetNoises()
+    {
+		_blocksNoiseImage = new ();
+		_blocksNoiseImage.NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
+		_blocksNoiseImage.Seed = _levelSeed;
+		_blocksNoiseImage.FractalOctaves = _blocksFractalOctaves;
+		_blocksNoiseImage.Frequency = .01f;
+
+		_detailsNoiseImage = new ();
+		_detailsNoiseImage.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
+		_detailsNoiseImage.Seed = _levelSeed + 1;
+		_detailsNoiseImage.Frequency = 0.2f; // more frequency = more details
+
+        _secondaryBlocksNoise = new ();
+        _secondaryBlocksNoise.Seed = _levelSeed + 2;
+        _secondaryBlocksNoise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
     }
 
 
@@ -143,15 +178,23 @@ public partial class NextLevelGenerator : TileMapLayer
 
             int blockId = (int)chunkData.blocksID[index];
 
-            if (blockId == -1)
-                continue;
-            
-            Vector2I atlasCoordinades = GetAtlasFromBlockId(blockId);
+            if (blockId != -1)
+            {
+                Vector2I blockAtlas = GetAtlasFromBlockId(blockId);
 
-            if (atlasCoordinades.X == -1)
-                continue;
-            
-            SetCell(new Vector2I(worldX, worldY), 0, atlasCoordinades);
+                if (blockAtlas.X != -1)
+                    SetCell(new Vector2I(worldX, worldY), 0, blockAtlas);
+            }
+
+            int detailsId = (int)chunkData.detailsID[index];
+
+            if (detailsId != -1)
+            {
+                Vector2I detailsAtlas = GetAtlasFromDetailsId(detailsId);
+
+                if (detailsAtlas.X != -1)
+                    _detailsTileMap.SetCell(new Vector2I(worldX, worldY), 0, detailsAtlas);
+            }
         }
     }
 
@@ -165,6 +208,7 @@ public partial class NextLevelGenerator : TileMapLayer
                 int worldY = chunkCoordinade.Y * chunkSize + localY;
 
                 EraseCell(new Vector2I(worldX, worldY));
+                _detailsTileMap.EraseCell(new Vector2I(worldX, worldY));
             }
         }
     }
@@ -192,26 +236,6 @@ public partial class NextLevelGenerator : TileMapLayer
         }
     }
 
-    public void SetSeeds()
-    {
-		var rng = new RandomNumberGenerator();
-		_blocksSeed = rng.RandiRange(0, 99999999);
-    }
-
-    public void SetNoises()
-    {
-		_blocksNoiseImage = new FastNoiseLite();
-		_blocksNoiseImage.NoiseType = FastNoiseLite.NoiseTypeEnum.ValueCubic;
-
-		_blocksNoiseImage.Seed = _blocksSeed;
-		_blocksNoiseImage.FractalOctaves = _blocksFractalOctaves;
-		_blocksNoiseImage.Frequency = _blocksFrequency;
-
-        _secondaryBlocksNoise = new FastNoiseLite();
-        _secondaryBlocksNoise.Seed = _blocksSeed + 1;
-        _secondaryBlocksNoise.NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-    }
-
     public void CreateChunksGrid()
     {
         for (var y = -chunksY/2; y < chunksY/2; y++)
@@ -227,16 +251,35 @@ public partial class NextLevelGenerator : TileMapLayer
     {
         return blockId switch
         {
-            100 => new Vector2I(1, 0),
-            101 => new Vector2I(0, 1),
-            110 => new Vector2I(1, 4),
-            120 => new Vector2I(1, 3),
-            130 => new Vector2I(1, 2),
-            140 => new Vector2I(2, 1),
-            141 => new Vector2I(1, 1),
-            150 => new Vector2I(3, 2),
-            151 => new Vector2I(3, 1),
-            152 => new Vector2I(3, 0),
+            100 => new Vector2I(1, 0), // grass
+            101 => new Vector2I(0, 1), // half void
+            110 => new Vector2I(1, 4), // dark grass
+            120 => new Vector2I(1, 3),// dry grass
+            130 => new Vector2I(1, 2), // snow grass
+            140 => new Vector2I(2, 1), // ice
+            141 => new Vector2I(1, 1), // ice and snow
+            150 => new Vector2I(3, 2), // half2 sand
+            151 => new Vector2I(3, 1), // half sand
+            152 => new Vector2I(3, 0), // sand
+            _ => new Vector2I(-1, -1)
+        };
+    }
+
+    private Vector2I GetAtlasFromDetailsId(int id)
+    {
+        return id switch
+        {
+            200 => new Vector2I(17, 0),
+            201 => new Vector2I(17, 1),
+            210 => new Vector2I(17, 2),
+            211 => new Vector2I(17, 3),
+            220 => new Vector2I(17, 4),
+            230 => new Vector2I(17, 5),
+            231 => new Vector2I(17, 6),
+            240 => new Vector2I(17, 7),
+            //241 => new Vector2I(17, 8),
+            //250 => new Vector2I(17, 9), desert doens't have grass 
+            //251 => new Vector2I(17, 10),
             _ => new Vector2I(-1, -1)
         };
     }
@@ -260,6 +303,9 @@ public partial class NextLevelGenerator : TileMapLayer
 
                     int blockID = GenerateBlockId(worldX, worldY);
                     chunkData.blocksID.Add(blockID);
+
+                    int detailID = GenerateDetailId(worldX, worldY, blockID);
+                    chunkData.detailsID.Add(detailID);
                 }
             }
         }
@@ -302,27 +348,83 @@ public partial class NextLevelGenerator : TileMapLayer
                 return -1;
             case 2:
                 if (value > .45f) return 120;
-                if (value > .40f) return 101;
+                if (value > .40f) return 121;
                 return -1;
             case 3:
 
                 if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .15f && _secondaryBlocksNoise.GetNoise2D(x, y) < .65f) return 130;
-                if (value > .40f) return 110;
-                if (value > .35f) return 101;
+                if (value > .40f) return 130;
+                if (value > .35f) return 131;
                 return -1;
             case 4:
                 if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .35f) return 140;
                 if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .25f && _secondaryBlocksNoise.GetNoise2D(x, y) < .35f) return 141;
-                if (value > .40f) return 130;
-                if (value > .35f) return 101;
+                if (value > .40f) return 140;
+                if (value > .35f) return 141;
                 return -1;
             case 5:
                 if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .35f) return 150;
                 if (value > .40f && _secondaryBlocksNoise.GetNoise2D(x, y) > .27f && _secondaryBlocksNoise.GetNoise2D(x, y) < .35f) return 151;
-                if (value > .40f) return 152;
-                if (value > .35f) return 101;
+                if (value > .40f) return 150;
+                if (value > .35f) return 151;
                 return -1;
         }
+        return -1;
+    }
+
+    private int GenerateDetailId(int x, int y, int blockId)
+    {
+        if (blockId == -1)
+            return -1;
+        
+        float value = _detailsNoiseImage.GetNoise2D(x, y);
+
+        switch (_levelBiomeId)
+        {
+            case 0:
+                if (blockId == 100)
+                {
+                    if (value > .35f) return 200;
+                    if (value > .15f) return 201;
+                }
+                return -1;
+            case 1:
+                if (blockId == 110)
+                {
+                    if (value > .35f) return 210;
+                    if (value > .15f) return 211;
+                }
+                return -1;
+            case 2:
+                if (blockId == 120)
+                {
+                    if (value > .35f) return 220;
+                    if (value > .15f) return 221;
+                }
+                return -1;
+            case 3:
+                if (blockId == 130 || blockId == 141)
+                {
+                    if (value > .35f) return 230;
+                    if (value > .15f) return 231;
+                }
+                return -1;
+            case 4:
+                if (blockId == 140 || blockId == 141)
+                {
+                    if (value > .35f) return 240;
+                    if (value > .15f) return 241;
+                }
+                return -1;
+            case 5:
+                if (blockId == 150 || blockId == 151 || blockId == 152)
+                {
+                    if (value > .35f) return 250;
+                    if (value > .15f) return 251;
+                }
+                return -1;
+        }
+
         return -1;
     }
 }
