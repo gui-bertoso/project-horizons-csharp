@@ -121,8 +121,8 @@ public partial class NextLevelGenerator : TileMapLayer
 
     public void SetBiome()
     {
-        //_levelBiomeId = new RandomNumberGenerator().RandiRange(0, 5);
-        _levelBiomeId = 0;
+        _levelBiomeId = new RandomNumberGenerator().RandiRange(0, 5);
+        //_levelBiomeId = 0;
     }
 
     public void SetNoises()
