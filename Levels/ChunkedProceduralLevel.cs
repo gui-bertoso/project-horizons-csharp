@@ -1,11 +1,10 @@
 using Godot;
-using projecthorizonscs;
-using projecthorizonscs.Autoload;
 using System;
+using projecthorizonscs.Autoload;
 
 namespace projecthorizonscs;
 
-public partial class ProceduralLevel : Node2D
+public partial class ChunkedProceduralLevel : Node2D
 {
 	public float playedTime;
 
@@ -19,6 +18,7 @@ public partial class ProceduralLevel : Node2D
     public override void _Process(double delta)
     {
         playedTime += (float)delta;
+		GD.Print($"current played time: {playedTime}");
     }
 
     public override void _ExitTree()
@@ -29,4 +29,3 @@ public partial class ProceduralLevel : Node2D
     }
 
 }
-

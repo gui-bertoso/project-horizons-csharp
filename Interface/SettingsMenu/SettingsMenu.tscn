@@ -100,7 +100,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Frame Rate"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=77121049]
+[node name="FrameRate" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer" unique_id=77121049]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -128,7 +129,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Vsync"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer11" unique_id=135852847]
+[node name="VSync" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer11" unique_id=135852847]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -146,7 +148,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Bloom"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer10" unique_id=1082391500]
+[node name="Bloom" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer10" unique_id=1082391500]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -164,7 +167,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Antialising"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=62373226]
+[node name="AntiAliasing" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer2" unique_id=62373226]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -188,7 +192,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Details"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1956302331]
+[node name="Details" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer3" unique_id=1956302331]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -208,7 +213,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Particles"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=1783967113]
+[node name="Particles" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer4" unique_id=1783967113]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -228,7 +234,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "PostProcessing"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=835040452]
+[node name="PostProcessing" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer/HBoxContainer5" unique_id=835040452]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 1
@@ -268,7 +275,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "General Volume"
 
-[node name="HSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer6" unique_id=144309515]
+[node name="GeneralVolume" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer6" unique_id=144309515]
 custom_minimum_size = Vector2(273, 0)
 layout_mode = 2
 value = 100.0
@@ -281,7 +288,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Music Volume"
 
-[node name="HSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer7" unique_id=1087422443]
+[node name="MusicVolume" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer7" unique_id=1087422443]
 custom_minimum_size = Vector2(273, 0)
 layout_mode = 2
 value = 50.0
@@ -294,7 +301,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Player Volume"
 
-[node name="HSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer8" unique_id=1505050134]
+[node name="PlayerVolume" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer8" unique_id=1505050134]
 custom_minimum_size = Vector2(273, 0)
 layout_mode = 2
 value = 50.0
@@ -307,7 +314,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Enemy Volume"
 
-[node name="HSlider" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer9" unique_id=791051651]
+[node name="EnemyVolume" type="HSlider" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer2/HBoxContainer9" unique_id=791051651]
 custom_minimum_size = Vector2(273, 0)
 layout_mode = 2
 value = 50.0
@@ -340,7 +347,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Generation type"
 
-[node name="OptionButton" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1521136566]
+[node name="WorldGeneration" type="OptionButton" parent="Panel/VBoxContainer/ScrollContainer/VBoxContainer/VBoxContainer3/HBoxContainer" unique_id=1521136566]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 0

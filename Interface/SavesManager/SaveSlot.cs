@@ -60,15 +60,23 @@ public partial class SaveSlot : VBoxContainer
 	{
 		var saveName = _levelNameLabel.Text;
 		DataManager.I.LoadWorldData(saveName.ToSnakeCase());
-		GetTree().ChangeSceneToFile("uid://caeqsflrr74fw");
+		if ((int)DataManager.I.GameDataDictionary["Settings.WorldGeneration"] == 0)
+		{
+			GetTree().ChangeSceneToFile("uid://caeqsflrr74fw");
+		}
+		else
+		{
+			GetTree().ChangeSceneToFile("uid://dh018q6kbew0o");
+		}
 	}
 
 	public void SetData(Dictionary<string, Variant> saveData)
 	{
-		var playedTime = (int)saveData["PlayedTime"];
-		var hours = playedTime / 3600;
-		var minutes = playedTime % 3600 / 60;
-		var seconds = playedTime % 60;
+		int playedTime = (int)(float)saveData["PlayedTime"];
+
+		int hours = playedTime / 3600;
+		int minutes = (playedTime % 3600) / 60;
+		int seconds = playedTime % 60;
 
 		_playedHoursLabel.Text = hours.ToString("D2");
 		_playedMinutesLabel.Text = minutes.ToString("D2");

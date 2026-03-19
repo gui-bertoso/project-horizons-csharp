@@ -11,6 +11,7 @@ public partial class SettingsMenu : Control
 	private OptionButton _detailsOption;
 	private OptionButton _particlesOption;
 	private OptionButton _postProcessingOption;
+	private OptionButton _worldGenerationOption;
 
 	private HSlider _generalVolumeSlider;
 	private HSlider _musicVolumeSlider;
@@ -19,18 +20,19 @@ public partial class SettingsMenu : Control
 
 	public override void _Ready()
 	{
-		_frameRateOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer/OptionButton");
-		_vsyncOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer11/OptionButton");
-		_bloomOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer10/OptionButton");
-		_antialiasingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer2/OptionButton");
-		_detailsOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer3/OptionButton");
-		_particlesOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer4/OptionButton");
-		_postProcessingOption = GetNode<OptionButton>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer5/OptionButton");
+		_frameRateOption = GetNode<OptionButton>("%FrameRate");
+		_vsyncOption = GetNode<OptionButton>("%VSync");
+		_bloomOption = GetNode<OptionButton>("%Bloom");
+		_antialiasingOption = GetNode<OptionButton>("%AntiAliasing");
+		_detailsOption = GetNode<OptionButton>("%Details");
+		_particlesOption = GetNode<OptionButton>("%Particles");
+		_postProcessingOption = GetNode<OptionButton>("%PostProcessing");
+		_worldGenerationOption = GetNode<OptionButton>("%WorldGeneration");
 
-		_generalVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer6/HSlider");
-		_musicVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer7/HSlider");
-		_playerVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer8/HSlider");
-		_enemyVolumeSlider = GetNode<HSlider>("Panel/VBoxContainer/ScrollContainer/VBoxContainer/HBoxContainer9/HSlider");
+		_generalVolumeSlider = GetNode<HSlider>("%GeneralVolume");
+		_musicVolumeSlider = GetNode<HSlider>("%MusicVolume");
+		_playerVolumeSlider = GetNode<HSlider>("%PlayerVolume");
+		_enemyVolumeSlider = GetNode<HSlider>("%EnemyVolume");
 
 		LoadSettings();
 	}
@@ -50,6 +52,7 @@ public partial class SettingsMenu : Control
 		Autoload.DataManager.I.GameDataDictionary["Settings.Details"] = _detailsOption.Selected;
 		Autoload.DataManager.I.GameDataDictionary["Settings.Particles"] = _particlesOption.Selected;
 		Autoload.DataManager.I.GameDataDictionary["Settings.PostProcessing"] = _postProcessingOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.WorldGeneration"] = _worldGenerationOption.Selected;
 
 		Autoload.DataManager.I.GameDataDictionary["Settings.GeneralVolume"] = _generalVolumeSlider.Value;
 		Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"] = _musicVolumeSlider.Value;
@@ -66,6 +69,7 @@ public partial class SettingsMenu : Control
 		_detailsOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Details"];
 		_particlesOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Particles"];
 		_postProcessingOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.PostProcessing"];
+		_worldGenerationOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.WorldGeneration"];
 
 		_generalVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.GeneralVolume"];
 		_musicVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"];

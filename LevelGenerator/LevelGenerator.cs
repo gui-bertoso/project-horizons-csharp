@@ -1,4 +1,5 @@
 using Godot;
+using projecthorizonscs.Autoload;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -69,6 +70,7 @@ Biome IDS
 		_details2TileMap = GetNode<TileMapLayer>("Details2");
 		SetLevelData();
 	}
+
 
 	private void SetLevelData()
 	{
