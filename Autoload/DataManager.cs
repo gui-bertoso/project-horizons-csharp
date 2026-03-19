@@ -32,6 +32,7 @@ public partial class DataManager : Node
 		{"Settings.MusicVolume", 50},
 		{"Settings.PlayerVolume", 50},
 		{"Settings.EnemyVolume", 50},
+		{"Settings.WorldGeneration", 0},
 
 		{"Saves", new Array<string>()}
 	};
@@ -83,7 +84,7 @@ public partial class DataManager : Node
 		GD.Print("Saving world data...");
 		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".txt", Godot.FileAccess.ModeFlags.Write);
 		file.StoreVar(CurrentWorldData);
-		GD.Print("Saved world data");
+		GD.Print($"Saved world data: {CurrentWorldData}");
 	}
 
 	public void QuickSaveWorldData()
@@ -121,8 +122,7 @@ public partial class DataManager : Node
 			CurrentWorldData[(string)variable.Key] = variable.Value;
 			GD.Print($"Loaded Data Variable: {variable}");
 		}
-
-		;
+		_currentSaveName = saveName;
 		GD.Print("Loaded world data");
 	}
 
