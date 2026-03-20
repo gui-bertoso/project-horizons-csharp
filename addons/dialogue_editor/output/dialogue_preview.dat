@@ -1,0 +1,26 @@
+[start]
+type=start
+next=dialogue_1306711992
+
+[dialogue_1306711992]
+type=dialogue
+text=oi mano
+next=dialogue_3657930943
+
+[dialogue_1172387362]
+type=dialogue
+text=tudo bem mlk?
+next=dialogue_3657930943
+
+[end]
+type=end
+
+[dialogue_3657930943]
+type=dialogue
+text=vsfd mlk
+next=end
+
+[dialogue_727140037]
+type=dialogue
+text=q bom
+next=end

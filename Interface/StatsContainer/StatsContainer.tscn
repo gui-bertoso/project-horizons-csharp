@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://0f4p3021loy4"]
+
+[ext_resource type="Texture2D" uid="uid://bccy3hfhq1q3o" path="res://Assets/Interface/hearth.png" id="1_6y83t"]
+[ext_resource type="Texture2D" uid="uid://b1f58shxnh6a8" path="res://Assets/Interface/background.png" id="1_84akm"]
+[ext_resource type="Texture2D" uid="uid://dnwp437a5inp8" path="res://Assets/Interface/red-fill.png" id="2_6y83t"]
+[ext_resource type="Texture2D" uid="uid://dcqjcxkxlyph6" path="res://Assets/Interface/cave.png" id="4_a8igb"]
+[ext_resource type="Texture2D" uid="uid://bmdl3aben5m8q" path="res://Assets/Interface/yellow-fill.png" id="5_0a6sy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0a6sy"]
+bg_color = Color(0.13682574, 0.13682574, 0.13682568, 1)
+
+[node name="StatsContainer" type="Control" unique_id=517590207]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=411818352]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 286.0
+offset_bottom = 83.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0a6sy")
+
+[node name="TextureRect" type="TextureRect" parent="Panel" unique_id=897223951]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 22.0
+offset_bottom = 22.0
+texture = ExtResource("1_6y83t")
+expand_mode = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Panel/TextureRect" unique_id=245599608]
+custom_minimum_size = Vector2(164, 0)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 5.0
+offset_right = 268.0
+offset_bottom = 17.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_84akm")
+texture_progress = ExtResource("2_6y83t")
+
+[node name="TextureRect2" type="TextureRect" parent="Panel" unique_id=1316583316]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 0
+offset_top = 44.0
+offset_right = 22.0
+offset_bottom = 66.0
+texture = ExtResource("4_a8igb")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel/TextureRect2" unique_id=1653573000]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 3.0
+offset_right = 74.0
+offset_bottom = 23.0
+text = "99999"
+
+[node name="TextureRect3" type="HBoxContainer" parent="Panel" unique_id=951781070]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 0
+offset_left = 4.0
+offset_top = 22.0
+offset_right = 205.0
+offset_bottom = 42.0
+
+[node name="Label" type="Label" parent="Panel/TextureRect3" unique_id=2078427139]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "XP"
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Panel/TextureRect3/Label" unique_id=1279069683]
+custom_minimum_size = Vector2(145, 0)
+layout_mode = 0
+offset_left = 23.0
+offset_top = 8.0
+offset_right = 238.0
+offset_bottom = 15.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_84akm")
+texture_progress = ExtResource("5_0a6sy")
+
+[node name="Label5" type="Label" parent="Panel/TextureRect3/Label/TextureProgressBar" unique_id=1575410115]
+layout_mode = 0
+offset_left = 217.0
+offset_top = -8.0
+offset_right = 246.0
+offset_bottom = 12.0
+text = "999"
