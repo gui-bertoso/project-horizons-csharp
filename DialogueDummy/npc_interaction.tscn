@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c4gflemuspk4v"]
+
+[ext_resource type="Script" uid="uid://ckrusdiw13x4w" path="res://DialogueDummy/NpcInteraction.cs" id="1_sjqtc"]
+
+[node name="NpcInteraction" type="Area2D" unique_id=298732891]
+script = ExtResource("1_sjqtc")

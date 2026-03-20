@@ -1,6 +1,6 @@
 using Godot;
-using System;
-using System.Xml;
+using System.Collections.Generic;
+using System.Text;
 
 public partial class DialogueNodeTemplate : GraphNode
 {
@@ -21,38 +21,73 @@ public partial class DialogueNodeTemplate : GraphNode
     public virtual int GetPrimaryOutputSlot() => 0;
     public virtual bool HasInput() => true;
     public virtual bool HasOutput() => true;
-    public virtual string ExportBody(DialogueEditor editor) => "";
 
-    protected void ClearAllSlots(int maxSlots = 10)
+    public virtual string ExportBody(DialogueEditor editor)
     {
-        for (int i = 0; i < maxSlots; i++)
-            SetSlot(i, false, 0, Colors.White, false, 0, Colors.White);
+        var sb = new StringBuilder();
+
+        sb.AppendLine($"type={NodeType}");
+
+        AppendCustomData(sb, editor);
+        AppendConnections(sb, editor);
+
+        return sb.ToString().TrimEnd();
     }
 
-	public void Setup(string id, string type)
+	public virtual int VisualOutputSlotToPort(int visualSlot)
 	{
-		NodeId = id;
-		NodeType = type;
+		return visualSlot;
+	}
 
-		Name = id;
-		Title = id;
+	public virtual int PortToVisualOutputSlot(int port)
+	{
+		return port;
+	}
+
+    protected virtual void AppendCustomData(StringBuilder sb, DialogueEditor editor)
+    {
+    }
+
+    protected virtual void AppendConnections(StringBuilder sb, DialogueEditor editor)
+    {
+        Dictionary<int, string> connections = editor.GetConnectionsFrom(Name);
+
+        foreach (var pair in connections)
+            sb.AppendLine($"next_{pair.Key}={pair.Value}");
+    }
+
+    public void Setup(string id, string type)
+    {
+        NodeId = id;
+        NodeType = type;
+        Name = id;
+        Title = id;
+    }
+
+	protected void ClearAllSlots(int maxSlots = 10)
+	{
+		for (int i = 0; i < maxSlots; i++)
+		{
+			SetSlotEnabledLeft(i, false);
+			SetSlotEnabledRight(i, false);
+			SetSlotTypeLeft(i, 0);
+			SetSlotTypeRight(i, 0);
+			SetSlotColorLeft(i, Colors.White);
+			SetSlotColorRight(i, Colors.White);
+		}
 	}
 
 	protected void AddInput(int slot)
 	{
-		SetSlot(
-			slot,
-			true, 0, Colors.White,
-			false, 0, Colors.White
-		);
+		SetSlotEnabledLeft(slot, true);
+		SetSlotTypeLeft(slot, 0);
+		SetSlotColorLeft(slot, Colors.White);
 	}
 
 	protected void AddOutput(int slot)
 	{
-		SetSlot(
-			slot,
-			false, 0, Colors.White,
-			true, 0, Colors.White
-		);
+		SetSlotEnabledRight(slot, true);
+		SetSlotTypeRight(slot, 0);
+		SetSlotColorRight(slot, Colors.White);
 	}
 }
