@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="2_aq0ab"]
 [ext_resource type="Script" uid="uid://5no4o07fkorj" path="res://Levels/DebugLevel.cs" id="2_wilel"]
 [ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="3_raufk"]
-[ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="4_aq0ab"]
 [ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="5_afn2h"]
 [ext_resource type="Resource" uid="uid://cyg3xv7u7ejjx" path="res://Items/AirBook.tres" id="6_86uab"]
 [ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="6_h4hu5"]
@@ -33,34 +32,19 @@
 [ext_resource type="Resource" uid="uid://ltdw5o4xhdyq" path="res://Items/Sword7.tres" id="29_3pigm"]
 [ext_resource type="Resource" uid="uid://cg3b3u27cxaww" path="res://Items/Sword8.tres" id="30_a3h4s"]
 [ext_resource type="Resource" uid="uid://chscq2xmd3jx5" path="res://Items/Armor0Foot.tres" id="31_16dk7"]
-[ext_resource type="PackedScene" uid="uid://cbi26ck84a7vt" path="res://Enemys/BigLeave/BigLeave.tscn" id="31_raufk"]
 [ext_resource type="Resource" uid="uid://wy3urukai6sd" path="res://Items/Armor0Healmet.tres" id="32_3pigm"]
-[ext_resource type="PackedScene" uid="uid://cyvxkgif4hkd2" path="res://Enemys/BigPurpleSeaStar/BigPurpleSeaStar.tscn" id="32_qt5um"]
 [ext_resource type="Resource" uid="uid://ca2kfx1wtfsfk" path="res://Items/Armor0Tome.tres" id="33_3pigm"]
-[ext_resource type="PackedScene" uid="uid://dfpfcw37w18uk" path="res://Enemys/BigRedSeaStar/BigRedSeaStar.tscn" id="33_16dk7"]
-[ext_resource type="PackedScene" uid="uid://bcaiqcsyutf3h" path="res://Enemys/BlueSeaStar/BlueSeaStar.tscn" id="34_3pigm"]
 [ext_resource type="Resource" uid="uid://croxmhimhnbcc" path="res://Items/Armor1Foot.tres" id="34_l00j7"]
-[ext_resource type="PackedScene" uid="uid://bqr7htmdp4vo0" path="res://Enemys/DebugEnemy/DebugEnemy.tscn" id="35_a3h4s"]
 [ext_resource type="Resource" uid="uid://cd05jfbywb32r" path="res://Items/Armor1Healmet.tres" id="35_wilel"]
-[ext_resource type="PackedScene" uid="uid://dda4okaf00gyt" path="res://Enemys/DryBigLeave/DryBigLeave.tscn" id="36_0ky7e"]
 [ext_resource type="Resource" uid="uid://8oj0ycrlf0r" path="res://Items/Armor1Tome.tres" id="36_jqk32"]
-[ext_resource type="PackedScene" uid="uid://bhsnsh34ccas0" path="res://Enemys/DryLeave/DryLeave.tscn" id="37_4iy5u"]
 [ext_resource type="Resource" uid="uid://byhky02505t54" path="res://Items/Armor2Foot.tres" id="37_302e7"]
-[ext_resource type="PackedScene" uid="uid://834fniewtsf1" path="res://Enemys/Leave/Leave.tscn" id="38_b3nne"]
 [ext_resource type="Resource" uid="uid://cg4fj4d6c12fl" path="res://Items/Armor2Healmet.tres" id="38_igw5y"]
-[ext_resource type="PackedScene" uid="uid://kx7p5e3ot70a" path="res://Enemys/PurpleSeaStar/PurpleSeaStar.tscn" id="39_8xps1"]
 [ext_resource type="Resource" uid="uid://c18m1bymar3kw" path="res://Items/Armor2Tome.tres" id="39_unkf6"]
 [ext_resource type="Resource" uid="uid://c0u42oeiran04" path="res://Items/Armor3Foot.tres" id="40_p2txi"]
-[ext_resource type="PackedScene" uid="uid://iqddsepl7qw2" path="res://Enemys/RageFlower/RageFlower.tscn" id="40_r4sgv"]
 [ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="41_iqm64"]
-[ext_resource type="PackedScene" uid="uid://dnwvjj5x2bff6" path="res://Enemys/RedSeaStar/RedSeaStar.tscn" id="41_oy1bj"]
-[ext_resource type="PackedScene" uid="uid://lpx4coq7ons1" path="res://Enemys/RockGuy/RockGuy.tscn" id="42_d8bal"]
 [ext_resource type="Resource" uid="uid://boaoaciiinbrh" path="res://Items/Armor3Tome.tres" id="42_k4u6w"]
-[ext_resource type="PackedScene" uid="uid://dwkyhktv3kdss" path="res://Enemys/SandAmount/SandAmount.tscn" id="43_l00j7"]
-[ext_resource type="PackedScene" uid="uid://duidimrh7jui6" path="res://Enemys/SandEater/SandEater.tscn" id="44_wilel"]
-[ext_resource type="PackedScene" uid="uid://dgtpo1o47clj" path="res://Enemys/SlimeBoss/SlimeBoss.tscn" id="46_jqk32"]
-[ext_resource type="PackedScene" uid="uid://bp5ijnt0j3y5f" path="res://Enemys/TestDummy/TestDummy.tscn" id="47_302e7"]
-[ext_resource type="PackedScene" uid="uid://cgyit0mk1agd4" path="res://Enemys/YellowSeaStar/YellowSeaStar.tscn" id="48_igw5y"]
+[ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
+[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="63_302e7"]
 
 [sub_resource type="Environment" id="Environment_raufk"]
 background_mode = 3
@@ -239,61 +223,11 @@ Item = ExtResource("41_iqm64")
 position = Vector2(-205, 572)
 Item = ExtResource("42_k4u6w")
 
-[node name="Node2D2" type="Node2D" parent="." index="3" unique_id=1280154329]
-
-[node name="BigLeave" parent="Node2D2" index="0" unique_id=1875013965 instance=ExtResource("31_raufk")]
-position = Vector2(1031, 228)
-
-[node name="BigLeave2" parent="Node2D2" index="1" unique_id=1110466286 instance=ExtResource("32_qt5um")]
-position = Vector2(1135, 224)
-
-[node name="BigLeave3" parent="Node2D2" index="2" unique_id=732544143 instance=ExtResource("33_16dk7")]
-position = Vector2(1248, 221)
-
-[node name="BigLeave4" parent="Node2D2" index="3" unique_id=855605884 instance=ExtResource("34_3pigm")]
-position = Vector2(1374, 218)
-
-[node name="BigLeave5" parent="Node2D2" index="4" unique_id=2093304573 instance=ExtResource("35_a3h4s")]
-position = Vector2(947, 306)
-
-[node name="BigLeave6" parent="Node2D2" index="5" unique_id=897573911 instance=ExtResource("36_0ky7e")]
-position = Vector2(1083, 304)
-
-[node name="BigLeave7" parent="Node2D2" index="6" unique_id=2004891815 instance=ExtResource("37_4iy5u")]
-position = Vector2(1219, 295)
-
-[node name="Leave" parent="Node2D2" index="7" unique_id=1192637422 instance=ExtResource("38_b3nne")]
-position = Vector2(1356, 295)
-
-[node name="BigLeave8" parent="Node2D2" index="8" unique_id=936087583 instance=ExtResource("39_8xps1")]
-position = Vector2(825, 392)
-
-[node name="RageFlower" parent="Node2D2" index="9" unique_id=1771400735 instance=ExtResource("40_r4sgv")]
-position = Vector2(983, 398)
-
-[node name="BigLeave9" parent="Node2D2" index="10" unique_id=1228208238 instance=ExtResource("41_oy1bj")]
-position = Vector2(1146, 398)
-
-[node name="BigLeave10" parent="Node2D2" index="11" unique_id=799905812 instance=ExtResource("42_d8bal")]
-position = Vector2(1323, 399)
-
-[node name="BigLeave11" parent="Node2D2" index="12" unique_id=1526455698 instance=ExtResource("43_l00j7")]
-position = Vector2(1500, 402)
-
-[node name="BigLeave12" parent="Node2D2" index="13" unique_id=672210232 instance=ExtResource("44_wilel")]
-position = Vector2(989, 535)
-
-[node name="Slime" parent="Node2D2" index="14" unique_id=684259099 instance=ExtResource("4_aq0ab")]
-position = Vector2(1203, 541)
-
-[node name="BigLeave13" parent="Node2D2" index="15" unique_id=430231296 instance=ExtResource("46_jqk32")]
-position = Vector2(1418, 541)
-
-[node name="TestDummy" parent="Node2D2" index="16" unique_id=1943605032 instance=ExtResource("47_302e7")]
-position = Vector2(1614, 544)
-
-[node name="BigLeave14" parent="Node2D2" index="17" unique_id=1218472122 instance=ExtResource("48_igw5y")]
-position = Vector2(1176, 670)
-
-[node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
+[node name="WorldEnvironment" parent="." index="5" unique_id=10120490]
 environment = SubResource("Environment_raufk")
+
+[node name="DialogueDummy" parent="." index="6" unique_id=1624981845 instance=ExtResource("62_jqk32")]
+position = Vector2(-632, 609)
+
+[node name="Player" parent="." index="7" unique_id=621873643 instance=ExtResource("63_302e7")]
+position = Vector2(-383, 683)

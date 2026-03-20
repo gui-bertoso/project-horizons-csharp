@@ -1,5 +1,6 @@
 using Godot;
 using System.Text;
+using System.Collections.Generic;
 
 public partial class DialogueNode : DialogueNodeTemplate
 {
@@ -34,7 +35,27 @@ public partial class DialogueNode : DialogueNodeTemplate
     public override bool HasInput() => true;
     public override bool HasOutput() => true;
     public override int GetPrimaryInputSlot() => 0;
-    public override int GetPrimaryOutputSlot() => 1;
+    public override int GetPrimaryOutputSlot() => 0;
+
+    public override int VisualOutputSlotToPort(int visualSlot)
+    {
+        return visualSlot switch
+        {
+            1 => 0,
+            2 => 1,
+            _ => 0
+        };
+    }
+
+    public override int PortToVisualOutputSlot(int port)
+    {
+        return port switch
+        {
+            0 => 1,
+            1 => 2,
+            _ => 1
+        };
+    }
 
     public override string ExportBody(DialogueEditor editor)
     {
@@ -44,40 +65,46 @@ public partial class DialogueNode : DialogueNodeTemplate
         string option1Text = Escape(option1?.Text?.Trim() ?? "");
         string option2Text = Escape(option2?.Text?.Trim() ?? "");
 
-        string next1 = editor.GetConnectionFrom(Name, 1);
-        string next2 = editor.GetConnectionFrom(Name, 2);
+        Dictionary<int, string> connections = editor.GetConnectionsFrom(Name);
 
-        bool hasNext1 = !string.IsNullOrEmpty(next1);
-        bool hasNext2 = !string.IsNullOrEmpty(next2);
+        string next1 = "";
+        string next2 = "";
+
+        int portOption1 = VisualOutputSlotToPort(1);
+        int portOption2 = VisualOutputSlotToPort(2);
+
+        if (connections.TryGetValue(portOption1, out var c1))
+            next1 = c1;
+
+        if (connections.TryGetValue(portOption2, out var c2))
+            next2 = c2;
 
         sb.AppendLine("type=dialogue");
         sb.AppendLine($"text={mainText}");
-
-        // 0 saídas
-        if (!hasNext1 && !hasNext2)
-            return sb.ToString().TrimEnd();
-
-        // 1 saída só no slot 1
-        if (hasNext1 && !hasNext2)
-        {
-            sb.AppendLine($"next={next1}");
-            return sb.ToString().TrimEnd();
-        }
-
-        // 1 saída só no slot 2
-        if (!hasNext1 && hasNext2)
-        {
-            sb.AppendLine($"next={next2}");
-            return sb.ToString().TrimEnd();
-        }
-
-        // 2 saídas
         sb.AppendLine($"option_0_text={option1Text}");
         sb.AppendLine($"option_0_next={next1}");
         sb.AppendLine($"option_1_text={option2Text}");
         sb.AppendLine($"option_1_next={next2}");
 
         return sb.ToString().TrimEnd();
+    }
+
+    public void SetText(string text)
+    {
+        if (textEdit != null)
+            textEdit.Text = text;
+    }
+
+    public void SetOption1Text(string text)
+    {
+        if (option1 != null)
+            option1.Text = text;
+    }
+
+    public void SetOption2Text(string text)
+    {
+        if (option2 != null)
+            option2.Text = text;
     }
 
     private string Escape(string text)

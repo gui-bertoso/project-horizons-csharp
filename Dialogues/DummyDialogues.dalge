@@ -1,0 +1,53 @@
+[start]
+position=20,200
+type=start
+next=dialogue_233930347
+
+[dialogue_233930347]
+position=180,80
+type=dialogue
+text=oi
+option_0_text=eae
+option_0_next=dialogue_946834098
+option_1_text=sai esquisito
+option_1_next=dialogue_3888362306
+
+[dialogue_946834098]
+position=360,0
+type=dialogue
+text=tudo bem?
+option_0_text=sim
+option_0_next=dialogue_2762869957
+option_1_text=não
+option_1_next=dialogue_2751823955
+
+[dialogue_2751823955]
+position=540,120
+type=dialogue
+text=ai é foda
+option_0_text=
+option_0_next=dialogue_3888362306
+option_1_text=
+option_1_next=dialogue_3888362306
+
+[end]
+position=940,120
+type=end
+
+[dialogue_2762869957]
+position=540,-40
+type=dialogue
+text=q bom
+option_0_text=
+option_0_next=end
+option_1_text=
+option_1_next=end
+
+[dialogue_3888362306]
+position=740,280
+type=dialogue
+text=então vsfd
+option_0_text=
+option_0_next=
+option_1_text=
+option_1_next=end

@@ -1,5 +1,133 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+
+public class DalgeData
+{
+    public string Id = "";
+    public string Type = "";
+    public string Text = "";
+    public Vector2 Position = Vector2.Zero;
+
+    public string Option0Text = "";
+    public string Option1Text = "";
+
+    public Dictionary<int, string> NextByPort = new();
+}
+
+public static class DalgeParser
+{
+    public static Dictionary<string, DalgeData> Load(string path)
+    {
+        var nodes = new Dictionary<string, DalgeData>();
+
+        if (!FileAccess.FileExists(path))
+        {
+            GD.PrintErr($"arquivo não encontrado: {path}");
+            return nodes;
+        }
+
+        using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+
+        DalgeData currentNode = null;
+
+        while (!file.EofReached())
+        {
+            string rawLine = file.GetLine();
+            string line = rawLine.Trim();
+
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            if (line.StartsWith("[") && line.EndsWith("]"))
+            {
+                string nodeId = line.Substring(1, line.Length - 2).Trim();
+
+                currentNode = new DalgeData
+                {
+                    Id = nodeId
+                };
+
+                nodes[nodeId] = currentNode;
+                continue;
+            }
+
+            if (currentNode == null)
+                continue;
+
+            string[] split = line.Split('=', 2);
+            if (split.Length != 2)
+                continue;
+
+            string key = split[0].Trim().ToLower();
+            string value = split[1].Trim();
+
+            switch (key)
+            {
+                case "type":
+                    currentNode.Type = value;
+                    break;
+
+                case "text":
+                    currentNode.Text = Unescape(value);
+                    break;
+
+                case "position":
+                {
+                    string[] posSplit = value.Split(',', 2);
+
+                    if (posSplit.Length == 2 &&
+                        float.TryParse(posSplit[0].Trim(), out float x) &&
+                        float.TryParse(posSplit[1].Trim(), out float y))
+                    {
+                        currentNode.Position = new Vector2(x, y);
+                    }
+                    break;
+                }
+                
+                case "option_0_text":
+                    currentNode.Option0Text = Unescape(value);
+                    break;
+
+                case "option_0_next":
+                    currentNode.NextByPort[0] = value; // porta interna da saída visual 1
+                    break;
+
+                case "option_1_text":
+                    currentNode.Option1Text = Unescape(value);
+                    break;
+
+                case "option_1_next":
+                    currentNode.NextByPort[1] = value; // porta interna da saída visual 2
+                    break;
+
+                default:
+                    if (key.StartsWith("next_"))
+                    {
+                        string portText = key.Substring(5);
+
+                        if (int.TryParse(portText, out int port))
+                            currentNode.NextByPort[port] = value;
+                    }
+                    else if (key == "next")
+                    {
+                        // compatibilidade com formato antigo
+                        currentNode.NextByPort[0] = value;
+                    }
+                    break;
+            }
+        }
+
+        return nodes;
+    }
+
+    private static string Unescape(string text)
+    {
+        return text
+            .Replace("\\n", "\n")
+            .Replace("\\\\", "\\");
+    }
+}
 
 public partial class DialogueEditor : Control
 {
@@ -48,6 +176,9 @@ public partial class DialogueEditor : Control
         switchNodeScene = GD.Load<PackedScene>("res://addons/dialogue_editor/nodes/SwitchNode.tscn");
         endNodeScene = GD.Load<PackedScene>("res://addons/dialogue_editor/nodes/EndNode.tscn");
         randomizeNodeScene = GD.Load<PackedScene>("res://addons/dialogue_editor/nodes/RandomizeNode.tscn");
+
+        var loadDatButton = GetNode<Button>("RightPanel/HBoxContainer/LoadDatButton");
+        loadDatButton.Pressed += LoadPreviewDat;
 
         graph.ConnectionRequest += OnConnectionRequest;
         graph.DisconnectionRequest += OnDisconnectionRequest;
@@ -140,8 +271,11 @@ public partial class DialogueEditor : Control
         {
             if (child is DialogueNodeTemplate dialogueNode)
             {
+                Vector2 pos = dialogueNode.PositionOffset;
+
                 sb.AppendLine($"[{dialogueNode.Name}]");
-                sb.AppendLine(dialogueNode.ExportBody(this));
+                sb.AppendLine($"position={(int)pos.X},{(int)pos.Y}");
+                sb.AppendLine(dialogueNode.ExportBody(this).TrimEnd());
                 sb.AppendLine();
             }
         }
@@ -158,7 +292,7 @@ public partial class DialogueEditor : Control
     {
         string dat = BuildDat();
 
-        string path = "res://addons/dialogue_editor/output/dialogue_preview.dat";
+        string path = "res://addons/dialogue_editor/output/dialogue_preview.dalge";
 
         using var file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
         file.StoreString(dat);
@@ -166,6 +300,125 @@ public partial class DialogueEditor : Control
         previewText.Text = dat;
 
         GD.Print("dat salvo em: " + path);
+    }
+    
+    public void LoadDat(string path)
+    {
+        var data = DalgeParser.Load(path);
+
+        ClearGraph();
+
+        var createdNodes = new Dictionary<string, DialogueNodeTemplate>();
+
+        foreach (var pair in data)
+        {
+            DalgeData nodeData = pair.Value;
+
+            if (string.IsNullOrWhiteSpace(nodeData.Type))
+                continue;
+
+            DialogueNodeTemplate node = CreateNodeFromType(nodeData.Type);
+            if (node == null)
+                continue;
+
+            graph.AddChild(node);
+
+            node.Name = nodeData.Id;
+            node.NodeId = nodeData.Id;
+            node.NodeType = nodeData.Type;
+            node.PositionOffset = nodeData.Position;
+
+            ApplyNodeData(node, nodeData);
+
+            createdNodes[nodeData.Id] = node;
+        }
+
+        foreach (var pair in data)
+        {
+            DalgeData nodeData = pair.Value;
+
+            if (!createdNodes.TryGetValue(nodeData.Id, out var fromNode))
+                continue;
+
+            foreach (var connectionPair in nodeData.NextByPort)
+            {
+                int fromPort = connectionPair.Key;
+                string targetId = connectionPair.Value;
+
+                if (string.IsNullOrWhiteSpace(targetId))
+                    continue;
+
+                if (!createdNodes.TryGetValue(targetId, out var toNode))
+                    continue;
+
+                int toPort = toNode.GetPrimaryInputSlot();
+
+                if (!graph.IsNodeConnected(fromNode.Name, fromPort, toNode.Name, toPort))
+                    graph.ConnectNode(fromNode.Name, fromPort, toNode.Name, toPort);
+            }
+        }
+
+        RefreshPreview();
+        GD.Print($"dalge carregado: {path}");
+    }
+
+    private void ClearGraph()
+    {
+        var connections = new List<Godot.Collections.Dictionary>();
+
+        foreach (Godot.Collections.Dictionary connection in graph.GetConnectionList())
+            connections.Add(connection);
+
+        foreach (var connection in connections)
+        {
+            StringName fromNode = (StringName)connection["from_node"];
+            int fromPort = (int)(long)connection["from_port"];
+            StringName toNode = (StringName)connection["to_node"];
+            int toPort = (int)(long)connection["to_port"];
+
+            graph.DisconnectNode(fromNode, fromPort, toNode, toPort);
+        }
+
+        var nodesToRemove = new List<DialogueNodeTemplate>();
+
+        foreach (Node child in graph.GetChildren())
+        {
+            if (child is DialogueNodeTemplate dialogueNode)
+                nodesToRemove.Add(dialogueNode);
+        }
+
+        foreach (var node in nodesToRemove)
+        {
+            if (IsInstanceValid(node) && node.GetParent() == graph)
+                graph.RemoveChild(node);
+
+            node.QueueFree();
+        }
+    }
+
+    private DialogueNodeTemplate CreateNodeFromType(string type)
+    {
+        switch (type)
+        {
+            case "start":
+                return startNodeScene.Instantiate<DialogueNodeTemplate>();
+
+            case "dialogue":
+                return dialogueNodeScene.Instantiate<DialogueNodeTemplate>();
+
+            case "switch":
+                return switchNodeScene.Instantiate<DialogueNodeTemplate>();
+
+            case "randomize":
+                return randomizeNodeScene.Instantiate<DialogueNodeTemplate>();
+
+            case "end":
+                return endNodeScene.Instantiate<DialogueNodeTemplate>();
+
+            default:
+                GD.PrintErr($"tipo de node desconhecido: {type}");
+                return null;
+        }
     }
 
     private bool HasSelectedNode()
@@ -175,8 +428,6 @@ public partial class DialogueEditor : Control
             if (child is GraphNode graphNode && graphNode.Selected)
                 return true;
         }
-
-        RefreshPreview();
 
         return false;
     }
@@ -189,8 +440,6 @@ public partial class DialogueEditor : Control
                 return graphNode;
         }
 
-        RefreshPreview();
-
         return null;
     }
 
@@ -202,9 +451,24 @@ public partial class DialogueEditor : Control
                 return true;
         }
 
-        RefreshPreview();
-
         return false;
+    }
+
+    public Dictionary<int, string> GetConnectionsFrom(StringName nodeName)
+    {
+        var result = new Dictionary<int, string>();
+
+        foreach (Godot.Collections.Dictionary connection in graph.GetConnectionList())
+        {
+            StringName fromNode = (StringName)connection["from_node"];
+            int fromPort = (int)(long)connection["from_port"];
+            StringName toNode = (StringName)connection["to_node"];
+
+            if (fromNode == nodeName)
+                result[fromPort] = toNode.ToString();
+        }
+
+        return result;
     }
 
     private void SetupPopupMenu()
@@ -277,16 +541,42 @@ public partial class DialogueEditor : Control
         if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
         {
             if (keyEvent.Keycode == Key.Delete)
+            {
                 DeleteSelectedNodes();
-
                 RefreshPreview();
+            }
         }
     }
 
-    private void OnConnectionRequest(StringName from, long fromSlot, StringName to, long toSlot)
+    private void OnConnectionRequest(StringName fromNodeName, long fromPort, StringName toNodeName, long toPort)
     {
-        graph.ConnectNode(from, (int)fromSlot, to, (int)toSlot);
-        RefreshPreview();
+        GD.Print($"CONNECT REQUEST: {fromNodeName}:{fromPort} -> {toNodeName}:{toPort}");
+
+        var fromNode = graph.GetNodeOrNull<DialogueNodeTemplate>(fromNodeName.ToString());
+        var toNode = graph.GetNodeOrNull<DialogueNodeTemplate>(toNodeName.ToString());
+
+        if (fromNode == null || toNode == null)
+        {
+            GD.PrintErr("fromNode ou toNode veio null");
+            return;
+        }
+
+        if (!CanConnectNodes(fromNode, toNode))
+        {
+            GD.PrintErr($"conexão bloqueada: {fromNode.Name} -> {toNode.Name}");
+            return;
+        }
+
+        if (!graph.IsNodeConnected(fromNodeName, (int)fromPort, toNodeName, (int)toPort))
+        {
+            graph.ConnectNode(fromNodeName, (int)fromPort, toNodeName, (int)toPort);
+            GD.Print($"CONNECTED: {fromNodeName}:{fromPort} -> {toNodeName}:{toPort}");
+            RefreshPreview();
+        }
+        else
+        {
+            GD.Print("já estava conectado");
+        }
     }
 
     private void OnDisconnectionRequest(StringName from, long fromSlot, StringName to, long toSlot)
@@ -398,6 +688,15 @@ public partial class DialogueEditor : Control
             if (!nodeTemplate.HasInput())
                 return;
 
+            var fromNode = graph.GetNodeOrNull<DialogueNodeTemplate>(pendingFromNode.ToString());
+            var toNode = nodeTemplate;
+
+            if (fromNode == null || toNode == null)
+                return;
+
+            if (!CanConnectNodes(fromNode, toNode))
+                return;
+
             graph.ConnectNode(
                 pendingFromNode,
                 pendingFromSlot,
@@ -408,6 +707,15 @@ public partial class DialogueEditor : Control
         else
         {
             if (!nodeTemplate.HasOutput())
+                return;
+
+            var fromNode = nodeTemplate;
+            var toNode = graph.GetNodeOrNull<DialogueNodeTemplate>(pendingFromNode.ToString());
+
+            if (fromNode == null || toNode == null)
+                return;
+
+            if (!CanConnectNodes(fromNode, toNode))
                 return;
 
             graph.ConnectNode(
@@ -436,6 +744,42 @@ public partial class DialogueEditor : Control
         RefreshPreview();
     }
 
+    private void LoadPreviewDat()
+    {
+        string path = "res://addons/dialogue_editor/output/dialogue_preview.dalge";
+        LoadDat(path);
+    }
+
+    private bool HasIncomingConnection(StringName nodeName)
+    {
+        foreach (Godot.Collections.Dictionary connection in graph.GetConnectionList())
+        {
+            StringName toNode = (StringName)connection["to_node"];
+
+            if (toNode == nodeName)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool CanConnectNodes(DialogueNodeTemplate fromNode, DialogueNodeTemplate toNode)
+    {
+        if (fromNode == null || toNode == null)
+            return false;
+
+        if (fromNode == toNode)
+            return false;
+
+        if (toNode.NodeType == "start")
+            return false;
+
+        if (fromNode.NodeType == "end")
+            return false;
+
+        return true;
+    }
+
     private void DeleteSelectedNodes()
     {
         var nodesToDelete = new Godot.Collections.Array<GraphNode>();
@@ -454,6 +798,10 @@ public partial class DialogueEditor : Control
         foreach (GraphNode node in nodesToDelete)
         {
             RemoveConnectionsFromNode(node);
+
+            if (node.GetParent() == graph)
+                graph.RemoveChild(node);
+
             node.QueueFree();
         }
 
@@ -462,9 +810,12 @@ public partial class DialogueEditor : Control
 
     private void RemoveConnectionsFromNode(GraphNode node)
     {
-        var connections = graph.GetConnectionList();
+        var connections = new List<Godot.Collections.Dictionary>();
 
-        foreach (Godot.Collections.Dictionary connection in connections)
+        foreach (Godot.Collections.Dictionary connection in graph.GetConnectionList())
+            connections.Add(connection);
+
+        foreach (var connection in connections)
         {
             StringName fromNode = (StringName)connection["from_node"];
             int fromPort = (int)(long)connection["from_port"];
@@ -474,8 +825,33 @@ public partial class DialogueEditor : Control
             if (fromNode == node.Name || toNode == node.Name)
                 graph.DisconnectNode(fromNode, fromPort, toNode, toPort);
         }
+    }
 
-        RefreshPreview();
+    private void ApplyNodeData(DialogueNodeTemplate node, DalgeData data)
+    {
+        switch (data.Type)
+        {
+            case "dialogue":
+                if (node is DialogueNode dialogueNode)
+                {
+                    dialogueNode.SetText(data.Text);
+                    dialogueNode.SetOption1Text(data.Option0Text);
+                    dialogueNode.SetOption2Text(data.Option1Text);
+                }
+                break;
+
+            case "start":
+                break;
+
+            case "end":
+                break;
+
+            case "switch":
+                break;
+
+            case "randomize":
+                break;
+        }
     }
 
     public void CreateStartNode()
