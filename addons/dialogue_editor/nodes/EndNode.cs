@@ -16,9 +16,4 @@ public partial class EndNode : DialogueNodeTemplate
     public override bool HasInput() => true;
     public override bool HasOutput() => false;
     public override int GetPrimaryInputSlot() => 0;
-
-    public override string ExportBody(DialogueEditor editor)
-    {
-        return "type=end";
-    }
 }

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dq10vrexs7p4r"]
+
+[ext_resource type="Script" uid="uid://bydowhdn128na" path="res://DialogueDummy/DialogueDummy.cs" id="1_hqxj1"]
+[ext_resource type="Script" uid="uid://b2qvogrekdxiy" path="res://DialogueDummy/DialogueComponent.cs" id="2_vg2d7"]
+[ext_resource type="PackedScene" uid="uid://c4gflemuspk4v" path="res://DialogueDummy/npc_interaction.tscn" id="3_1kpri"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vg2d7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1kpri"]
+radius = 246.81168
+
+[node name="DialogueDummy" type="Node2D" unique_id=1624981845]
+script = ExtResource("1_hqxj1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1445779607]
+position = Vector2(-1.0000153, -46.000015)
+scale = Vector2(0.12890625, 0.18554688)
+texture = SubResource("NoiseTexture2D_vg2d7")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=803659004]
+
+[node name="DialogueComponent" type="Control" parent="CanvasLayer" unique_id=446073882]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -179.5
+offset_top = -198.0
+offset_right = 179.5
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_vg2d7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/DialogueComponent" unique_id=2001332637]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogueText" type="RichTextLabel" parent="CanvasLayer/DialogueComponent/VBoxContainer" unique_id=448671852]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 103.83)
+layout_mode = 2
+text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+[node name="Option1Button" type="Button" parent="CanvasLayer/DialogueComponent/VBoxContainer" unique_id=1905947865]
+unique_name_in_owner = true
+layout_mode = 2
+text = "aaa"
+
+[node name="Option2Button" type="Button" parent="CanvasLayer/DialogueComponent/VBoxContainer" unique_id=1879831726]
+unique_name_in_owner = true
+layout_mode = 2
+text = "bbb"
+
+[node name="NpcInteraction" parent="." unique_id=298732891 instance=ExtResource("3_1kpri")]
+collision_layer = 0
+collision_mask = 4
+DialogueComponentPath = NodePath("../CanvasLayer/DialogueComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NpcInteraction" unique_id=116016750]
+shape = SubResource("CircleShape2D_1kpri")
