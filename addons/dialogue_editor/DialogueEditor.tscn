@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://n4bx04gdodl5"]
 
-[ext_resource type="Script" uid="uid://b8280siggftxp" path="res://addons/dialogue_editor/DialogueEditor.cs" id="1_4jhfp"]
+[ext_resource type="Script" uid="uid://b8280siggftxp" path="res://addons/dialogue_editor/DialogueEditor.cs" id="1_4nrfu"]
 
 [node name="DialogueEditor" type="Control" unique_id=1834357493]
 layout_mode = 3
@@ -9,7 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_4jhfp")
+script = ExtResource("1_4nrfu")
 
 [node name="PopupMenu" type="PopupMenu" parent="." unique_id=2118762461]
 
@@ -29,7 +29,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scroll_offset = Vector2(-901, -648)
 grid_pattern = 1
 
 [node name="RightPanel" type="VBoxContainer" parent="." unique_id=1415787084]
