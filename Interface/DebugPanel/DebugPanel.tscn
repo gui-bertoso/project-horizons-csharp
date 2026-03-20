@@ -18,10 +18,10 @@ script = ExtResource("1_v6rdo")
 [node name="BaseContainer" type="VBoxContainer" parent="." unique_id=2137798317]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 287.0
-offset_bottom = 275.0
+offset_left = 867.0
+offset_top = 8.0
+offset_right = 1144.0
+offset_bottom = 480.0
 
 [node name="Panel2" type="Panel" parent="BaseContainer" unique_id=2059157216]
 custom_minimum_size = Vector2(0, 24)
