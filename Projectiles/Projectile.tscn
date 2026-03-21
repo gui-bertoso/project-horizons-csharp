@@ -7,4 +7,8 @@ script = ExtResource("1_lgxlk")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=78179007]
 
-[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1925719147]
+[node name="Area2D" type="Area2D" parent="." unique_id=1082665479]
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1798747728]
