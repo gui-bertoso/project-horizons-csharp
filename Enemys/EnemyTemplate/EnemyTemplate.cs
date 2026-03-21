@@ -9,7 +9,10 @@ public partial class EnemyTemplate : CharacterBody2D
 	private Sprite2D _bodySprite;
 	private Label _debugLabel;
 	private Area2D _attackArea;
-	private Area2D _hitboxArea;
+	private CollisionShape2D _hitboxArea;
+
+	[Export]
+	public int Damage = 2;
 
 	private PackedScene _floatTextScene;
 
@@ -47,7 +50,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		_bodySprite = GetNode<Sprite2D>("Sprite");
 		_debugLabel = GetNode<Label>("Label");
 		_attackArea = GetNode<Area2D>("AttackArea");
-		_hitboxArea = GetNode<Area2D>("HitBox");
+		_hitboxArea = GetNode<CollisionShape2D>("Hitbox/Collision");
 
 		AnimPlayer.AnimationFinished += OnAnimationFinished;
 	}
@@ -64,14 +67,14 @@ public partial class EnemyTemplate : CharacterBody2D
 	{
 		var node = area.GetParent<PhysicWeapon>();
 		ApplyDamage(node.Damage);
-		ApplyIFrames(0.1f);
+		ApplyIFrames(0.3f);
 	}
 
 	public async void ApplyIFrames(float value)
 	{
-		_hitboxArea.Monitoring = false;
+		_hitboxArea.Disabled = true;
 		await ToSignal(GetTree().CreateTimer(value), SceneTreeTimer.SignalName.Timeout);
-		_hitboxArea.Monitoring = true;
+		_hitboxArea.Disabled = false;
 	}
 
 	public void ApplyDamage(int value)
