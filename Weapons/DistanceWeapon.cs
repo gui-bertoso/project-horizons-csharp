@@ -22,16 +22,18 @@ public partial class DistanceWeapon : Weapon
 
 	public override void _Process(double delta)
 	{
-		_projectileSpawnMarker.LookAt(GetLocalMousePosition());
+		var mousePosition = GetGlobalMousePosition();
+		var mouseAngle = (mousePosition - GlobalPosition).Normalized();
+		_projectileSpawnMarker.Rotation = mouseAngle.Angle();
 	}
 
 	public override void Action()
 	{
 		GD.Print("Actionnnnn 33333");
-		SpawnProjectile(GetLocalMousePosition());
+		SpawnProjectile();
 	}
 
-	public void SpawnProjectile(Vector2 targetPosition)
+	public void SpawnProjectile()
 	{
 		if (_projectileScene == null)
 			return;
@@ -43,8 +45,6 @@ public partial class DistanceWeapon : Weapon
 		projectile.GlobalPosition = _projectileSpawnMarker.GlobalPosition;
 		projectile.GlobalScale = Vector2.One * _projectileScale;
 
-		Vector2 dir = (targetPosition - projectile.GlobalPosition).Normalized();
-
-		projectile.SetDirection(dir);
+		projectile.Rotation = _projectileSpawnMarker.Rotation;
 	}
 }
