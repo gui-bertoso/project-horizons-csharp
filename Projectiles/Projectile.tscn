@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c4apbh0f4yydu"]
+
+[ext_resource type="Script" uid="uid://flhun3bgoyli" path="res://Projectiles/Projectile.cs" id="1_lgxlk"]
+
+[node name="Projectile" type="Node2D" unique_id=882868704]
+script = ExtResource("1_lgxlk")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=78179007]
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1925719147]

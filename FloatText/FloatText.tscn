@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://g635rxmee8pj"]
+
+[ext_resource type="Script" uid="uid://dsd413ogk6kr1" path="res://FloatText/FloatText.cs" id="1_lhilu"]
+
+[node name="FloatText" type="Label" unique_id=1091939878]
+offset_right = 34.0
+offset_bottom = 20.0
+text = "-999"
+script = ExtResource("1_lhilu")

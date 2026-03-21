@@ -1825,6 +1825,20 @@ tracks/15/keys = {
 "update": 0,
 "values": [Vector2(-13.999998, -23), Vector2(-13.999998, -23)]
 }
+tracks/16/type = "method"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("../..")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ActionCurrentWeapon"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_u5tep"]
 resource_name = "ranged_attack_loop_side"
@@ -2021,6 +2035,20 @@ tracks/15/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(-5, -22.000002), Vector2(-5, -22.000002)]
+}
+tracks/16/type = "method"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("../..")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ActionCurrentWeapon"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_8sa4y"]

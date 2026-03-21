@@ -5,7 +5,7 @@ namespace projecthorizonscs.Player;
 public partial class PlayerHand : Marker2D
 {
 	private Item equippedItem;
-	private Node _equippedItemReference;
+	private Node2D _equippedItemReference;
 	private Node2D _handOffset;
 	private Node2D _body;
 
@@ -28,13 +28,23 @@ public partial class PlayerHand : Marker2D
 		*/
 	}
 
+	public void ActionCurrentWeapon()
+	{
+		if (equippedItem==null) return;
+		if (GetWeaponClass() == "ranged")
+		{
+			((Weapon)_equippedItemReference).Action();
+		}
+		GD.Print("Actionnnnn 22222");
+	}
+
 	public void EquipItem(Item item)
 	{
 		ClearEquippedItem();
 		equippedItem = item;
 		if (equippedItem.ItemScene != null)
 		{
-			_equippedItemReference = equippedItem.ItemScene.Instantiate();
+            _equippedItemReference = equippedItem.ItemScene.Instantiate<Node2D>();
 		}
 		else
 		{
