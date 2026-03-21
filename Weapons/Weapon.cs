@@ -18,4 +18,9 @@ public partial class Weapon : Node2D
 	{
 		_sprite = GetNode<Sprite2D>("Sprite");
 	}
+
+	public virtual void Action()
+	{
+		
+	}
 }

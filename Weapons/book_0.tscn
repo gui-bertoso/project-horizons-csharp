@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dy2egmkxusdhc"]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_qt8j0"]
+[ext_resource type="Texture2D" uid="uid://ch4vakga47iwx" path="res://Assets/Weapons/Mage/DebugBook.png" id="2_45ruq"]
+[ext_resource type="PackedScene" uid="uid://xfvgssu7qxyb" path="res://Projectiles/DebugProjectile.tscn" id="2_kk26e"]
+
+[node name="DistanceWeapon" unique_id=1442216068 instance=ExtResource("1_qt8j0")]
+_projectileScene = ExtResource("2_kk26e")
+_projectileScale = 1.0
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+texture = ExtResource("2_45ruq")

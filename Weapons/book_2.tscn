@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b1uokkbxu72te"]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_jse8v"]
+
+[node name="DistanceWeapon" unique_id=1442216068 instance=ExtResource("1_jse8v")]
+_projectileScale = 1.0
