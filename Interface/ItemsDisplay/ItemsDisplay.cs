@@ -14,6 +14,8 @@ public partial class ItemsDisplay : Control
 	private TextureRect _acessory1PlaceholderTextureRect;
 	private TextureRect _acessory2PlaceholderTextureRect;
 
+	private Label _consumableAmountLabel;
+
 	private TextureRect _headArmorTextureRect;
 	private TextureRect _bodyArmorTextureRect;
 	private TextureRect _footArmorTextureRect;
@@ -41,6 +43,7 @@ public partial class ItemsDisplay : Control
 		_consumablePlaceholderTextureRect = GetNode<TextureRect>("%ConsumablePlaceholderTextureRect");
 		_acessory1PlaceholderTextureRect = GetNode<TextureRect>("%Acessory1PlaceholderTextureRect");
 		_acessory2PlaceholderTextureRect = GetNode<TextureRect>("%Acessory2PlaceholderTextureRect");
+		_consumableAmountLabel = GetNode<Label>("%ConsumableAmountLabel");
 
 		_headArmorTextureRect = GetNode<TextureRect>("%HeadArmorTextureRect");
 		_bodyArmorTextureRect = GetNode<TextureRect>("%BodyArmorTextureRect");
@@ -53,8 +56,10 @@ public partial class ItemsDisplay : Control
 
 
 
-	public void EquipItem(Item.ITEM_TYPE slot, Item item)
+	public void EquipItem(Item.ITEM_TYPE slot, Item newItem)
 	{
+		var item = (Item)newItem.Duplicate(true);
+
 		GD.Print("Equiping item");
 		switch (slot)
 		{
@@ -92,9 +97,18 @@ public partial class ItemsDisplay : Control
 				GD.Print("Weapon Equipped");
 				break;
 			case Item.ITEM_TYPE.Consumable:
-				_consumableTextureRect.Texture = item.ItemTexture;
-				_consumablePlaceholderTextureRect.Visible = false;
-				_equippedConsumable = item;
+				if (_equippedConsumable == null)
+				{
+					_consumableTextureRect.Texture = item.ItemTexture;
+					_consumablePlaceholderTextureRect.Visible = false;
+					_equippedConsumable = item;
+				}
+				else
+				{
+					_equippedConsumable.ItemAmount += item.ItemAmount;
+					_consumableAmountLabel.Text = _equippedConsumable.ItemAmount.ToString();
+				}
+
 				break;
 			case Item.ITEM_TYPE.Acessory1:
 				_acessory1TextureRect.Texture = item.ItemTexture;
@@ -114,8 +128,41 @@ public partial class ItemsDisplay : Control
 		GD.Print("Equipped item");
 	}
 
+	public void ClearConsumableSlot()
+	{
+		_equippedConsumable = null;
+		_consumablePlaceholderTextureRect.Visible = true;
+		_consumableTextureRect.Visible = false;
+		_consumableTextureRect.Texture = null;
+		_consumableAmountLabel.Text = "";
+	}
+
 	public override void _Process(double delta)
 	{
-		
+		ActionBehavior();
+	}
+
+	public void ActionBehavior()
+	{
+		if (_equippedConsumable != null)
+		{
+			if (Input.IsActionJustPressed("consume"))
+			{
+				UseConsumable();
+			}
+		}
+	}
+
+	public void UseConsumable()
+	{
+		var item = (Item)_equippedConsumable.Duplicate(true);
+		item.ItemAmount = 1;
+		_consumableAmountLabel.Text = _equippedConsumable.ItemAmount.ToString();
+
+		_equippedConsumable.ItemAmount -= 1;
+		if (_equippedConsumable.ItemAmount <= 0)
+		{
+			ClearConsumableSlot();
+		}
 	}
 }
