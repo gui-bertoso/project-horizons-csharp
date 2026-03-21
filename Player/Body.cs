@@ -72,6 +72,7 @@ public partial class Body : Node2D
 	
 	private void AnimationBehavior()
 	{
+		if (_player.IsAttacking()) return;
 		if (
 			_animationPlayer.CurrentAnimation == "collect_side" ||
 			 _animationPlayer.CurrentAnimation == "collect_back"

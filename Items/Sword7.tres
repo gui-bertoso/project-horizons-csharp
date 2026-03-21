@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("2_xgodc")
 ItemName = "Orange"
+ItemClass = 1
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_iw25f")

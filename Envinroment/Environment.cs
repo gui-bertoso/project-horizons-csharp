@@ -1,6 +1,6 @@
 using Godot;
 
-namespace projecthorizonscs.Envinroment;
+namespace projecthorizonscs;
 
 public partial class Environment(Node2D desertBiomeEffects) : WorldEnvironment
 {
