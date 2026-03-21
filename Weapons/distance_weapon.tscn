@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://2dnu4epa24yw"]
+
+[ext_resource type="PackedScene" uid="uid://cqtyh8q3jg4di" path="res://Weapons/weapon.tscn" id="1_kh770"]
+[ext_resource type="Script" uid="uid://clq4l67h0f66d" path="res://Weapons/DistanceWeapon.cs" id="2_kh770"]
+
+[node name="DistanceWeapon" unique_id=1442216068 instance=ExtResource("1_kh770")]
+script = ExtResource("2_kh770")
+
+[node name="ProjectileSpawn" type="Marker2D" parent="." index="1" unique_id=211260653]

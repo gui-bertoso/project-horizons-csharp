@@ -1,6 +1,7 @@
 [gd_resource type="Resource" format=3 uid="uid://dnkj2govjti3v"]
 
 [ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Mellee/Branch.png" id="1_136wd"]
+[ext_resource type="PackedScene" uid="uid://65ponpmxfju8" path="res://Weapons/sword_0.tscn" id="1_346h4"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_346h4"]
 
 [resource]
@@ -9,3 +10,4 @@ ItemName = "Orange"
 ItemClass = 1
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_136wd")
+ItemScene = ExtResource("1_346h4")
