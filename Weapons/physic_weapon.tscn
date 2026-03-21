@@ -5,9 +5,11 @@
 
 [node name="PhysicWeapon" unique_id=1442216068 instance=ExtResource("1_scdsx")]
 script = ExtResource("2_et3dn")
+Damage = 1
+Effects = []
 
 [node name="AttackArea" type="Area2D" parent="." index="1" unique_id=1955743263]
-collision_layer = 8
+collision_layer = 64
 collision_mask = 0
 
 [node name="Collision" type="CollisionShape2D" parent="AttackArea" index="0" unique_id=1652481084]
