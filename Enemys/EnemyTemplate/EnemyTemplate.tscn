@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://6g0lm4udf7fl" path="res://Enemys/EnemyTemplate/EnemyTemplate.cs" id="1_3tre6"]
 
 [node name="EnemyTemplate" type="CharacterBody2D" unique_id=1875013965]
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_3tre6")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=728830498]
@@ -10,6 +12,8 @@ script = ExtResource("1_3tre6")
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=494260580]
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1331474415]
+collision_layer = 0
+collision_mask = 64
 
 [node name="Collision" type="CollisionShape2D" parent="Hitbox" unique_id=48495568]
 
@@ -22,5 +26,9 @@ theme_override_font_sizes/font_size = 8
 text = "aaaaaa"
 
 [node name="AttackArea" type="Area2D" parent="." unique_id=1732603855]
+collision_layer = 128
+collision_mask = 0
 
 [node name="Collision" type="CollisionShape2D" parent="AttackArea" unique_id=1961384960]
+
+[connection signal="area_entered" from="Hitbox" to="." method="OnHitboxAreaEntered"]
