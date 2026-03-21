@@ -3794,6 +3794,7 @@ rotation = -0.6859667
 script = ExtResource("4_ddoul")
 
 [node name="Branch" type="Sprite2D" parent="Body/Node2D/Hand" unique_id=314751152]
+visible = false
 position = Vector2(-12.521301, -11.541968)
 texture = ExtResource("6_s1rgi")
 flip_h = true

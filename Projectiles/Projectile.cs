@@ -9,24 +9,22 @@ public partial class Projectile : Node2D
 	public float LifeTime = 3f;
 
 	private float _lifeTimer;
-	private Vector2 _direction = Vector2.Zero;
+	
+	[Export]
+	public int Damage = 1;
+	[Export]
+	public Godot.Collections.Array Effects = new();
 
 	public override void _Ready()
 	{
 		_lifeTimer = LifeTime;
 	}
 
-	public void SetDirection(Vector2 dir)
-	{
-		_direction = dir.Normalized();
-		Rotation = _direction.Angle();
-	}
-
 	public override void _PhysicsProcess(double delta)
 	{
 		float d = (float)delta;
 
-		GlobalPosition += _direction * Speed * d;
+		GlobalPosition += new Vector2(1, 0).Rotated(Rotation) * Speed * d;
 
 		_lifeTimer -= d;
 		if (_lifeTimer <= 0f)
