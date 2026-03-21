@@ -9,7 +9,7 @@ script = ExtResource("1_tix2g")
 offset = Vector2(0, -16)
 
 [node name="Label" type="Label" parent="." unique_id=338628916]
-visible = false
+z_index = 2
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
