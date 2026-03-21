@@ -303,6 +303,15 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("AtlasTexture_85j5r")
 
+[node name="ConsumableAmountLabel" type="Label" parent="Control/TextureRect6" unique_id=646538989]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 24.0
+offset_right = 40.0
+offset_bottom = 44.0
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [node name="TextureRect7" type="TextureRect" parent="Control" unique_id=376948893]
 layout_mode = 0
 offset_left = -57.0
