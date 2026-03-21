@@ -46,6 +46,11 @@
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
+background_mode = 3
+adjustment_enabled = true
+adjustment_brightness = 0.86
+adjustment_contrast = 1.25
+adjustment_saturation = 1.2
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 script = ExtResource("2_wilel")
@@ -220,6 +225,9 @@ Item = ExtResource("42_k4u6w")
 [node name="WorldEnvironment" parent="." index="5" unique_id=10120490]
 environment = SubResource("Environment_8485w")
 script = null
+
+[node name="DirectionalLight2D" parent="WorldEnvironment" index="5" unique_id=1599067131]
+visible = false
 
 [node name="DialogueDummy" parent="." index="6" unique_id=1624981845 instance=ExtResource("62_jqk32")]
 position = Vector2(-632, 609)

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://gxe0vnytkj5"]
+
+[ext_resource type="PackedScene" uid="uid://b2ubndb6p4ht5" path="res://Weapons/physic_weapon.tscn" id="1_532x3"]
+[ext_resource type="Texture2D" uid="uid://dgtnwumhe238i" path="res://Assets/Weapons/Mellee/OldSword.png" id="2_2co5a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2co5a"]
+size = Vector2(3, 24)
+
+[node name="Sword3" unique_id=1442216068 instance=ExtResource("1_532x3")]
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(1, -12)
+texture = ExtResource("2_2co5a")
+
+[node name="Collision" parent="AttackArea" parent_id_path=PackedInt32Array(1955743263) index="0" unique_id=1652481084]
+position = Vector2(0.5, -16)
+shape = SubResource("RectangleShape2D_2co5a")

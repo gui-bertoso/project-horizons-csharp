@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3 uid="uid://dxumhigrtphu5"]
+
+[ext_resource type="PackedScene" uid="uid://m2kjj33vq51e" path="res://Weapons/sword_4.tscn" id="1_ipn1b"]
+[ext_resource type="Texture2D" uid="uid://dh8s34uaaxvk1" path="res://Assets/Weapons/Mellee/Stick.png" id="2_5ouia"]
+[ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="3_l7bjl"]
+
+[resource]
+script = ExtResource("3_l7bjl")
+ItemName = "Orange"
+ItemClass = 1
+ItemDescription = "A citric fruit"
+ItemTexture = ExtResource("2_5ouia")
+ItemScene = ExtResource("1_ipn1b")
