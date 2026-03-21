@@ -44,14 +44,8 @@
 [ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="41_iqm64"]
 [ext_resource type="Resource" uid="uid://boaoaciiinbrh" path="res://Items/Armor3Tome.tres" id="42_k4u6w"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
-[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="63_302e7"]
 
-[sub_resource type="Environment" id="Environment_raufk"]
-background_mode = 3
-adjustment_enabled = true
-adjustment_brightness = 0.89
-adjustment_contrast = 1.075
-adjustment_saturation = 1.29
+[sub_resource type="Environment" id="Environment_8485w"]
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 script = ExtResource("2_wilel")
@@ -80,7 +74,7 @@ position = Vector2(-735, 392)
 Item = ExtResource("6_i6pwl")
 
 [node name="PhysicItem3" parent="Node2D" index="2" unique_id=1459116363 instance=ExtResource("5_afn2h")]
-position = Vector2(-736, 334)
+position = Vector2(1640, 172)
 Item = ExtResource("8_qpdt5")
 
 [node name="PhysicItem4" parent="Node2D" index="3" unique_id=1581893835 instance=ExtResource("5_afn2h")]
@@ -100,7 +94,7 @@ position = Vector2(-655, 347)
 Item = ExtResource("12_i1swl")
 
 [node name="PhysicItem8" parent="Node2D" index="7" unique_id=1139293456 instance=ExtResource("5_afn2h")]
-position = Vector2(-648, 285)
+position = Vector2(1462, 206)
 Item = ExtResource("13_1w57s")
 
 [node name="PhysicItem9" parent="Node2D" index="8" unique_id=74670818 instance=ExtResource("5_afn2h")]
@@ -136,39 +130,39 @@ position = Vector2(-581, 143)
 Item = ExtResource("21_ki3ay")
 
 [node name="PhysicItem17" parent="Node2D" index="16" unique_id=2122331244 instance=ExtResource("5_afn2h")]
-position = Vector2(-501, 145)
+position = Vector2(1574, 235)
 Item = ExtResource("22_qf5dj")
 
 [node name="PhysicItem18" parent="Node2D" index="17" unique_id=732842636 instance=ExtResource("5_afn2h")]
-position = Vector2(-497, 214)
+position = Vector2(1612, 48)
 Item = ExtResource("23_8485w")
 
 [node name="PhysicItem19" parent="Node2D" index="18" unique_id=1644999536 instance=ExtResource("5_afn2h")]
-position = Vector2(-502, 268)
+position = Vector2(1607, 102)
 Item = ExtResource("24_wrmfb")
 
 [node name="PhysicItem20" parent="Node2D" index="19" unique_id=1798318642 instance=ExtResource("5_afn2h")]
-position = Vector2(-507, 344)
+position = Vector2(1710, 132)
 Item = ExtResource("25_ssnfo")
 
 [node name="PhysicItem21" parent="Node2D" index="20" unique_id=912563698 instance=ExtResource("5_afn2h")]
-position = Vector2(-503, 411)
+position = Vector2(1714, 199)
 Item = ExtResource("26_raufk")
 
 [node name="PhysicItem22" parent="Node2D" index="21" unique_id=1964914962 instance=ExtResource("5_afn2h")]
-position = Vector2(-503, 467)
+position = Vector2(1714, 255)
 Item = ExtResource("27_qt5um")
 
 [node name="PhysicItem23" parent="Node2D" index="22" unique_id=374781800 instance=ExtResource("5_afn2h")]
-position = Vector2(-432, 485)
+position = Vector2(1785, 273)
 Item = ExtResource("28_16dk7")
 
 [node name="PhysicItem24" parent="Node2D" index="23" unique_id=1630786448 instance=ExtResource("5_afn2h")]
-position = Vector2(-437, 404)
+position = Vector2(1780, 192)
 Item = ExtResource("29_3pigm")
 
 [node name="PhysicItem25" parent="Node2D" index="24" unique_id=1337142526 instance=ExtResource("5_afn2h")]
-position = Vector2(-425, 324)
+position = Vector2(1792, 112)
 Item = ExtResource("30_a3h4s")
 
 [node name="PhysicItem26" parent="Node2D" index="25" unique_id=949109052 instance=ExtResource("5_afn2h")]
@@ -224,10 +218,10 @@ position = Vector2(-205, 572)
 Item = ExtResource("42_k4u6w")
 
 [node name="WorldEnvironment" parent="." index="5" unique_id=10120490]
-environment = SubResource("Environment_raufk")
+environment = SubResource("Environment_8485w")
+script = null
 
 [node name="DialogueDummy" parent="." index="6" unique_id=1624981845 instance=ExtResource("62_jqk32")]
 position = Vector2(-632, 609)
 
-[node name="Player" parent="." index="7" unique_id=621873643 instance=ExtResource("63_302e7")]
-position = Vector2(-383, 683)
+[editable path="WorldEnvironment"]

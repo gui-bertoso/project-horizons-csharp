@@ -4,7 +4,7 @@ namespace projecthorizonscs.Player;
 
 public partial class PlayerHand : Marker2D
 {
-	private Item _equippedItem;
+	private Item equippedItem;
 	private Node _equippedItemReference;
 	private Node2D _handOffset;
 	private Node2D _body;
@@ -18,27 +18,29 @@ public partial class PlayerHand : Marker2D
 
 	public override void _Process(double delta)
 	{
+		/*
 		var mousePosition = GetGlobalMousePosition();
 		var mouseAngle = (mousePosition - GlobalPosition).Normalized();
 		_handOffset.Rotation = mouseAngle.Angle();
 		Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
 		_body.Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
-		//GD.Print(_handOffset.Rotation);
+		GD.Print(_handOffset.Rotation);
+		*/
 	}
 
 	public void EquipItem(Item item)
 	{
 		ClearEquippedItem();
-		_equippedItem = item;
-		if (_equippedItem.ItemScene != null)
+		equippedItem = item;
+		if (equippedItem.ItemScene != null)
 		{
-			_equippedItemReference = _equippedItem.ItemScene.Instantiate();
+			_equippedItemReference = equippedItem.ItemScene.Instantiate();
 		}
 		else
 		{
 			_equippedItemReference = new Sprite2D();
-			((Sprite2D)_equippedItemReference).Texture = _equippedItem.ItemTexture;
-			((Sprite2D)_equippedItemReference).Offset = new Vector2(0, -(_equippedItem.ItemTexture.GetSize().Y/2)+4);
+			((Sprite2D)_equippedItemReference).Texture = equippedItem.ItemTexture;
+			((Sprite2D)_equippedItemReference).Offset = new Vector2(0, -(equippedItem.ItemTexture.GetSize().Y/2)+4);
 		}
 
 		AddChild(_equippedItemReference);
@@ -50,7 +52,7 @@ public partial class PlayerHand : Marker2D
 		{
 			i.QueueFree();
 		}
-		_equippedItem = null;
+		equippedItem = null;
 		_equippedItemReference = null;
 	}
 
@@ -58,8 +60,24 @@ public partial class PlayerHand : Marker2D
 	{
 		var droppedItem = (PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
 		droppedItem.GlobalPosition = GlobalPosition;
-		droppedItem.Item = _equippedItem;
+		droppedItem.Item = equippedItem;
 		ClearEquippedItem();
 		GetTree().CurrentScene.AddChild(droppedItem);
 	}
-}
+
+	public bool HasWeaponEquipped()
+	{
+		return equippedItem!=null;
+	}
+
+	public string GetWeaponClass()
+	{
+		if (equippedItem==null) return "hand";
+		switch (equippedItem.ItemClass)
+		{
+			case Item.ITEM_CLASS.Ranged: return  "ranged";
+			case Item.ITEM_CLASS.Mellee: return  "sword";
+		}
+		return "hand";
+	}
+ }

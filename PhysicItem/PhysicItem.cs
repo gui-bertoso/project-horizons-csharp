@@ -21,6 +21,8 @@ public partial class PhysicItem : Node2D
 
 	public override void _Ready()
 	{
+		GD.Print("Item here");
+		GD.Print($"ITEM {GlobalPosition}");
 		_sprite = GetNode<Sprite2D>("Sprite");
 		_label = GetNode<Label>("Label");
 		if (Item != null)
@@ -50,8 +52,12 @@ public partial class PhysicItem : Node2D
 
 	private void UpdateCanCollect()
 	{
-		if (Autoload.Globals.I.LocalPlayer == null) return;
+		if (Autoload.Globals.I.LocalPlayer == null){
+			GD.Print("dont have player");
+			return;
+		}
 		var distanceToPlayer = Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
+		
 		if (distanceToPlayer <= _collectDistance)
 		{
 			_canCollect = true;
