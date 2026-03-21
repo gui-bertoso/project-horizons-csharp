@@ -120,8 +120,6 @@ public partial class Player : CharacterBody2D
 	{
 		_isAttacking = Input.IsActionPressed("action");
 
-		// recuperação de estado bugado:
-		// se por algum motivo terminou animação de down mas o estado não resetou, força reset
 		if (_rangedState == RangedAttackState.Ending)
 		{
 			if (_animationPlayer.CurrentAnimation != "ranged_attack_down_side" &&
@@ -131,7 +129,6 @@ public partial class Player : CharacterBody2D
 			}
 		}
 
-		// se começou e ficou preso fora das animações de up, corrige
 		if (_rangedState == RangedAttackState.Starting)
 		{
 			if (_animationPlayer.CurrentAnimation != "ranged_attack_up_side" &&
@@ -211,7 +208,6 @@ public partial class Player : CharacterBody2D
 			case "ranged_attack_down_back":
 				ResetRangedAttack();
 
-				// se o jogador já estiver segurando de novo, recomeça instantaneamente
 				if (_isAttacking)
 					StartRangedAttack();
 

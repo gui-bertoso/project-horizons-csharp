@@ -8,6 +8,8 @@ public partial class Globals : Node
 	public delegate void DevModeUpdatedEventHandler();
 	public static Globals I {get; private set;}
 	public Player.Player LocalPlayer {get; set;}
+
+	public StatsContainer StatsContainer{get; set;}
 	public Player.PlayerHand LocalPlayerHand {get; set;}
 	public AchievementsOverlay LocalAchievementsOverlay {get; set;}
 

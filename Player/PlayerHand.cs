@@ -75,6 +75,16 @@ public partial class PlayerHand : Marker2D
 		GetTree().CurrentScene.AddChild(droppedItem);
 	}
 
+	public void EnableWeaponAttackArea()
+	{
+		((PhysicWeapon)_equippedItemReference).EnableAttackArea();
+	}
+
+	public void DisableWeaponAttackArea()
+	{
+		((PhysicWeapon)_equippedItemReference).DisableAttackArea();
+	}
+
 	public bool HasWeaponEquipped()
 	{
 		return equippedItem!=null;

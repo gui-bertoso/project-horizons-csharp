@@ -234,11 +234,26 @@ visible = false
 position = Vector2(-632, 609)
 
 [node name="Slime" parent="." index="7" unique_id=1875013965 instance=ExtResource("45_8485w")]
-position = Vector2(1722, -467)
+position = Vector2(1720, -471)
 collision_layer = 1
 collision_mask = 1
 
-[node name="PhysicItem" parent="." index="8" unique_id=969569692 instance=ExtResource("5_afn2h")]
+[node name="Slime2" parent="." index="8" unique_id=2118759442 instance=ExtResource("45_8485w")]
+position = Vector2(1630, -497)
+collision_layer = 1
+collision_mask = 1
+
+[node name="Slime3" parent="." index="9" unique_id=635929724 instance=ExtResource("45_8485w")]
+position = Vector2(1789, -412)
+collision_layer = 1
+collision_mask = 1
+
+[node name="Slime4" parent="." index="10" unique_id=1039181622 instance=ExtResource("45_8485w")]
+position = Vector2(1518, -504)
+collision_layer = 1
+collision_mask = 1
+
+[node name="PhysicItem" parent="." index="11" unique_id=969569692 instance=ExtResource("5_afn2h")]
 position = Vector2(1333, -67)
 Item = ExtResource("21_ki3ay")
 
