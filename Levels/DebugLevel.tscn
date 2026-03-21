@@ -43,6 +43,7 @@
 [ext_resource type="Resource" uid="uid://c0u42oeiran04" path="res://Items/Armor3Foot.tres" id="40_p2txi"]
 [ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="41_iqm64"]
 [ext_resource type="Resource" uid="uid://boaoaciiinbrh" path="res://Items/Armor3Tome.tres" id="42_k4u6w"]
+[ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="45_8485w"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
@@ -231,5 +232,10 @@ visible = false
 
 [node name="DialogueDummy" parent="." index="6" unique_id=1624981845 instance=ExtResource("62_jqk32")]
 position = Vector2(-632, 609)
+
+[node name="Slime" parent="." index="7" unique_id=1875013965 instance=ExtResource("45_8485w")]
+position = Vector2(1722, -467)
+collision_layer = 1
+collision_mask = 1
 
 [editable path="WorldEnvironment"]
