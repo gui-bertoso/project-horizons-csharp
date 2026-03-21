@@ -51,6 +51,8 @@ public partial class ItemsDisplay : Control
 		_acessory2TextureRect = GetNode<TextureRect>("%Acessory2TextureRect");
 	}
 
+
+
 	public void EquipItem(Item.ITEM_TYPE slot, Item item)
 	{
 		GD.Print("Equiping item");
@@ -114,5 +116,6 @@ public partial class ItemsDisplay : Control
 
 	public override void _Process(double delta)
 	{
+		
 	}
 }
