@@ -11,6 +11,8 @@ public partial class EnemyTemplate : CharacterBody2D
 	private Area2D _attackArea;
 	private Area2D _hitboxArea;
 
+	private PackedScene _floatTextScene;
+
 	protected Player.Player PlayerReference;
 
 	[Export]
@@ -39,6 +41,8 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	public override void _Ready()
 	{
+		_floatTextScene = GD.Load<PackedScene>("uid://g635rxmee8pj");
+
 		AnimPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		_bodySprite = GetNode<Sprite2D>("Sprite");
 		_debugLabel = GetNode<Label>("Label");
@@ -73,10 +77,19 @@ public partial class EnemyTemplate : CharacterBody2D
 	public void ApplyDamage(int value)
 	{
 		Health -= value;
+		SpawnFloatDamage(value);
 		if (Health < 0)
 		{
 			CurrentState = EnemyState.Death;
 		}
+	}
+
+	public void SpawnFloatDamage(int value)
+	{
+		var newFloatText = _floatTextScene.Instantiate<FloatText>();
+		GetTree().CurrentScene.AddChild(newFloatText);
+		newFloatText.GlobalPosition = GlobalPosition;
+		newFloatText.SetData("HealthDecrease", value);
 	}
 
 	public override void _Process(double delta)

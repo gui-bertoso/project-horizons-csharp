@@ -314,6 +314,12 @@ public partial class Player : CharacterBody2D
 			_body.Scale = new Vector2(-1f, 1f);
 	}
 
+	public void ActionCurrentWeapon()
+	{
+		_hand.ActionCurrentWeapon();
+		GD.Print("Actionnnnn");
+	}
+
 	private void DashBehavior(float delta)
 	{
 		if (_onDash)

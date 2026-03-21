@@ -53,7 +53,6 @@ public partial class PhysicItem : Node2D
 	private void UpdateCanCollect()
 	{
 		if (Autoload.Globals.I.LocalPlayer == null){
-			GD.Print("dont have player");
 			return;
 		}
 		var distanceToPlayer = Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);

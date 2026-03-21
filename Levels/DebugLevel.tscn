@@ -21,7 +21,7 @@
 [ext_resource type="Resource" uid="uid://x2kso84n6vhn" path="res://Items/DebugSword.tres" id="17_qmlrk"]
 [ext_resource type="Resource" uid="uid://bcg8kptyhhel2" path="res://Items/FireBook.tres" id="18_xhit2"]
 [ext_resource type="Resource" uid="uid://djstkq8sv78m6" path="res://Items/OldSword.tres" id="19_8hffr"]
-[ext_resource type="Resource" uid="uid://buo5x8ppueefw" path="res://Items/SimpleBook.tres" id="21_ki3ay"]
+[ext_resource type="Resource" uid="uid://buo5x8ppueefw" path="res://Items/DebugBook.tres" id="21_ki3ay"]
 [ext_resource type="Resource" uid="uid://by5vaxm5nm501" path="res://Items/Sword0.tres" id="22_qf5dj"]
 [ext_resource type="Resource" uid="uid://d3cqlwtx1g8ch" path="res://Items/Sword1.tres" id="23_8485w"]
 [ext_resource type="Resource" uid="uid://gdwobj2h2ben" path="res://Items/Sword2.tres" id="24_wrmfb"]
@@ -237,5 +237,9 @@ position = Vector2(-632, 609)
 position = Vector2(1722, -467)
 collision_layer = 1
 collision_mask = 1
+
+[node name="PhysicItem" parent="." index="8" unique_id=969569692 instance=ExtResource("5_afn2h")]
+position = Vector2(1333, -67)
+Item = ExtResource("21_ki3ay")
 
 [editable path="WorldEnvironment"]
