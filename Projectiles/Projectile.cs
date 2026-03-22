@@ -8,7 +8,7 @@ public partial class Projectile : Node2D
 	[Export]
 	public float LifeTime = 3f;
 
-	private float _lifeTimer;
+	public float _lifeTimer;
 	
 	[Export]
 	public int Damage = 1;

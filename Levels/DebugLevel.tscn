@@ -314,6 +314,7 @@ Item = ExtResource("42_k4u6w")
 
 [node name="RageFlower" parent="Node2D" index="60" unique_id=1875013965 instance=ExtResource("44_wrmfb")]
 position = Vector2(2157, -44)
+EnemyName = "RageFlower"
 
 [node name="WorldEnvironment" parent="." index="5" unique_id=10120490]
 environment = SubResource("Environment_8485w")
