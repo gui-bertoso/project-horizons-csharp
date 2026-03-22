@@ -115,7 +115,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		MoveAndSlide();
 	}
 
-	public void UpdateState()
+	public virtual void UpdateState()
 	{
 		switch (CurrentState)
 		{
@@ -158,7 +158,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		}
 	}
 
-	public void ApplyStatePhysics()
+	public virtual void ApplyStatePhysics()
 	{
 		var velocity = Velocity;
 
@@ -202,7 +202,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		Velocity = velocity;
 	}
 
-	public void ApplyState()
+	public virtual void ApplyState()
 	{
 		switch (CurrentState)
 		{
@@ -223,7 +223,7 @@ public partial class EnemyTemplate : CharacterBody2D
 		}
 	}
 
-	public void ApplyStateAnimation()
+	public virtual void ApplyStateAnimation()
 	{
 		switch (CurrentState)
 		{
