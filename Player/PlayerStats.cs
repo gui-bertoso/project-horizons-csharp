@@ -48,9 +48,17 @@ public partial class PlayerStats : Node
 
 	private void OnHitboxAreaEntered(Area2D area)
 	{
-		var node = area.GetParent<EnemyTemplate>();
-		var damage = node.Damage;
-		UpdateHealth("Decrease", damage);
+		var node = area.GetParent();
+		if (node is Projectile)
+		{
+			var damage = ((Projectile)node).Damage;
+			UpdateHealth("Decrease", damage);
+		}
+		else
+		{
+			var damage = ((EnemyTemplate)node).Damage;
+			UpdateHealth("Decrease", damage);
+		}
 	}
 
 	private void UpdateHealth(string type, int value)
