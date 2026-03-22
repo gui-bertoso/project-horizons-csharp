@@ -6,7 +6,7 @@ namespace projecthorizonscs.Enemys;
 public partial class EnemyTemplate : CharacterBody2D
 {
 	protected AnimationPlayer AnimPlayer;
-	private Sprite2D _bodySprite;
+	public Sprite2D _bodySprite;
 	private Label _debugLabel;
 	private Area2D _attackArea;
 	private CollisionShape2D _hitboxArea;

@@ -135,8 +135,8 @@ script = ExtResource("2_su4h6")
 Damage = 1
 EnemyName = "Leave"
 Health = 3
-MoveSpeed = 175
-DetectionDistance = 250
+MoveSpeed = 95
+DetectionDistance = 260
 
 [node name="Sprite" parent="." index="0" unique_id=728830498]
 position = Vector2(0, -16)

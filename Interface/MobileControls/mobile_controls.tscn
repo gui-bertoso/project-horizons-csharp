@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://c2tdofnkdulbv"]
+
+[ext_resource type="Texture2D" uid="uid://b787h15sw82aj" path="res://Icon.svg" id="1_8nahi"]
+[ext_resource type="Script" uid="uid://omdtb7mdvtxx" path="res://Interface/MobileControls/MobileControls.cs" id="1_n4r8t"]
+
+[node name="MobileControls" type="Control" unique_id=1658402906]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n4r8t")
+
+[node name="Control3" type="Control" parent="." unique_id=72165492]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VirtualJoystick" type="VirtualJoystick" parent="Control3" unique_id=1119284981]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 175.0
+offset_top = 401.0
+offset_right = 215.0
+offset_bottom = 441.0
+grow_vertical = 0
+joystick_mode = 1
+joystick_size = 159.0
+action_left = &"move_left"
+action_right = &"move_right"
+action_up = &"move_up"
+action_down = &"move_down"
+
+[node name="Control" type="Control" parent="Control3" unique_id=453659157]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1072.0
+offset_top = 568.0
+offset_right = 1112.0
+offset_bottom = 608.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Node2D" type="Node2D" parent="Control3/Control" unique_id=1993442328]
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control3/Control/Node2D" unique_id=1150502786]
+position = Vector2(-140, -139)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "dash"
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="Control3/Control/Node2D" unique_id=2045376704]
+position = Vector2(-99, -277)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "collect"
+
+[node name="TouchScreenButton3" type="TouchScreenButton" parent="Control3/Control/Node2D" unique_id=1332097830]
+position = Vector2(-250, -227)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "action"
+
+[node name="TouchScreenButton4" type="TouchScreenButton" parent="Control3/Control/Node2D" unique_id=510646034]
+position = Vector2(-250, -227)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "action"
+
+[node name="Control2" type="Control" parent="Control3" unique_id=253830781]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1072.0
+offset_right = 1112.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Node2D" type="Node2D" parent="Control3/Control2" unique_id=675743326]
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control3/Control2/Node2D" unique_id=972980581]
+position = Vector2(-154, 114)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "consume"
+
+[node name="Control3" type="Control" parent="Control3" unique_id=156984326]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Node2D" type="Node2D" parent="Control3/Control3" unique_id=1118721350]
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control3/Control3/Node2D" unique_id=1002508721]
+position = Vector2(78, 86.00001)
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("1_8nahi")
+texture_pressed = ExtResource("1_8nahi")
+action = "debug"
