@@ -2,7 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://btxaahjihi36b" path="res://Enemys/EnemyTemplate/EnemyTemplate.tscn" id="1_5mboe"]
 [ext_resource type="Script" uid="uid://eub0ieeu84jp" path="res://Enemys/Slime/Slime.cs" id="2_47n6s"]
-[ext_resource type="Texture2D" uid="uid://xfwm51d5mt1d" path="res://Assets/Enemys/Slime.png" id="3_twulu"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_shv32"]
+load_path = "res://.godot/imported/Slime.png-e7827413be66f8e0a79b2773c1e9e802.ctex"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_twulu"]
 
@@ -130,12 +132,16 @@ size = Vector2(35, 30)
 
 [node name="Slime" unique_id=1875013965 instance=ExtResource("1_5mboe")]
 script = ExtResource("2_47n6s")
+Damage = 1
 EnemyName = "Slime"
-MoveSpeed = 84
+Health = 6
+MoveSpeed = 80
+DetectionDistance = 220
 
 [node name="Sprite" parent="." index="0" unique_id=728830498]
+self_modulate = Color(0, 0, 1, 1)
 position = Vector2(0, -16)
-texture = ExtResource("3_twulu")
+texture = SubResource("CompressedTexture2D_shv32")
 hframes = 7
 vframes = 4
 
