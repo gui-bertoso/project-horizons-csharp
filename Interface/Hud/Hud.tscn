@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://blfohvpid3goa" path="res://Interface/DebugPanel/DebugPanel.tscn" id="1_vy2b5"]
 [ext_resource type="PackedScene" uid="uid://c7ybtt5poys77" path="res://Interface/ItemsDisplay/ItemsDisplay.tscn" id="2_3fcnm"]
 [ext_resource type="PackedScene" uid="uid://0f4p3021loy4" path="res://Interface/StatsContainer/StatsContainer.tscn" id="3_qthrp"]
+[ext_resource type="PackedScene" uid="uid://c2tdofnkdulbv" path="res://Interface/MobileControls/mobile_controls.tscn" id="4_3ikdg"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1839957270]
 
@@ -11,3 +12,5 @@
 [node name="ItemsDisplay" parent="." unique_id=603277340 instance=ExtResource("2_3fcnm")]
 
 [node name="StatsContainer" parent="." unique_id=517590207 instance=ExtResource("3_qthrp")]
+
+[node name="MobileControls" parent="." unique_id=1658402906 instance=ExtResource("4_3ikdg")]

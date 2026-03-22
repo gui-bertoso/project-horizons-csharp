@@ -10,6 +10,7 @@ size = Vector2(16, 9)
 [node name="Seed" unique_id=882868704 instance=ExtResource("1_ikkgk")]
 script = ExtResource("2_8usxn")
 Speed = 200.0
+Damage = 3
 
 [node name="Sprite" parent="." index="0" unique_id=78179007]
 rotation = 1.5647961

@@ -43,9 +43,7 @@
 [ext_resource type="Resource" uid="uid://c0u42oeiran04" path="res://Items/Armor3Foot.tres" id="40_p2txi"]
 [ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="41_iqm64"]
 [ext_resource type="Resource" uid="uid://boaoaciiinbrh" path="res://Items/Armor3Tome.tres" id="42_k4u6w"]
-[ext_resource type="PackedScene" uid="uid://iqddsepl7qw2" path="res://Enemys/RageFlower/RageFlower.tscn" id="44_wrmfb"]
 [ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="45_8485w"]
-[ext_resource type="PackedScene" uid="uid://834fniewtsf1" path="res://Enemys/Leave/Leave.tscn" id="47_ssnfo"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
@@ -323,35 +321,611 @@ visible = false
 [node name="DialogueDummy" parent="." index="6" unique_id=1624981845 instance=ExtResource("62_jqk32")]
 position = Vector2(-632, 609)
 
-[node name="RageFlower" parent="." index="7" unique_id=1875013965 instance=ExtResource("44_wrmfb")]
-position = Vector2(2030, -287)
-EnemyName = "RageFlower"
-
-[node name="Slime" parent="." index="8" unique_id=1164479310 instance=ExtResource("45_8485w")]
-position = Vector2(1720, -471)
-collision_layer = 1
-collision_mask = 1
-
-[node name="Slime2" parent="." index="9" unique_id=2118759442 instance=ExtResource("45_8485w")]
-position = Vector2(1630, -497)
-collision_layer = 1
-collision_mask = 1
-
-[node name="Slime3" parent="." index="10" unique_id=635929724 instance=ExtResource("45_8485w")]
-position = Vector2(1789, -412)
-collision_layer = 1
-collision_mask = 1
-
-[node name="Slime4" parent="." index="11" unique_id=1039181622 instance=ExtResource("45_8485w")]
-position = Vector2(1518, -504)
-collision_layer = 1
-collision_mask = 1
-
-[node name="PhysicItem" parent="." index="12" unique_id=969569692 instance=ExtResource("5_afn2h")]
+[node name="PhysicItem" parent="." index="7" unique_id=969569692 instance=ExtResource("5_afn2h")]
 position = Vector2(1333, -67)
 Item = ExtResource("21_ki3ay")
 
-[node name="Leave" parent="." index="13" unique_id=1211643105 instance=ExtResource("47_ssnfo")]
-position = Vector2(2207, -85)
+[node name="Node2D2" type="Node2D" parent="." index="8" unique_id=244727296]
+position = Vector2(26, 1671)
+
+[node name="Slime" parent="Node2D2" index="0" unique_id=1434048504 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime2" parent="Node2D2" index="1" unique_id=1875013965 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime3" parent="Node2D2" index="2" unique_id=1134785572 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime4" parent="Node2D2" index="3" unique_id=656599922 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime5" parent="Node2D2" index="4" unique_id=1090321993 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime6" parent="Node2D2" index="5" unique_id=1535270095 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime7" parent="Node2D2" index="6" unique_id=1440175297 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime8" parent="Node2D2" index="7" unique_id=1049006698 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime9" parent="Node2D2" index="8" unique_id=721516000 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime10" parent="Node2D2" index="9" unique_id=2106294868 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime11" parent="Node2D2" index="10" unique_id=980205943 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime12" parent="Node2D2" index="11" unique_id=280342527 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime13" parent="Node2D2" index="12" unique_id=983653059 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime14" parent="Node2D2" index="13" unique_id=1708735765 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime15" parent="Node2D2" index="14" unique_id=1543727431 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime16" parent="Node2D2" index="15" unique_id=1038535469 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime17" parent="Node2D2" index="16" unique_id=1185675464 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime18" parent="Node2D2" index="17" unique_id=1845275797 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime19" parent="Node2D2" index="18" unique_id=145700926 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime20" parent="Node2D2" index="19" unique_id=227691739 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime21" parent="Node2D2" index="20" unique_id=1564538186 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime22" parent="Node2D2" index="21" unique_id=860253481 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime23" parent="Node2D2" index="22" unique_id=764294853 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime24" parent="Node2D2" index="23" unique_id=1722816011 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime25" parent="Node2D2" index="24" unique_id=877259615 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime26" parent="Node2D2" index="25" unique_id=2139897806 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime27" parent="Node2D2" index="26" unique_id=60606876 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime28" parent="Node2D2" index="27" unique_id=1443555671 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime29" parent="Node2D2" index="28" unique_id=1014639032 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime30" parent="Node2D2" index="29" unique_id=1395163587 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime31" parent="Node2D2" index="30" unique_id=2065445797 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime32" parent="Node2D2" index="31" unique_id=999879928 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime33" parent="Node2D2" index="32" unique_id=1107371746 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime34" parent="Node2D2" index="33" unique_id=332057451 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime35" parent="Node2D2" index="34" unique_id=727080584 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime36" parent="Node2D2" index="35" unique_id=152298434 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime37" parent="Node2D2" index="36" unique_id=1978795378 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime38" parent="Node2D2" index="37" unique_id=1657826002 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime39" parent="Node2D2" index="38" unique_id=764173238 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime40" parent="Node2D2" index="39" unique_id=77639974 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime41" parent="Node2D2" index="40" unique_id=905153909 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime42" parent="Node2D2" index="41" unique_id=2081137097 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime43" parent="Node2D2" index="42" unique_id=1844439790 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime44" parent="Node2D2" index="43" unique_id=18002721 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime45" parent="Node2D2" index="44" unique_id=938740862 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime46" parent="Node2D2" index="45" unique_id=1706303624 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime47" parent="Node2D2" index="46" unique_id=815090918 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime48" parent="Node2D2" index="47" unique_id=572620918 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime49" parent="Node2D2" index="48" unique_id=399622349 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime50" parent="Node2D2" index="49" unique_id=984592109 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime51" parent="Node2D2" index="50" unique_id=1990137318 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime52" parent="Node2D2" index="51" unique_id=672201651 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime53" parent="Node2D2" index="52" unique_id=827939652 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime54" parent="Node2D2" index="53" unique_id=710978738 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime55" parent="Node2D2" index="54" unique_id=837239101 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime56" parent="Node2D2" index="55" unique_id=391327744 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime57" parent="Node2D2" index="56" unique_id=252421281 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime58" parent="Node2D2" index="57" unique_id=1199021399 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime59" parent="Node2D2" index="58" unique_id=707989627 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime60" parent="Node2D2" index="59" unique_id=1096626132 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime61" parent="Node2D2" index="60" unique_id=156912210 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime62" parent="Node2D2" index="61" unique_id=2040117188 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime63" parent="Node2D2" index="62" unique_id=1459666462 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime64" parent="Node2D2" index="63" unique_id=2011049466 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime65" parent="Node2D2" index="64" unique_id=2001876749 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime66" parent="Node2D2" index="65" unique_id=2100863301 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime67" parent="Node2D2" index="66" unique_id=165507638 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime68" parent="Node2D2" index="67" unique_id=127707942 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime69" parent="Node2D2" index="68" unique_id=320858438 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime70" parent="Node2D2" index="69" unique_id=456554504 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime71" parent="Node2D2" index="70" unique_id=927985246 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime72" parent="Node2D2" index="71" unique_id=1109304245 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime73" parent="Node2D2" index="72" unique_id=1238295547 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime74" parent="Node2D2" index="73" unique_id=1172127203 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime75" parent="Node2D2" index="74" unique_id=2021265851 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime76" parent="Node2D2" index="75" unique_id=1187297375 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime77" parent="Node2D2" index="76" unique_id=1908021016 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime78" parent="Node2D2" index="77" unique_id=939395302 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime79" parent="Node2D2" index="78" unique_id=1799420763 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime80" parent="Node2D2" index="79" unique_id=497686025 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime81" parent="Node2D2" index="80" unique_id=1390525219 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime82" parent="Node2D2" index="81" unique_id=1301597592 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime83" parent="Node2D2" index="82" unique_id=1266028962 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime84" parent="Node2D2" index="83" unique_id=1341260755 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime85" parent="Node2D2" index="84" unique_id=559106339 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime86" parent="Node2D2" index="85" unique_id=1321220242 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime87" parent="Node2D2" index="86" unique_id=1935894253 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime88" parent="Node2D2" index="87" unique_id=772773852 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime89" parent="Node2D2" index="88" unique_id=1700037823 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime90" parent="Node2D2" index="89" unique_id=1962593542 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime91" parent="Node2D2" index="90" unique_id=1752078970 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime92" parent="Node2D2" index="91" unique_id=697742867 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime93" parent="Node2D2" index="92" unique_id=168570640 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime94" parent="Node2D2" index="93" unique_id=1081366194 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime95" parent="Node2D2" index="94" unique_id=1752444149 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime96" parent="Node2D2" index="95" unique_id=1108821779 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime97" parent="Node2D2" index="96" unique_id=1079219966 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime98" parent="Node2D2" index="97" unique_id=730931132 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime99" parent="Node2D2" index="98" unique_id=947783267 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime100" parent="Node2D2" index="99" unique_id=1841234768 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime101" parent="Node2D2" index="100" unique_id=183219609 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime102" parent="Node2D2" index="101" unique_id=1622211025 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime103" parent="Node2D2" index="102" unique_id=791349676 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime104" parent="Node2D2" index="103" unique_id=2018637384 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime105" parent="Node2D2" index="104" unique_id=1343786374 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime106" parent="Node2D2" index="105" unique_id=128877888 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime107" parent="Node2D2" index="106" unique_id=1519813145 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime108" parent="Node2D2" index="107" unique_id=551828540 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime109" parent="Node2D2" index="108" unique_id=15755087 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime110" parent="Node2D2" index="109" unique_id=449418474 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime111" parent="Node2D2" index="110" unique_id=209986487 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime112" parent="Node2D2" index="111" unique_id=534579949 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime113" parent="Node2D2" index="112" unique_id=1709802858 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime114" parent="Node2D2" index="113" unique_id=467067544 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime115" parent="Node2D2" index="114" unique_id=604425231 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime116" parent="Node2D2" index="115" unique_id=96471827 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime117" parent="Node2D2" index="116" unique_id=1605388909 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime118" parent="Node2D2" index="117" unique_id=1710852791 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime119" parent="Node2D2" index="118" unique_id=428721156 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime120" parent="Node2D2" index="119" unique_id=297023891 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime121" parent="Node2D2" index="120" unique_id=1204104781 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime122" parent="Node2D2" index="121" unique_id=1534927551 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime123" parent="Node2D2" index="122" unique_id=975529048 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime124" parent="Node2D2" index="123" unique_id=1244296509 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime125" parent="Node2D2" index="124" unique_id=697382661 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime126" parent="Node2D2" index="125" unique_id=977181740 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime127" parent="Node2D2" index="126" unique_id=1074551020 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime128" parent="Node2D2" index="127" unique_id=1379069465 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime129" parent="Node2D2" index="128" unique_id=1620192686 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime130" parent="Node2D2" index="129" unique_id=1310305344 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime131" parent="Node2D2" index="130" unique_id=416192936 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime132" parent="Node2D2" index="131" unique_id=1011449888 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime133" parent="Node2D2" index="132" unique_id=349508213 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime134" parent="Node2D2" index="133" unique_id=862451094 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime135" parent="Node2D2" index="134" unique_id=2071795049 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime136" parent="Node2D2" index="135" unique_id=203817924 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime137" parent="Node2D2" index="136" unique_id=1571630846 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime138" parent="Node2D2" index="137" unique_id=1734334891 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime139" parent="Node2D2" index="138" unique_id=187508390 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime140" parent="Node2D2" index="139" unique_id=739549238 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime141" parent="Node2D2" index="140" unique_id=1701501899 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime142" parent="Node2D2" index="141" unique_id=1969838310 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime143" parent="Node2D2" index="142" unique_id=2106877766 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime144" parent="Node2D2" index="143" unique_id=537727910 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime145" parent="Node2D2" index="144" unique_id=520551532 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime146" parent="Node2D2" index="145" unique_id=1863713065 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime147" parent="Node2D2" index="146" unique_id=843987409 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime148" parent="Node2D2" index="147" unique_id=503795018 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime149" parent="Node2D2" index="148" unique_id=1118626683 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime150" parent="Node2D2" index="149" unique_id=1003779215 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime151" parent="Node2D2" index="150" unique_id=299584967 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime152" parent="Node2D2" index="151" unique_id=1679673727 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime153" parent="Node2D2" index="152" unique_id=1604973622 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime154" parent="Node2D2" index="153" unique_id=537960397 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime155" parent="Node2D2" index="154" unique_id=531163566 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime156" parent="Node2D2" index="155" unique_id=2056665059 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime157" parent="Node2D2" index="156" unique_id=290059674 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime158" parent="Node2D2" index="157" unique_id=1864614938 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime159" parent="Node2D2" index="158" unique_id=1904347539 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime160" parent="Node2D2" index="159" unique_id=1279224248 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime161" parent="Node2D2" index="160" unique_id=504265 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime162" parent="Node2D2" index="161" unique_id=648574777 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime163" parent="Node2D2" index="162" unique_id=156487304 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime164" parent="Node2D2" index="163" unique_id=810595328 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime165" parent="Node2D2" index="164" unique_id=1428497310 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime166" parent="Node2D2" index="165" unique_id=197053130 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime167" parent="Node2D2" index="166" unique_id=1881473791 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime168" parent="Node2D2" index="167" unique_id=2139626209 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime169" parent="Node2D2" index="168" unique_id=494228022 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime170" parent="Node2D2" index="169" unique_id=604531026 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime171" parent="Node2D2" index="170" unique_id=1043766055 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime172" parent="Node2D2" index="171" unique_id=2027132831 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime173" parent="Node2D2" index="172" unique_id=618156757 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime174" parent="Node2D2" index="173" unique_id=360652582 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime175" parent="Node2D2" index="174" unique_id=562145328 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime176" parent="Node2D2" index="175" unique_id=468040551 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime177" parent="Node2D2" index="176" unique_id=991039659 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime178" parent="Node2D2" index="177" unique_id=1131012135 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime179" parent="Node2D2" index="178" unique_id=1693228323 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime180" parent="Node2D2" index="179" unique_id=9774899 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime181" parent="Node2D2" index="180" unique_id=463913410 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime182" parent="Node2D2" index="181" unique_id=1489396829 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime183" parent="Node2D2" index="182" unique_id=1532330107 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime184" parent="Node2D2" index="183" unique_id=1762637441 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime185" parent="Node2D2" index="184" unique_id=1211922202 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime186" parent="Node2D2" index="185" unique_id=1435325721 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime187" parent="Node2D2" index="186" unique_id=818547095 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime188" parent="Node2D2" index="187" unique_id=1304147013 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime189" parent="Node2D2" index="188" unique_id=1505009343 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime190" parent="Node2D2" index="189" unique_id=160033548 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime191" parent="Node2D2" index="190" unique_id=2042045736 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime192" parent="Node2D2" index="191" unique_id=917646986 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime193" parent="Node2D2" index="192" unique_id=1696821289 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime194" parent="Node2D2" index="193" unique_id=330377262 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime195" parent="Node2D2" index="194" unique_id=841237804 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime196" parent="Node2D2" index="195" unique_id=220925531 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime197" parent="Node2D2" index="196" unique_id=176100898 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime198" parent="Node2D2" index="197" unique_id=296496628 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime199" parent="Node2D2" index="198" unique_id=634475858 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
+
+[node name="Slime200" parent="Node2D2" index="199" unique_id=52456204 instance=ExtResource("45_8485w")]
+position = Vector2(2006, -2261)
 
 [editable path="WorldEnvironment"]
