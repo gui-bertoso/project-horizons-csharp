@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c82canyapopma"]
+
+[ext_resource type="PackedScene" uid="uid://c5t8kfijpj0jd" path="res://Projectiles/EnemyProjectile.tscn" id="1_ikkgk"]
+[ext_resource type="Script" uid="uid://b2rmtet8i0ots" path="res://Projectiles/GreenSeed.cs" id="2_8usxn"]
+[ext_resource type="Texture2D" uid="uid://djcjeusvvdl1t" path="res://Assets/Projectiles/GreenSeed.png" id="2_ikkgk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e077m"]
+size = Vector2(16, 9)
+
+[node name="Seed" unique_id=882868704 instance=ExtResource("1_ikkgk")]
+script = ExtResource("2_8usxn")
+Speed = 200.0
+
+[node name="Sprite" parent="." index="0" unique_id=78179007]
+rotation = 1.5647961
+texture = ExtResource("2_ikkgk")
+
+[node name="CollisionShape2D" parent="Area2D" parent_id_path=PackedInt32Array(1082665479) index="0" unique_id=1798747728]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_e077m")
