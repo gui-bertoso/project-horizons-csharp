@@ -45,6 +45,7 @@
 [ext_resource type="Resource" uid="uid://boaoaciiinbrh" path="res://Items/Armor3Tome.tres" id="42_k4u6w"]
 [ext_resource type="PackedScene" uid="uid://iqddsepl7qw2" path="res://Enemys/RageFlower/RageFlower.tscn" id="44_wrmfb"]
 [ext_resource type="PackedScene" uid="uid://dsme77lawliia" path="res://Enemys/Slime/Slime.tscn" id="45_8485w"]
+[ext_resource type="PackedScene" uid="uid://834fniewtsf1" path="res://Enemys/Leave/Leave.tscn" id="47_ssnfo"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
@@ -349,5 +350,8 @@ collision_mask = 1
 [node name="PhysicItem" parent="." index="12" unique_id=969569692 instance=ExtResource("5_afn2h")]
 position = Vector2(1333, -67)
 Item = ExtResource("21_ki3ay")
+
+[node name="Leave" parent="." index="13" unique_id=1211643105 instance=ExtResource("47_ssnfo")]
+position = Vector2(2207, -85)
 
 [editable path="WorldEnvironment"]
