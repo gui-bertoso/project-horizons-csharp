@@ -17,12 +17,10 @@ public partial class RageFlower : projecthorizonscs.Enemys.EnemyTemplate
         base._Ready();
 
         _projectileSpawnMarker = GetNode<Marker2D>("ProjectileSpawn");
-        _seedProjectile = GD.Load<PackedScene>("uid://xfvgssu7qxyb");
-        _greenSeedProjectile = GD.Load<PackedScene>("uid://xfvgssu7qxyb");
+        _seedProjectile = GD.Load<PackedScene>("uid://c41q8gni3ijp5");
+        _greenSeedProjectile = GD.Load<PackedScene>("uid://c82canyapopma");
     }
-
     
-
 	public override void ApplyStateAnimation()
 	{
 		switch (CurrentState)
@@ -114,7 +112,7 @@ public partial class RageFlower : projecthorizonscs.Enemys.EnemyTemplate
     {
         var rng = new RandomNumberGenerator();
         Projectile projectile;
-        if (rng.RandiRange(0, 12) == 12)
+        if (rng.RandiRange(0, 12) == 1)
         {
             projectile = _greenSeedProjectile.Instantiate<Projectile>();
         }

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c5t8kfijpj0jd"]
+
+[ext_resource type="Script" uid="uid://flhun3bgoyli" path="res://Projectiles/Projectile.cs" id="1_2y3x4"]
+
+[node name="EnemyProjectile" type="Node2D" unique_id=882868704]
+script = ExtResource("1_2y3x4")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=78179007]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1082665479]
+collision_layer = 128
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1798747728]
