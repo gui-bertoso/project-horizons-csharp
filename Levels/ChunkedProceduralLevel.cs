@@ -18,7 +18,6 @@ public partial class ChunkedProceduralLevel : Node2D
     public override void _Process(double delta)
     {
         playedTime += (float)delta;
-		GD.Print($"current played time: {playedTime}");
     }
 
     public override void _ExitTree()
