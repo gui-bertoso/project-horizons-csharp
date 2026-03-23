@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://b1shirisnhtrs"]
 
-[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="1_mpopp"]
+[ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="1_4bsnw"]
+[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/MapTileMap.tres" id="1_mpopp"]
 [ext_resource type="Script" uid="uid://d4jih0bkgc7eb" path="res://NewLevelGeneratorTests/NextLevelGenerator.cs" id="2_4bsnw"]
 
 [node name="NewTilemapGenerator" type="TileMapLayer" unique_id=426732340]
 y_sort_enabled = true
-tile_set = ExtResource("1_mpopp")
+tile_set = ExtResource("1_4bsnw")
 rendering_quadrant_size = 32
 script = ExtResource("2_4bsnw")
 

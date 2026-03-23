@@ -23,8 +23,8 @@ public partial class NextLevelGenerator : TileMapLayer
     private Godot.Collections.Dictionary<Vector2I, bool> _validCellCache = new();
 
     public int chunkSize = 10;
-    public int chunksX = 125;
-    public int chunksY = 250;
+    public int chunksX = 60;
+    public int chunksY = 120;
 
 	private float _insideDetails = 40f;
 	private float _coastDetails = 90.0f;
@@ -532,7 +532,7 @@ public partial class NextLevelGenerator : TileMapLayer
         float treeChanceNoise = detailsNoiseImage.GetNoise2D(x * 0.18f + 928.4f, y * 0.18f - 417.2f);
         float treeVariationValue = detailsNoiseImage.GetNoise2D(x * 0.37f + 193.7f, y * 0.37f - 812.5f);
 
-        int treeSpacing = 5;
+        int treeSpacing = 6;
 
         int cellX = Mathf.FloorToInt((float)x / treeSpacing);
         int cellY = Mathf.FloorToInt((float)y / treeSpacing);
@@ -552,8 +552,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 0:
                 if (blockId == 100)
                 {
-                    bool denseForest = forestNoise > 0.10f;
-                    bool lightForest = forestNoise > -0.15f && treeChanceNoise > 0.25f;
+                    bool denseForest = forestNoise > 0.28f;
+                    bool lightForest = forestNoise > 0.08f && treeChanceNoise > 0.48f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
@@ -566,8 +566,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 1:
                 if (blockId == 110)
                 {
-                    bool denseForest = forestNoise > 0.20f;
-                    bool lightForest = forestNoise > -0.05f && treeChanceNoise > 0.35f;
+                    bool denseForest = forestNoise > 0.35f;
+                    bool lightForest = forestNoise > 0.15f && treeChanceNoise > 0.55f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
@@ -580,8 +580,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 2:
                 if (blockId == 120)
                 {
-                    bool denseForest = forestNoise > 0.30f;
-                    bool lightForest = forestNoise > 0.05f && treeChanceNoise > 0.45f;
+                    bool denseForest = forestNoise > 0.42f;
+                    bool lightForest = forestNoise > 0.22f && treeChanceNoise > 0.62f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
@@ -904,7 +904,7 @@ public partial class NextLevelGenerator : TileMapLayer
         float treeChanceNoise = _detailsNoiseImage.GetNoise2D(x * 0.18f + 928.4f, y * 0.18f - 417.2f);
         float treeVariationValue = _detailsNoiseImage.GetNoise2D(x * 0.37f + 193.7f, y * 0.37f - 812.5f);
 
-        int treeSpacing = 5;
+        int treeSpacing = 6;
 
         int cellX = Mathf.FloorToInt((float)x / treeSpacing);
         int cellY = Mathf.FloorToInt((float)y / treeSpacing);
@@ -924,8 +924,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 0:
                 if (blockId == 100)
                 {
-                    bool denseForest = forestNoise > 0.10f;
-                    bool lightForest = forestNoise > -0.15f && treeChanceNoise > 0.25f;
+                    bool denseForest = forestNoise > 0.28f;
+                    bool lightForest = forestNoise > 0.08f && treeChanceNoise > 0.48f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
@@ -938,8 +938,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 1:
                 if (blockId == 110)
                 {
-                    bool denseForest = forestNoise > 0.20f;
-                    bool lightForest = forestNoise > -0.05f && treeChanceNoise > 0.35f;
+                    bool denseForest = forestNoise > 0.35f;
+                    bool lightForest = forestNoise > 0.15f && treeChanceNoise > 0.55f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
@@ -952,8 +952,8 @@ public partial class NextLevelGenerator : TileMapLayer
             case 2:
                 if (blockId == 120)
                 {
-                    bool denseForest = forestNoise > 0.30f;
-                    bool lightForest = forestNoise > 0.05f && treeChanceNoise > 0.45f;
+                    bool denseForest = forestNoise > 0.42f;
+                    bool lightForest = forestNoise > 0.22f && treeChanceNoise > 0.62f;
 
                     if (canPlaceTree && (denseForest || lightForest))
                         return treeVariationValue > 0f ? 300 : 301;
