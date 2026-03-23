@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dduowujep6yb0"]
 
-[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="1_6ienh"]
+[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/MapTileMap.tres" id="1_6ienh"]
 [ext_resource type="Script" uid="uid://8i6s3ncv06m" path="res://Interface/SettingsMenu/SettingsMenu.cs" id="1_bdi13"]
 [ext_resource type="PackedScene" uid="uid://cuqaf4voofpgw" path="res://Envinroment/new_envinroment.tscn" id="3_mhvid"]
 

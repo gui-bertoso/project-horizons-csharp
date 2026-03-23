@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cuiypyxqvmafj"]
 
-[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/Layer0Tileset.tres" id="1_7ae1w"]
+[ext_resource type="TileSet" uid="uid://sq5di6pkgab6" path="res://Tilesets/MapTileMap.tres" id="1_7ae1w"]
 [ext_resource type="Script" uid="uid://5fgyla3rgnoh" path="res://LevelGenerator/LevelGenerator.cs" id="1_xjjrg"]
 
 [node name="TilemapGenerator" type="TileMapLayer" unique_id=426732340]
