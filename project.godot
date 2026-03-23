@@ -20,6 +20,7 @@ config/icon="res://Icon.svg"
 Globals="*uid://dxu3j7isnds5t"
 DataManager="*uid://c5g6r15ukq0v4"
 AchievementsManager="*uid://c77otfm3buuaa"
+EnemysManager="*uid://drkbe36pxaeby"
 
 [display]
 

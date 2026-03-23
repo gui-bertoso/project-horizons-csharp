@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bo41mbgikuxqk"]
 
 [ext_resource type="PackedScene" uid="uid://lbt34dfemles" path="res://Interface/Hud/Hud.tscn" id="2_0bju4"]
+[ext_resource type="Script" uid="uid://dv82eur0s2m0r" path="res://Levels/EnemysContainer.cs" id="2_ersrp"]
 [ext_resource type="Texture2D" uid="uid://cocd2lhvugjap" path="res://Assets/background.png" id="3_t4nej"]
 [ext_resource type="PackedScene" uid="uid://batl3kqaga0xt" path="res://Envinroment/Environment.tscn" id="4_ersrp"]
 
@@ -14,6 +15,9 @@ scale = Vector2(6.686111, 4.2083335)
 texture = ExtResource("3_t4nej")
 
 [node name="Scenario" type="Node2D" parent="." unique_id=2043432428]
+
+[node name="EnemysContainer" type="Node2D" parent="." unique_id=679281896]
+script = ExtResource("2_ersrp")
 
 [node name="HUD" parent="." unique_id=1839957270 instance=ExtResource("2_0bju4")]
 
