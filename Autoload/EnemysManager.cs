@@ -5,6 +5,20 @@ using System.Collections.Generic;
 
 public partial class EnemysManager : Node
 {
+    public Godot.Collections.Dictionary<int, Godot.Collections.Array<EnemySpawnData>> enemyPathsToBiome = new()
+    {
+        {
+            0,
+            new()
+            {
+                new(25, "uid://cbi26ck84a7vt"),
+                new(25, "uid://834fniewtsf1"),
+                new(25, "uid://dsme77lawliia"),
+                new(25, "uid://iqddsepl7qw2"),
+            }
+        }
+    };
+    
     public static EnemysManager I { get; private set; }
 
     public Node2D EnemysContainer { get; set; }
@@ -41,27 +55,28 @@ public partial class EnemysManager : Node
 
     public void SpawnEnemy(string enemyScenePath, Vector2 spawnPosition = default)
     {
-        if (EnemysContainer == null || !GodotObject.IsInstanceValid(EnemysContainer))
-        {
-            GD.PushError("EnemysContainer is null.");
-            return;
-        }
+        Node spawnContainer = GetTree().CurrentScene;
 
         var enemyScene = GD.Load<PackedScene>(enemyScenePath);
         if (enemyScene == null)
         {
-            GD.PushError($"Could not load enemy scene: {enemyScenePath}");
+            GD.Print($"Could not load enemy scene: {enemyScenePath}");
             return;
         }
 
+        if (EnemysContainer != null)
+            spawnContainer = EnemysContainer;
+
         var newEnemy = enemyScene.Instantiate<EnemyTemplate>();
-        EnemysContainer.AddChild(newEnemy);
-        newEnemy.GlobalPosition = spawnPosition;
 
         newEnemy.ID = _nextEnemyId;
         _nextEnemyId++;
 
+        spawnContainer.CallDeferred(Node.MethodName.AddChild, newEnemy);
+        newEnemy.CallDeferred(Node2D.MethodName.SetGlobalPosition, spawnPosition);
+
         EnemysArray.Add(newEnemy);
+        GD.Print($"EnemySpawner: spawned {spawnPosition}");
     }
 
     public void ClearEnemies()
@@ -161,5 +176,34 @@ public partial class EnemysManager : Node
         }
 
         EnemysAlive = EnemysContainer.GetChildCount();
+    }
+
+    public string GetRandomEnemyByChance(int BiomeId)
+    {
+        if (!enemyPathsToBiome.ContainsKey(BiomeId)) return null;
+
+        var enemysList = enemyPathsToBiome[BiomeId];
+        if (enemysList == null || enemysList.Count == 0) return null;
+
+        int totalChance = 0;
+        foreach (var enemy in enemysList)
+            totalChance += enemy.Chance;
+        
+        if (totalChance <= 0)
+            return null;
+        
+        int randomValue = GD.RandRange(1, totalChance);
+
+        int currentChance = 0;
+
+        foreach (var enemy in enemysList)
+        {
+            currentChance += enemy.Chance;
+
+            if (randomValue <= currentChance)
+                return enemy.Path;
+        }
+
+        return enemysList[0].Path;
     }
 }

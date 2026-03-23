@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://xvuy4nrq8uyd"]
 
-[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="1_65e70"]
+[ext_resource type="Script" uid="uid://lcfkuvqegai6" path="res://Interface/LoadingScreen/LoadingScreen.cs" id="1_wkxvt"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=622922478]
+script = ExtResource("1_wkxvt")
 
 [node name="Control" type="Control" parent="." unique_id=1361937680]
 layout_mode = 3
@@ -21,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
-[node name="Label" type="Label" parent="Control" unique_id=1267142374]
+[node name="MainLabel" type="Label" parent="Control" unique_id=1267142374]
 layout_mode = 0
 offset_left = 510.0
 offset_top = 373.0
@@ -31,5 +32,25 @@ text = "[MessageHere]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Node2D" parent="Control" unique_id=1591361011 instance=ExtResource("1_65e70")]
-position = Vector2(565, 311.99997)
+[node name="SubLabel" type="Label" parent="Control" unique_id=1793743564]
+layout_mode = 0
+offset_left = 513.0
+offset_top = 406.0
+offset_right = 630.0
+offset_bottom = 429.0
+text = "[MessageHere]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Control" unique_id=1315044704]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -531.5
+offset_top = -24.0
+offset_right = 531.5
+grow_horizontal = 2
+grow_vertical = 0
