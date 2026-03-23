@@ -1,0 +1,31 @@
+[start]
+type=start
+next=dialogue_1050176885
+
+[dialogue_1050176885]
+type=dialogue
+text=oi
+next=dialogue_1280761783
+
+[dialogue_2124170371]
+type=dialogue
+text=tudo bem?
+next=dialogue_2977571938
+
+[dialogue_2977571938]
+type=dialogue
+text=quem liga
+next=dialogue_1280761783
+
+[dialogue_1280761783]
+type=dialogue
+text=vsfd
+next=end
+
+[end]
+type=end
+
+[dialogue_1096002944]
+type=dialogue
+text=qbom
+next=end
