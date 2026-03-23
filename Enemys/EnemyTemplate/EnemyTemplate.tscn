@@ -9,6 +9,7 @@ collision_mask = 7
 script = ExtResource("1_3tre6")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=728830498]
+z_index = 1
 material = ExtResource("2_fn716")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=494260580]
