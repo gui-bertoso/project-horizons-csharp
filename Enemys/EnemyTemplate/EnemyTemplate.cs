@@ -11,6 +11,8 @@ public partial class EnemyTemplate : CharacterBody2D
 	private Area2D _attackArea;
 	private CollisionShape2D _hitboxArea;
 
+	public int ID = 0;
+
 	[Export]
 	public int Damage = 2;
 
@@ -26,6 +28,9 @@ public partial class EnemyTemplate : CharacterBody2D
 	public int MoveSpeed = 100;
 	[Export]
 	public int DetectionDistance = 200;
+
+	public float UpdateCooldown = 0.0f;
+	public float UpdateCooldownCount = 0.0f;
 
 	public enum EnemyState
 	{
@@ -97,6 +102,13 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	public override void _Process(double delta)
 	{
+		if (UpdateCooldownCount > 0)
+		{
+			UpdateCooldownCount -= (float)delta;
+			return;
+		}
+
+		UpdateCooldownCount = UpdateCooldown;
 		if (Autoload.Globals.I.LocalPlayer == null)
 		{
 			return;

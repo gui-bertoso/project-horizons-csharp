@@ -1,0 +1,117 @@
+using Godot;
+using System.Text;
+using System.Collections.Generic;
+
+public partial class DialogueNode : DialogueNodeTemplate
+{
+    private LineEdit textEdit;
+    private LineEdit option1;
+    private LineEdit option2;
+
+    public override void _Ready()
+    {
+        SetupNode("dialogue", "dialogue");
+        Title = "Dialogue Node";
+
+        textEdit = GetNodeOrNull<LineEdit>("%TextEdit");
+        option1 = GetNodeOrNull<LineEdit>("%Option1");
+        option2 = GetNodeOrNull<LineEdit>("%Option2");
+
+        if (textEdit == null)
+            GD.PrintErr($"DialogueNode {Name}: %TextEdit nao encontrado.");
+
+        if (option1 == null)
+            GD.PrintErr($"DialogueNode {Name}: %Option1 nao encontrado.");
+
+        if (option2 == null)
+            GD.PrintErr($"DialogueNode {Name}: %Option2 nao encontrado.");
+
+        ClearAllSlots();
+        AddInput(0);
+        AddOutput(1);
+        AddOutput(2);
+    }
+
+    public override bool HasInput() => true;
+    public override bool HasOutput() => true;
+    public override int GetPrimaryInputSlot() => 0;
+    public override int GetPrimaryOutputSlot() => 0;
+
+    public override int VisualOutputSlotToPort(int visualSlot)
+    {
+        return visualSlot switch
+        {
+            1 => 0,
+            2 => 1,
+            _ => 0
+        };
+    }
+
+    public override int PortToVisualOutputSlot(int port)
+    {
+        return port switch
+        {
+            0 => 1,
+            1 => 2,
+            _ => 1
+        };
+    }
+
+    public override string ExportBody(DialogueEditor editor)
+    {
+        var sb = new StringBuilder();
+
+        string mainText = Escape(textEdit?.Text?.Trim() ?? "");
+        string option1Text = Escape(option1?.Text?.Trim() ?? "");
+        string option2Text = Escape(option2?.Text?.Trim() ?? "");
+
+        Dictionary<int, string> connections = editor.GetConnectionsFrom(Name);
+
+        string next1 = "";
+        string next2 = "";
+
+        int portOption1 = VisualOutputSlotToPort(1);
+        int portOption2 = VisualOutputSlotToPort(2);
+
+        if (connections.TryGetValue(portOption1, out var c1))
+            next1 = c1;
+
+        if (connections.TryGetValue(portOption2, out var c2))
+            next2 = c2;
+
+        sb.AppendLine("type=dialogue");
+        sb.AppendLine($"text={mainText}");
+        sb.AppendLine($"option_0_text={option1Text}");
+        sb.AppendLine($"option_0_next={next1}");
+        sb.AppendLine($"option_1_text={option2Text}");
+        sb.AppendLine($"option_1_next={next2}");
+
+        return sb.ToString().TrimEnd();
+    }
+
+    public void SetText(string text)
+    {
+        if (textEdit != null)
+            textEdit.Text = text;
+    }
+
+    public void SetOption1Text(string text)
+    {
+        if (option1 != null)
+            option1.Text = text;
+    }
+
+    public void SetOption2Text(string text)
+    {
+        if (option2 != null)
+            option2.Text = text;
+    }
+
+    private string Escape(string text)
+    {
+        return text
+            .Replace("\\", "\\\\")
+            .Replace("\n", "\\n")
+            .Replace("\r", "");
+    }
+}

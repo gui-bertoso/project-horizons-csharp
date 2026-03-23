@@ -5,9 +5,23 @@ using System;
 
 public partial class DebugLevel : Node2D
 {
+	private Godot.Collections.Array<string> EnemysScenePath = new()
+	{
+		"uid://cbi26ck84a7vt",
+		"uid://834fniewtsf1",
+		"uid://iqddsepl7qw2",
+		"uid://dsme77lawliia"
+	};
+
 	public override void _Ready()
 	{
 		AchievementsManager.I.SetCurrentLevel(Globals.I.CurrentLevel);
+
+		var rng = new RandomNumberGenerator();
+		for (var i = 0; i < 10; i++)
+		{
+			EnemysManager.I.SpawnEnemy(EnemysScenePath[rng.RandiRange(0, EnemysScenePath.Count-1)]);
+		}
 	}
 
 	public override void _Process(double delta)
