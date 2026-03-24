@@ -48,7 +48,7 @@ rendering_quadrant_size = 32
 visible = false
 
 [node name="DialogueDummy" parent="." index="5" unique_id=1624981845 instance=ExtResource("62_jqk32")]
-position = Vector2(-632, 609)
+position = Vector2(-571, 503)
 
 [node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
 environment = SubResource("Environment_8485w")

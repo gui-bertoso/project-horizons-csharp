@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://clp507qq16cwy"]
+
+[ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_8kkgb"]
+[ext_resource type="Script" uid="uid://mnishmyo0ihv" path="res://Levels/EmeraldLevel.cs" id="2_8kkgb"]
+[ext_resource type="PackedScene" uid="uid://c21ri5hc0t8ow" path="res://LevelGenerators/EmeraldGen/emerald_level_generator.tscn" id="3_4re6q"]
+[ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="4_4re6q"]
+
+[node name="ChunkedProceduralLevel" unique_id=1049057679 instance=ExtResource("1_8kkgb")]
+script = ExtResource("2_8kkgb")
+
+[node name="EmeraldLevelGenerator" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=1349310333 instance=ExtResource("3_4re6q")]
+SmallDetailAtlases = Array[Vector2i]([Vector2i(39, 0), Vector2i(39, 1), Vector2i(38, 0), Vector2i(38, 1), Vector2i(37, 0), Vector2i(37, 1), Vector2i(36, 0), Vector2i(36, 1), Vector2i(35, 0), Vector2i(35, 1), Vector2i(34, 0), Vector2i(34, 1), Vector2i(39, 6)])
+
+[node name="MapCam" type="Camera2D" parent="." index="5" unique_id=195108495]
+enabled = false
+zoom = Vector2(0.09, 0.09)
+
+[node name="Node2D" parent="." index="7" unique_id=1591361011 instance=ExtResource("4_4re6q")]
