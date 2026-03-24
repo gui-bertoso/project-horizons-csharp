@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://caeqsflrr74fw"]
 
-[ext_resource type="PackedScene" uid="uid://cuiypyxqvmafj" path="res://LevelGenerator/LevelGenerator.tscn" id="1_1celh"]
+[ext_resource type="PackedScene" uid="uid://cuiypyxqvmafj" path="res://LevelGenerators/BruteGen/LevelGenerator.tscn" id="1_1celh"]
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_3xjt4"]
 [ext_resource type="Script" uid="uid://ccn4ysa176ivc" path="res://Levels/ProceduralLevel.cs" id="2_1celh"]
 [ext_resource type="PackedScene" uid="uid://wet0wmm7xxec" path="res://Interface/AchievementsOverlay/AchievementsOverlay.tscn" id="4_vsia4"]

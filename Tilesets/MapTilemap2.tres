@@ -2,6 +2,18 @@
 
 [ext_resource type="Texture2D" uid="uid://c2frtpdwutkdk" path="res://Assets/Map/MapSpriteSheet2.png" id="1_2j1sr"]
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2j1sr"]
+polygon = PackedVector2Array(0, -8, -16, 0, 0, 8, 16, 0)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_2rrlq"]
+polygon = PackedVector2Array(0, -8, -16, 0, 0, 8, 16, 0)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_tvsmp"]
+polygon = PackedVector2Array(0, -8, -16, 0, 0, 8, 16, 0)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_b12m2"]
+polygon = PackedVector2Array(0, -8, -16, 0, 0, 8, 16, 0)
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2rrlq"]
 texture = ExtResource("1_2j1sr")
 texture_region_size = Vector2i(32, 32)
@@ -70,9 +82,13 @@ texture_region_size = Vector2i(32, 32)
 34:9/0 = 0
 33:9/0 = 0
 36:10/0 = 0
+36:10/0/texture_origin = Vector2i(0, 7)
 37:10/0 = 0
+37:10/0/texture_origin = Vector2i(0, 7)
 38:10/0 = 0
+38:10/0/texture_origin = Vector2i(0, 7)
 39:10/0 = 0
+39:10/0/texture_origin = Vector2i(0, 7)
 39:11/0 = 0
 38:11/0 = 0
 37:11/0 = 0
@@ -123,16 +139,16 @@ texture_region_size = Vector2i(32, 32)
 19:34/0 = 0
 24:33/size_in_atlas = Vector2i(5, 7)
 24:33/0 = 0
-24:33/0/texture_origin = Vector2i(14, 93)
-29:33/size_in_atlas = Vector2i(5, 7)
-29:33/0 = 0
-29:33/0/texture_origin = Vector2i(12, 96)
+24:33/0/texture_origin = Vector2i(-1, 90)
+24:33/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_2j1sr")
 34:33/size_in_atlas = Vector2i(4, 7)
 34:33/0 = 0
-34:33/0/texture_origin = Vector2i(-12, 90)
+34:33/0/texture_origin = Vector2i(2, 79)
+34:33/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_tvsmp")
 38:34/size_in_atlas = Vector2i(2, 6)
 38:34/0 = 0
-38:34/0/texture_origin = Vector2i(5, 79)
+38:34/0/texture_origin = Vector2i(-7, 73)
+38:34/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_b12m2")
 38:27/size_in_atlas = Vector2i(2, 6)
 38:27/0 = 0
 38:27/0/texture_origin = Vector2i(4, 83)
@@ -169,10 +185,15 @@ texture_region_size = Vector2i(32, 32)
 29:22/size_in_atlas = Vector2i(5, 2)
 29:22/0 = 0
 29:22/0/texture_origin = Vector2i(12, 10)
+29:33/size_in_atlas = Vector2i(5, 7)
+29:33/0 = 0
+29:33/0/texture_origin = Vector2i(29, 91)
+29:33/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_2rrlq")
 
 [resource]
 tile_shape = 1
 tile_size = Vector2i(32, 16)
 occlusion_layer_0/light_mask = 1
+occlusion_layer_0/sdf_collision = true
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_2rrlq")
