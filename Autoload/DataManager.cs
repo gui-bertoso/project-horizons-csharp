@@ -20,6 +20,7 @@ public partial class DataManager : Node
 
 	public Dictionary<string, Variant> GameDataDictionary = new()
 	{
+		{"Settings.Resolution", 0},
 		{"Settings.FrameRate", 1},
 		{"Settings.Fullscreen", 1},
 		{"Settings.Vsync", 0},
