@@ -18,6 +18,8 @@ public partial class SettingsMenu : Control
 	private HSlider _playerVolumeSlider;
 	private HSlider _enemyVolumeSlider;
 
+	private NewEnvinroment _previewEnvinroment;
+
 	public override void _Ready()
 	{
 		_frameRateOption = GetNode<OptionButton>("%FrameRate");
@@ -33,6 +35,8 @@ public partial class SettingsMenu : Control
 		_musicVolumeSlider = GetNode<HSlider>("%MusicVolume");
 		_playerVolumeSlider = GetNode<HSlider>("%PlayerVolume");
 		_enemyVolumeSlider = GetNode<HSlider>("%EnemyVolume");
+
+		_previewEnvinroment = GetNode<NewEnvinroment>("%Envinroment");
 
 		LoadSettings();
 	}
@@ -58,6 +62,14 @@ public partial class SettingsMenu : Control
 		Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"] = _musicVolumeSlider.Value;
 		Autoload.DataManager.I.GameDataDictionary["Settings.PlayerVolume"] = _playerVolumeSlider.Value;
 		Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"] = _enemyVolumeSlider.Value;
+		
+	}
+
+	public void OnSettingSwited(Godot.Variant value)
+	{
+		//_previewEnvinroment.ApplyEnvinroment();
+		SaveSettings();
+		GetTree().ChangeSceneToFile("uid://dduowujep6yb0");
 	}
 
 	private void LoadSettings()
