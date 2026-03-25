@@ -1,6 +1,6 @@
 using Godot;
 
-namespace projecthorizonscs.Envinroment;
+namespace projecthorizonscs;
 
 public partial class NewEnvinroment : WorldEnvironment
 {
@@ -50,7 +50,7 @@ public partial class NewEnvinroment : WorldEnvironment
 		_biomeId = levelGenerator?.LevelBiomeId ?? 0;
 	}
 
-	private void ApplyEnvinroment()
+	public void ApplyEnvinroment()
 	{
 		_env = new Godot.Environment();
 		_env.BackgroundMode = Godot.Environment.BGMode.Canvas;
