@@ -174,6 +174,10 @@ public partial class RubyGen : Node2D
 
 	public volatile int _threadProgress = 0;
 	public volatile int _threadMaxProgress = 1;
+	public volatile int _threadChunkProgress = 0;
+	public volatile int _threadChunkMaxProgress = 1;
+	public volatile int _threadCurrentChunkX = 0;
+	public volatile int _threadCurrentChunkY = 0;
 
 	public Godot.Collections.Dictionary<Vector2I, RubyChunkData> chunksDictionary = new();
 
@@ -212,6 +216,10 @@ public partial class RubyGen : Node2D
 
 			_threadProgress = 0;
 			_threadMaxProgress = Mathf.Max(1, LevelSizeY);
+			_threadChunkProgress = 0;
+			_threadChunkMaxProgress = Mathf.Max(1, chunksDictionary.Count);
+			_threadCurrentChunkX = 0;
+			_threadCurrentChunkY = 0;
 
 			LoadingScreen.I?.SetText("gerando mundo...");
 			LoadingScreen.I?.SetSubText("thread iniciada...");
@@ -340,7 +348,10 @@ public partial class RubyGen : Node2D
 		if (LoadingScreen.I == null)
 			return;
 
-		float progress01 = _threadMaxProgress > 0 ? (float)_threadProgress / _threadMaxProgress : 0f;
+		float progress01 = _threadChunkMaxProgress > 0
+			? (float)_threadChunkProgress / _threadChunkMaxProgress
+			: 0f;
+
 		float totalProgress = Mathf.Clamp(8f + (progress01 * 89f), 8f, 97f);
 
 		string mainText;
@@ -408,7 +419,9 @@ public partial class RubyGen : Node2D
 		}
 
 		LoadingScreen.I.SetText(mainText);
-		LoadingScreen.I.SetSubText($"{subText}  |  linhas: {_threadProgress} / {_threadMaxProgress}");
+		LoadingScreen.I.SetSubText(
+			$"{subText}  |  chunk atual: ({_threadCurrentChunkX}, {_threadCurrentChunkY})  |  {_threadChunkProgress} / {_threadChunkMaxProgress}"
+		);
 		LoadingScreen.I.SetProgress(totalProgress);
 	}
 
@@ -633,6 +646,9 @@ public partial class RubyGen : Node2D
 		foreach (Vector2I chunkCoord in chunksDictionary.Keys)
 			result.Chunks[chunkCoord] = new RubyChunkData();
 
+		int processedChunks = 0;
+		int totalChunks = Mathf.Max(1, chunksDictionary.Count);
+
 		foreach (var pair in world.Ground)
 			AddTileToChunk(result.Chunks, pair.Key, pair.Value, RubyLayerType.Ground);
 
@@ -649,7 +665,15 @@ public partial class RubyGen : Node2D
 			AddTileToChunk(result.Chunks, pair.Key, pair.Value, RubyLayerType.Shadows);
 
 		foreach (var pair in result.Chunks)
+		{
+			_threadCurrentChunkX = pair.Key.X;
+			_threadCurrentChunkY = pair.Key.Y;
 			pair.Value.SpawnEnemys = IsSpawnableChunk(pair.Value);
+
+			processedChunks++;
+			_threadChunkProgress = processedChunks;
+			_threadChunkMaxProgress = totalChunks;
+		}
 
 		return result;
 	}
