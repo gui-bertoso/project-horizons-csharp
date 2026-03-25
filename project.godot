@@ -22,6 +22,7 @@ DataManager="*uid://c5g6r15ukq0v4"
 AchievementsManager="*uid://c77otfm3buuaa"
 EnemysManager="*uid://drkbe36pxaeby"
 LoadingScreen="*uid://xvuy4nrq8uyd"
+SettingsApplyer="*uid://n7kbduoavmbn"
 
 [display]
 

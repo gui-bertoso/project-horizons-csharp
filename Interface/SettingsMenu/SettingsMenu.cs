@@ -4,6 +4,8 @@ namespace projecthorizonscs.Interface.SettingsMenu;
 
 public partial class SettingsMenu : Control
 {
+	private OptionButton _fullscreenOption;
+	private OptionButton _resolutionOption;
 	private OptionButton _frameRateOption;
 	private OptionButton _vsyncOption;
 	private OptionButton _bloomOption;
@@ -22,6 +24,8 @@ public partial class SettingsMenu : Control
 
 	public override void _Ready()
 	{
+		_fullscreenOption = GetNode<OptionButton>("%Fullscreen");
+		_resolutionOption = GetNode<OptionButton>("%Resolution");
 		_frameRateOption = GetNode<OptionButton>("%FrameRate");
 		_vsyncOption = GetNode<OptionButton>("%VSync");
 		_bloomOption = GetNode<OptionButton>("%Bloom");
@@ -49,6 +53,8 @@ public partial class SettingsMenu : Control
 
 	private void SaveSettings()
 	{
+		Autoload.DataManager.I.GameDataDictionary["Settings.Fullscreen"] = _fullscreenOption.Selected;
+		Autoload.DataManager.I.GameDataDictionary["Settings.Resolution"] = _resolutionOption.Selected;
 		Autoload.DataManager.I.GameDataDictionary["Settings.FrameRate"] = _frameRateOption.Selected;
 		Autoload.DataManager.I.GameDataDictionary["Settings.Vsync"] = _vsyncOption.Selected;
 		Autoload.DataManager.I.GameDataDictionary["Settings.Bloom"] = _bloomOption.Selected;
@@ -62,18 +68,20 @@ public partial class SettingsMenu : Control
 		Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"] = _musicVolumeSlider.Value;
 		Autoload.DataManager.I.GameDataDictionary["Settings.PlayerVolume"] = _playerVolumeSlider.Value;
 		Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"] = _enemyVolumeSlider.Value;
-		
 	}
 
 	public void OnSettingSwited(Godot.Variant value)
 	{
 		//_previewEnvinroment.ApplyEnvinroment();
 		SaveSettings();
+		SettingsApplyer.I.ApplySettings();
 		GetTree().ChangeSceneToFile("uid://dduowujep6yb0");
 	}
 
 	private void LoadSettings()
 	{
+		_fullscreenOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Fullscreen"];
+		_resolutionOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Resolution"];
 		_frameRateOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.FrameRate"];
 		_vsyncOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Vsync"];
 		_bloomOption.Selected = (int)Autoload.DataManager.I.GameDataDictionary["Settings.Bloom"];
