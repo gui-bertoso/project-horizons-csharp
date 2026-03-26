@@ -1,11 +1,15 @@
 [gd_scene format=3 uid="uid://pckfjegc135i"]
 
-[ext_resource type="Script" uid="uid://b4dbk60l0hc7w" path="res://LevelGenerators/RubyGen/RubyGen.cs" id="1_ryihu"]
+[ext_resource type="Script" uid="uid://bur03o4noyl5v" path="res://LevelGenerators/RubyGen/RubyGen.cs" id="1_ryihu"]
 [ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="2_i3gxk"]
 
 [node name="RubyGen" type="Node2D" unique_id=1349310333]
 script = ExtResource("1_ryihu")
+HorizontalRenderRadius = 3
+VerticalRenderRadius = 7
 SeedValue = 44637346
+ForestBiomeChance = 0.34
+DarkForestBiomeChance = 0.7
 VoidAtlas = Vector2i(0, 1)
 BeachChance = 0.545
 BeachBorderDistance = 3
@@ -21,15 +25,20 @@ MediumDetailDensityChance = 0.001
 MediumDetailRegionChance = 0.005
 TreeThreshold = 0.915
 TreeDensityInfluence = 0.01
-GroundMainAtlas = Vector2i(1, 0)
-GroundAlt1Atlas = Vector2i(5, 0)
-GroundAlt2Atlas = Vector2i(1, 1)
+ForestGroundMainAtlas = Vector2i(1, 0)
+ForestGroundAlt1Atlas = Vector2i(1, 1)
+ForestGroundAlt2Atlas = Vector2i(5, 0)
+DarkForestGroundMainAtlas = Vector2i(2, 0)
+DarkForestGroundAlt1Atlas = Vector2i(2, 0)
 GroundAlt1Threshold = 0.69
 GroundAlt2Threshold = 0.7
 EdgeDecorAtlases = Array[Vector2i]([Vector2i(36, 10), Vector2i(37, 10), Vector2i(38, 10)])
-SmallDetailAtlases = Array[Vector2i]([Vector2i(39, 0), Vector2i(39, 1), Vector2i(38, 0), Vector2i(38, 1), Vector2i(37, 0), Vector2i(37, 1), Vector2i(36, 0), Vector2i(36, 1), Vector2i(35, 0), Vector2i(35, 1), Vector2i(34, 0), Vector2i(34, 1), Vector2i(39, 6)])
-MediumDetailAtlases = Array[Vector2i]([Vector2i(35, 9), Vector2i(37, 9), Vector2i(39, 9), Vector2i(38, 9), Vector2i(34, 9)])
-TreeAtlases = Array[Vector2i]([Vector2i(24, 33), Vector2i(29, 33), Vector2i(34, 33), Vector2i(38, 34)])
+ForestSmallDetailAtlases = Array[Vector2i]([Vector2i(38, 11), Vector2i(39, 6), Vector2i(36, 6), Vector2i(34, 0), Vector2i(34, 1), Vector2i(35, 0), Vector2i(35, 1), Vector2i(36, 0), Vector2i(36, 1), Vector2i(37, 0), Vector2i(37, 1), Vector2i(38, 0), Vector2i(38, 1), Vector2i(39, 0), Vector2i(39, 0)])
+DarkForestSmallDetailAtlases = Array[Vector2i]([Vector2i(36, 10), Vector2i(37, 10), Vector2i(38, 10), Vector2i(39, 10), Vector2i(37, 7), Vector2i(38, 3), Vector2i(39, 3)])
+ForestMediumDetailAtlases = Array[Vector2i]([Vector2i(33, 9), Vector2i(34, 9), Vector2i(35, 9), Vector2i(36, 9), Vector2i(37, 9), Vector2i(38, 9)])
+DarkForestMediumDetailAtlases = Array[Vector2i]([Vector2i(35, 9), Vector2i(37, 9), Vector2i(39, 9)])
+ForestTreeAtlases = Array[Vector2i]([Vector2i(24, 33), Vector2i(29, 33), Vector2i(34, 33), Vector2i(36, 34), Vector2i(38, 34)])
+DarkForestTreeAtlases = Array[Vector2i]([Vector2i(24, 33), Vector2i(29, 33), Vector2i(34, 33), Vector2i(36, 34), Vector2i(38, 34)])
 DirtAtlases = Array[Vector2i]([Vector2i(5, 0), Vector2i(1, 1)])
 TreeShadowAtlas = Vector2i(34, 22)
 ShadowOffset = Vector2i(0, 1)
@@ -39,7 +48,7 @@ y_sort_enabled = true
 tile_set = ExtResource("2_i3gxk")
 
 [node name="DetailsSmall" type="TileMapLayer" parent="." unique_id=1574637572]
-y_sort_enabled = true
+z_index = 1
 tile_set = ExtResource("2_i3gxk")
 
 [node name="DetailsMedium" type="TileMapLayer" parent="." unique_id=1804546551]
@@ -47,9 +56,11 @@ y_sort_enabled = true
 tile_set = ExtResource("2_i3gxk")
 
 [node name="Shadows" type="TileMapLayer" parent="." unique_id=971440947]
+z_index = 2
 y_sort_enabled = true
 tile_set = ExtResource("2_i3gxk")
 
 [node name="Objects" type="TileMapLayer" parent="." unique_id=1785183892]
+z_index = 2
 y_sort_enabled = true
 tile_set = ExtResource("2_i3gxk")

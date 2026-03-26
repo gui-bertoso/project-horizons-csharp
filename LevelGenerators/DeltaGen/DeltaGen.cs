@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace projecthorizonscs;
 
-public partial class RubyGen : Node2D
+public partial class DeltaGen : Node2D
 {
 	[ExportGroup("TileMap Layers")]
 	[Export] public NodePath GroundPath = "Ground";
