@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dsn1iynynytm6"]
+
+[ext_resource type="Script" uid="uid://bownp3j132iwy" path="res://LevelGenerators/DeltaGen/DeltaGen.cs" id="1_ysafu"]
+[ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="2_dccel"]
+
+[node name="DeltaGen" type="Node2D" unique_id=1349310333]
+script = ExtResource("1_ysafu")
+
+[node name="Ground" type="TileMapLayer" parent="." unique_id=1066713571]
+y_sort_enabled = true
+tile_set = ExtResource("2_dccel")
+
+[node name="DetailsSmall" type="TileMapLayer" parent="." unique_id=1574637572]
+z_index = 1
+tile_set = ExtResource("2_dccel")
+
+[node name="DetailsMedium" type="TileMapLayer" parent="." unique_id=1804546551]
+y_sort_enabled = true
+tile_set = ExtResource("2_dccel")
+
+[node name="Shadows" type="TileMapLayer" parent="." unique_id=971440947]
+z_index = 2
+y_sort_enabled = true
+tile_set = ExtResource("2_dccel")
+
+[node name="Objects" type="TileMapLayer" parent="." unique_id=1785183892]
+z_index = 2
+y_sort_enabled = true
+tile_set = ExtResource("2_dccel")
