@@ -203,21 +203,29 @@ grow_vertical = 2
 color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
 [node name="MainLabel" type="Label" parent="Control" unique_id=1267142374]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 558.0
-offset_right = 129.0
-offset_bottom = 581.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -88.0
+offset_right = 131.0
+offset_bottom = -65.0
+grow_vertical = 0
 text = "[MessageHere]"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SubLabel" type="Label" parent="Control" unique_id=1793743564]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 577.0
-offset_right = 130.0
-offset_bottom = 600.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -67.0
+offset_right = 131.0
+offset_bottom = -44.0
+grow_vertical = 0
 text = "[MessageHere]"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -244,64 +252,74 @@ offset_top = 300.0
 offset_right = 599.0
 offset_bottom = 340.0
 
-[node name="Node2D" type="Node2D" parent="Control" unique_id=301366112]
-position = Vector2(31, 551)
+[node name="Control" type="Control" parent="Control" unique_id=1712720139]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = -93.0
+offset_right = 22.0
+offset_bottom = -93.0
+grow_vertical = 0
 
-[node name="Body" type="Node2D" parent="Control/Node2D" unique_id=1321992099]
+[node name="Node2D" type="Node2D" parent="Control/Control" unique_id=301366112]
+
+[node name="Body" type="Node2D" parent="Control/Control/Node2D" unique_id=1321992099]
 scale = Vector2(-1, 1)
 
-[node name="Side" type="Node2D" parent="Control/Node2D/Body" unique_id=1545816021]
+[node name="Side" type="Node2D" parent="Control/Control/Node2D/Body" unique_id=1545816021]
 
-[node name="Layer0" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=716895743]
+[node name="Layer0" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=716895743]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 13
 
-[node name="Layer1" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=409694421]
+[node name="Layer1" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=409694421]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 11
 
-[node name="Layer2" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=547438336]
+[node name="Layer2" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=547438336]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 9
 
-[node name="Layer4" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=1774709608]
+[node name="Layer4" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=1774709608]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 5
 
-[node name="Layer5" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=1153081878]
+[node name="Layer5" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=1153081878]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 7
 
-[node name="Layer6" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=282247559]
+[node name="Layer6" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=282247559]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 1
 
-[node name="Layer3" type="Sprite2D" parent="Control/Node2D/Body/Side" unique_id=1745796962]
+[node name="Layer3" type="Sprite2D" parent="Control/Control/Node2D/Body/Side" unique_id=1745796962]
 position = Vector2(0, -32)
 texture = ExtResource("3_mmaie")
 hframes = 2
 vframes = 7
 frame = 3
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Node2D/Body" unique_id=1700580956]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/Control/Node2D/Body" unique_id=1700580956]
 root_node = NodePath("../Side")
 libraries/ = SubResource("AnimationLibrary_sb1q0")
 autoplay = &"walk_forward_side"
