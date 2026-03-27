@@ -3,9 +3,24 @@
 [ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_lq7bx"]
 [ext_resource type="Script" uid="uid://crk2qjqxlhftg" path="res://Levels/RubyProceduralLevel.cs" id="2_lq7bx"]
 [ext_resource type="PackedScene" uid="uid://pckfjegc135i" path="res://LevelGenerators/RubyGen/RubyGen.tscn" id="3_1pkdb"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="4_1pkdb"]
 
 [sub_resource type="Environment" id="Environment_lq7bx"]
 background_mode = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldwd3"]
+atlas = ExtResource("4_1pkdb")
+region = Rect2(200, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i3lvr"]
+lifetime_randomness = 0.79
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(656, 49.755, 1)
+gravity = Vector3(-510.78, 62.155, 0)
+scale_min = 0.25
+scale_max = 0.25
+color = Color(0.61331886, 0.6012353, 3.85046e-07, 1)
 
 [node name="ChunkedProceduralLevel" unique_id=1049057679 instance=ExtResource("1_lq7bx")]
 script = ExtResource("2_lq7bx")
@@ -20,3 +35,11 @@ zoom = Vector2(0.09, 0.09)
 
 [node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
 environment = SubResource("Environment_lq7bx")
+script = null
+
+[node name="GPUParticles2D" parent="WorldEnvironment/DesertBiomeEffects/CanvasLayer" parent_id_path=PackedInt32Array(10120490, 1090217473) index="0" unique_id=1434601390]
+position = Vector2(1612, 187)
+texture = SubResource("AtlasTexture_ldwd3")
+process_material = SubResource("ParticleProcessMaterial_i3lvr")
+
+[editable path="WorldEnvironment"]
