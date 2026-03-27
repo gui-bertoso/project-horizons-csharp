@@ -202,6 +202,13 @@ texture_region_size = Vector2i(32, 32)
 29:33/0/texture_origin = Vector2i(29, 91)
 29:33/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_2rrlq")
 29:33/0/physics_layer_0/polygon_0/points = PackedVector2Array(-18.255661, 11.421028, -6.0252686, 7.284279, -6.113712, -4.943144, -16.816792, -6.3849854, -28.867327, -1.3489408, -28.147892, 8.36343)
+37:2/0 = 0
+36:2/0 = 0
+36:2/0/texture_origin = Vector2i(0, 8)
+35:2/0 = 0
+35:2/0/texture_origin = Vector2i(0, 8)
+34:2/0 = 0
+34:2/0/texture_origin = Vector2i(0, 1)
 
 [resource]
 tile_shape = 1

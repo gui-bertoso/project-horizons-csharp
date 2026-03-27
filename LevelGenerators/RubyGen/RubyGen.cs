@@ -21,11 +21,11 @@ public partial class RubyGen : Node2D
 	[Export] public int ChunksX = 60;
 	[Export] public int ChunksY = 120;
 	[Export] public int TileSize = 32;
-	[Export] public int HorizontalRenderRadius = 2;
-	[Export] public int VerticalRenderRadius = 6;
+	[Export] public int HorizontalRenderRadius = 3;
+	[Export] public int VerticalRenderRadius = 7;
 
 	[ExportGroup("General")]
-	[Export] public int SeedValue = 12345;
+	[Export] public int SeedValue = 44637346;
 	[Export] public bool RandomizeSeedOnReady = true;
 	[Export] public bool ClearBeforeGenerate = true;
 	[Export] public bool GenerateOnReady = true;
@@ -33,8 +33,11 @@ public partial class RubyGen : Node2D
 	[Export] public bool RandomizeBiomeOnReady = true;
 
 	[ExportGroup("Biome Chance On Ready")]
-	[Export(PropertyHint.Range, "0,1,0.01")] public float ForestBiomeChance = 0.70f;
-	[Export(PropertyHint.Range, "0,1,0.01")] public float DarkForestBiomeChance = 0.30f;
+	[Export(PropertyHint.Range, "0,1,0.01")] public float ForestBiomeChance = 0.34f;
+	[Export(PropertyHint.Range, "0,1,0.01")] public float DarkForestBiomeChance = 0.70f;
+	[Export(PropertyHint.Range, "0,1,0.01")] public float SnowForestBiomeChance = 0.18f;
+	[Export(PropertyHint.Range, "0,1,0.01")] public float DesertBiomeChance = 0.16f;
+	[Export(PropertyHint.Range, "0,1,0.01")] public float SnowlandsBiomeChance = 0.14f;
 
 	[ExportGroup("Loading Screen")]
 	[Export] public bool UseFakeLoadingSmoothing = true;
@@ -51,30 +54,30 @@ public partial class RubyGen : Node2D
 
 	[ExportGroup("Beach")]
 	[Export] public bool GenerateBeach = true;
-	[Export] public float BeachChance = 0.45f;
-	[Export] public int BeachBorderDistance = 2;
-	[Export] public Vector2I SandAtlas = new(1, 5);
+	[Export] public float BeachChance = 0.545f;
+	[Export] public int BeachBorderDistance = 3;
+	[Export] public Vector2I SandAtlas = new(7, 1);
 
 	[ExportGroup("Lakes")]
 	[Export] public bool GenerateLakes = true;
 	[Export] public float LakeNoiseFrequency = 0.030f;
 	[Export] public float LakeThreshold = 0.73f;
 	[Export] public int LakeEdgeDepth = 1;
-	[Export] public Vector2I WaterAtlas = new(2, 5);
-	[Export] public Vector2I DeepWaterAtlas = new(3, 5);
+	[Export] public Vector2I WaterAtlas = new(0, 37);
+	[Export] public Vector2I DeepWaterAtlas = new(0, 38);
 
 	[ExportGroup("Ground Noise")]
-	[Export] public float GroundFrequency = 0.035f;
+	[Export] public float GroundFrequency = 0.020f;
 	[Export] public FastNoiseLite.NoiseTypeEnum GroundNoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
 	[Export] public float GroundThreshold = 0.40f;
 
 	[ExportGroup("Shape / Island")]
 	[Export] public bool UseIslandMask = true;
-	[Export] public float IslandRoundness = 1.15f;
-	[Export] public float IslandFalloffPower = 1.85f;
+	[Export] public float IslandRoundness = 2.265f;
+	[Export] public float IslandFalloffPower = 10.59f;
 
 	[ExportGroup("Density Noise")]
-	[Export] public float DensityFrequency = 0.010f;
+	[Export] public float DensityFrequency = 0.305f;
 	[Export] public FastNoiseLite.NoiseTypeEnum DensityNoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
 
 	[ExportGroup("Small Details Spawn")]
@@ -86,9 +89,9 @@ public partial class RubyGen : Node2D
 	[Export] public bool GenerateMediumDetails = true;
 	[Export] public float MediumDetailsFrequency = 0.08f;
 	[Export] public FastNoiseLite.NoiseTypeEnum MediumDetailsNoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-	[Export] public float MediumDetailBaseChance = 0.004f;
-	[Export] public float MediumDetailDensityChance = 0.012f;
-	[Export] public float MediumDetailRegionChance = 0.010f;
+	[Export] public float MediumDetailBaseChance = 0.001f;
+	[Export] public float MediumDetailDensityChance = 0.001f;
+	[Export] public float MediumDetailRegionChance = 0.005f;
 
 	[ExportGroup("Trees")]
 	[Export] public bool GenerateTrees = true;
@@ -97,25 +100,25 @@ public partial class RubyGen : Node2D
 	[Export] public int TreePaddingCheckRadius = 2;
 	[Export] public float TreeNoiseFrequency = 0.045f;
 	[Export] public FastNoiseLite.NoiseTypeEnum TreeNoiseType = FastNoiseLite.NoiseTypeEnum.Perlin;
-	[Export] public float TreeThreshold = 0.53f;
-	[Export] public float TreeDensityInfluence = 0.24f;
+	[Export] public float TreeThreshold = 0.915f;
+	[Export] public float TreeDensityInfluence = 0.010f;
 	[Export] public float TreeBaseChanceBonus = 0.01f;
 	[Export] public int TreeRandomOffsetX = 1;
 	[Export] public int TreeRandomOffsetY = 1;
 
 	[ExportGroup("Forest - Ground")]
-	[Export] public Vector2I ForestGroundMainAtlas = new(0, 0);
-	[Export] public Vector2I ForestGroundAlt1Atlas = new(1, 0);
-	[Export] public Vector2I ForestGroundAlt2Atlas = new(2, 0);
+	[Export] public Vector2I ForestGroundMainAtlas = new(1, 0);
+	[Export] public Vector2I ForestGroundAlt1Atlas = new(1, 1);
+	[Export] public Vector2I ForestGroundAlt2Atlas = new(5, 0);
 
 	[ExportGroup("Dark Forest - Ground")]
-	[Export] public Vector2I DarkForestGroundMainAtlas = new(3, 0);
-	[Export] public Vector2I DarkForestGroundAlt1Atlas = new(4, 0);
+	[Export] public Vector2I DarkForestGroundMainAtlas = new(2, 0);
+	[Export] public Vector2I DarkForestGroundAlt1Atlas = new(2, 0);
 	[Export] public Vector2I DarkForestGroundAlt2Atlas = new(5, 0);
 
 	[ExportGroup("Ground Thresholds")]
-	[Export] public float GroundAlt1Threshold = 0.60f;
-	[Export] public float GroundAlt2Threshold = 0.78f;
+	[Export] public float GroundAlt1Threshold = 0.69f;
+	[Export] public float GroundAlt2Threshold = 0.70f;
 
 	[ExportGroup("Edge Decorations")]
 	[Export] public bool GenerateEdgeDecorations = true;
@@ -131,66 +134,184 @@ public partial class RubyGen : Node2D
 	[ExportGroup("Forest - Small Details")]
 	[Export] public Godot.Collections.Array<Vector2I> ForestSmallDetailAtlases = new()
 	{
-		new Vector2I(0, 1),
-		new Vector2I(1, 1),
-		new Vector2I(2, 1),
-		new Vector2I(3, 1),
-		new Vector2I(4, 1),
-		new Vector2I(5, 1),
+		new Vector2I(38, 11),
+		new Vector2I(39, 6),
+		new Vector2I(36, 6),
+		new Vector2I(34, 0),
+		new Vector2I(34, 1),
+		new Vector2I(35, 0),
+		new Vector2I(35, 1),
+		new Vector2I(36, 0),
+		new Vector2I(36, 1),
+		new Vector2I(37, 0),
+		new Vector2I(37, 1),
+		new Vector2I(38, 0),
+		new Vector2I(38, 1),
+		new Vector2I(39, 0),
+		new Vector2I(39, 0),
 	};
 
 	[ExportGroup("Dark Forest - Small Details")]
 	[Export] public Godot.Collections.Array<Vector2I> DarkForestSmallDetailAtlases = new()
 	{
-		new Vector2I(6, 1),
-		new Vector2I(7, 1),
-		new Vector2I(8, 1),
+		new Vector2I(34, 2),
+		new Vector2I(35, 2),
+		new Vector2I(36, 2),
+		new Vector2I(37, 2),
+		new Vector2I(38, 2),
+		new Vector2I(39, 2),
+		new Vector2I(38, 3),
+		new Vector2I(39, 3),
+		new Vector2I(37, 7),
+		new Vector2I(35, 8),
+		new Vector2I(39, 10),
 	};
 
 	[ExportGroup("Forest - Medium Details")]
 	[Export] public Godot.Collections.Array<Vector2I> ForestMediumDetailAtlases = new()
 	{
-		new Vector2I(0, 2),
-		new Vector2I(1, 2),
-		new Vector2I(2, 2),
-		new Vector2I(3, 2),
-		new Vector2I(4, 2),
+		new Vector2I(33, 9),
+		new Vector2I(34, 9),
+		new Vector2I(35, 9),
+		new Vector2I(36, 9),
+		new Vector2I(37, 9),
+		new Vector2I(38, 9),
 	};
 
 	[ExportGroup("Dark Forest - Medium Details")]
 	[Export] public Godot.Collections.Array<Vector2I> DarkForestMediumDetailAtlases = new()
 	{
-		new Vector2I(5, 2),
-		new Vector2I(6, 2),
-		new Vector2I(7, 2),
+		new Vector2I(35, 9),
+		new Vector2I(37, 9),
+		new Vector2I(39, 9),
 	};
 
 	[ExportGroup("Forest - Trees")]
 	[Export] public Godot.Collections.Array<Vector2I> ForestTreeAtlases = new()
+	{
+		new Vector2I(24, 33),
+		new Vector2I(29, 33),
+		new Vector2I(34, 33),
+		new Vector2I(36, 34),
+		new Vector2I(38, 34),
+	};
+
+	[ExportGroup("Dark Forest - Trees")]
+	[Export] public Godot.Collections.Array<Vector2I> DarkForestTreeAtlases = new()
+	{
+		new Vector2I(24, 33),
+		new Vector2I(29, 33),
+		new Vector2I(34, 33),
+		new Vector2I(36, 34),
+		new Vector2I(38, 34),
+	};
+
+	[ExportGroup("Snow Forest - Ground")]
+	[Export] public Vector2I SnowForestGroundMainAtlas = new(2, 0);
+	[Export] public Vector2I SnowForestGroundAlt1Atlas = new(4, 0);
+	[Export] public Vector2I SnowForestGroundAlt2Atlas = new(4, 1);
+
+	[ExportGroup("Desert - Ground")]
+	[Export] public Vector2I DesertGroundMainAtlas = new(8, 0);
+	[Export] public Vector2I DesertGroundAlt1Atlas = new(8, 1);
+	[Export] public Vector2I DesertGroundAlt2Atlas = new(8, 2);
+
+	[ExportGroup("Snowlands - Ground")]
+	[Export] public Vector2I SnowlandsGroundMainAtlas = new(4, 0);
+	[Export] public Vector2I SnowlandsGroundAlt1Atlas = new(4, 0);
+	[Export] public Vector2I SnowlandsGroundAlt2Atlas = new(4, 1);
+
+	[ExportGroup("Frozen Lakes")]
+	[Export] public Vector2I FrozenWaterAtlas = new(6, 0);
+	[Export] public Vector2I FrozenDeepWaterAtlas = new(6, 0);
+
+	[ExportGroup("Snow Forest - Small Details")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowForestSmallDetailAtlases = new()
+	{
+		new Vector2I(9, 1),
+		new Vector2I(10, 1),
+		new Vector2I(11, 1),
+	};
+
+	[ExportGroup("Desert - Small Details")]
+	[Export] public Godot.Collections.Array<Vector2I> DesertSmallDetailAtlases = new()
+	{
+		new Vector2I(12, 1),
+		new Vector2I(13, 1),
+		new Vector2I(14, 1),
+	};
+
+	[ExportGroup("Snowlands - Small Details")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowlandsSmallDetailAtlases = new()
+	{
+		new Vector2I(15, 1),
+		new Vector2I(16, 1),
+		new Vector2I(17, 1),
+	};
+
+	[ExportGroup("Snow Forest - Medium Details")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowForestMediumDetailAtlases = new()
+	{
+		new Vector2I(8, 2),
+		new Vector2I(9, 2),
+		new Vector2I(10, 2),
+	};
+
+	[ExportGroup("Desert - Medium Details")]
+	[Export] public Godot.Collections.Array<Vector2I> DesertMediumDetailAtlases = new()
+	{
+		new Vector2I(11, 2),
+		new Vector2I(12, 2),
+		new Vector2I(13, 2),
+	};
+
+	[ExportGroup("Snowlands - Medium Details")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowlandsMediumDetailAtlases = new()
+	{
+		new Vector2I(14, 2),
+		new Vector2I(15, 2),
+		new Vector2I(16, 2),
+	};
+
+	[ExportGroup("Snow Forest - Trees")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowForestTreeAtlases = new()
+	{
+		new Vector2I(6, 3),
+		new Vector2I(7, 3),
+		new Vector2I(8, 3),
+	};
+
+	[ExportGroup("Desert - Trees")]
+	[Export] public Godot.Collections.Array<Vector2I> DesertTreeAtlases = new()
+	{
+	};
+
+	[ExportGroup("Snowlands - Trees")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowlandsTreeAtlases = new()
+	{
+		new Vector2I(9, 3),
+		new Vector2I(10, 3),
+		new Vector2I(11, 3),
+	};
+
+	[ExportGroup("Snowlands - Normal Pine Trees")]
+	[Export] public Godot.Collections.Array<Vector2I> SnowlandsNormalPineTreeAtlases = new()
 	{
 		new Vector2I(0, 3),
 		new Vector2I(1, 3),
 		new Vector2I(2, 3),
 	};
 
-	[ExportGroup("Dark Forest - Trees")]
-	[Export] public Godot.Collections.Array<Vector2I> DarkForestTreeAtlases = new()
-	{
-		new Vector2I(3, 3),
-		new Vector2I(4, 3),
-		new Vector2I(5, 3),
-	};
-
 	[ExportGroup("Ground Context")]
 	[Export] public Godot.Collections.Array<Vector2I> DirtAtlases = new()
 	{
-		new Vector2I(10, 0),
-		new Vector2I(11, 0)
+		new Vector2I(5, 0),
+		new Vector2I(1, 1),
 	};
 
 	[ExportGroup("Atlas - Shadows")]
-	[Export] public Vector2I TreeShadowAtlas = new(0, 4);
-	[Export] public Vector2I ShadowOffset = new(1, 1);
+	[Export] public Vector2I TreeShadowAtlas = new(34, 22);
+	[Export] public Vector2I ShadowOffset = new(0, 1);
 
 	[ExportGroup("Portal")]
 	[Export] public string InitialPortalScenePath = "res://Portal/InitialPortal.tscn";
@@ -369,7 +490,10 @@ public partial class RubyGen : Node2D
 	{
 		float forest = Mathf.Max(0f, ForestBiomeChance);
 		float darkForest = Mathf.Max(0f, DarkForestBiomeChance);
-		float total = forest + darkForest;
+		float snowForest = Mathf.Max(0f, SnowForestBiomeChance);
+		float desert = Mathf.Max(0f, DesertBiomeChance);
+		float snowlands = Mathf.Max(0f, SnowlandsBiomeChance);
+		float total = forest + darkForest + snowForest + desert + snowlands;
 
 		if (total <= 0f)
 		{
@@ -381,7 +505,16 @@ public partial class RubyGen : Node2D
 		rng.Randomize();
 		float roll = rng.RandfRange(0f, total);
 
-		LevelBiomeId = roll <= forest ? 0 : 1;
+		if (roll <= forest)
+			LevelBiomeId = 0;
+		else if (roll <= forest + darkForest)
+			LevelBiomeId = 1;
+		else if (roll <= forest + darkForest + snowForest)
+			LevelBiomeId = 2;
+		else if (roll <= forest + darkForest + snowForest + desert)
+			LevelBiomeId = 3;
+		else
+			LevelBiomeId = 4;
 	}
 
 	private string GetBiomeDisplayName()
@@ -389,6 +522,9 @@ public partial class RubyGen : Node2D
 		return LevelBiomeId switch
 		{
 			1 => "dark forest",
+			2 => "snow forest",
+			3 => "desert",
+			4 => "snowlands",
 			_ => "forest"
 		};
 	}
@@ -791,7 +927,7 @@ public partial class RubyGen : Node2D
 					chunk.ValidGroundCells.Add(cell);
 					chunk.ValidGroundCellSet.Add(cell);
 				}
-				if (atlas == WaterAtlas || atlas == DeepWaterAtlas)
+				if (atlas == WaterAtlas || atlas == DeepWaterAtlas || atlas == FrozenWaterAtlas || atlas == FrozenDeepWaterAtlas)
 					chunk.WaterCells++;
 				if (atlas == VoidAtlas)
 					chunk.VoidCells++;
@@ -1025,24 +1161,126 @@ public partial class RubyGen : Node2D
 		return _ground.ToGlobal(local);
 	}
 
+	private bool IsForestBiome()
+	{
+		return LevelBiomeId == 0;
+	}
+
 	private bool IsDarkForestBiome()
 	{
 		return LevelBiomeId == 1;
 	}
 
+	private bool IsSnowForestBiome()
+	{
+		return LevelBiomeId == 2;
+	}
+
+	private bool IsDesertBiome()
+	{
+		return LevelBiomeId == 3;
+	}
+
+	private bool IsSnowlandsBiome()
+	{
+		return LevelBiomeId == 4;
+	}
+
 	private Godot.Collections.Array<Vector2I> GetCurrentSmallDetailAtlases()
 	{
-		return IsDarkForestBiome() ? DarkForestSmallDetailAtlases : ForestSmallDetailAtlases;
+		return LevelBiomeId switch
+		{
+			1 => DarkForestSmallDetailAtlases,
+			2 => SnowForestSmallDetailAtlases,
+			3 => DesertSmallDetailAtlases,
+			4 => SnowlandsSmallDetailAtlases,
+			_ => ForestSmallDetailAtlases
+		};
 	}
 
 	private Godot.Collections.Array<Vector2I> GetCurrentMediumDetailAtlases()
 	{
-		return IsDarkForestBiome() ? DarkForestMediumDetailAtlases : ForestMediumDetailAtlases;
+		return LevelBiomeId switch
+		{
+			1 => DarkForestMediumDetailAtlases,
+			2 => SnowForestMediumDetailAtlases,
+			3 => DesertMediumDetailAtlases,
+			4 => SnowlandsMediumDetailAtlases,
+			_ => ForestMediumDetailAtlases
+		};
 	}
 
 	private Godot.Collections.Array<Vector2I> GetCurrentTreeAtlases()
 	{
-		return IsDarkForestBiome() ? DarkForestTreeAtlases : ForestTreeAtlases;
+		return LevelBiomeId switch
+		{
+			1 => DarkForestTreeAtlases,
+			2 => SnowForestTreeAtlases,
+			3 => DesertTreeAtlases,
+			4 => SnowlandsTreeAtlases,
+			_ => ForestTreeAtlases
+		};
+	}
+
+	private Vector2I GetCurrentGroundMainAtlas()
+	{
+		return LevelBiomeId switch
+		{
+			1 => DarkForestGroundMainAtlas,
+			2 => SnowForestGroundMainAtlas,
+			3 => DesertGroundMainAtlas,
+			4 => SnowlandsGroundMainAtlas,
+			_ => ForestGroundMainAtlas
+		};
+	}
+
+	private Vector2I GetCurrentGroundAlt1Atlas()
+	{
+		return LevelBiomeId switch
+		{
+			1 => DarkForestGroundAlt1Atlas,
+			2 => SnowForestGroundAlt1Atlas,
+			3 => DesertGroundAlt1Atlas,
+			4 => SnowlandsGroundAlt1Atlas,
+			_ => ForestGroundAlt1Atlas
+		};
+	}
+
+	private Vector2I GetCurrentGroundAlt2Atlas()
+	{
+		return LevelBiomeId switch
+		{
+			1 => DarkForestGroundAlt2Atlas,
+			2 => SnowForestGroundAlt2Atlas,
+			3 => DesertGroundAlt2Atlas,
+			4 => SnowlandsGroundAlt2Atlas,
+			_ => ForestGroundAlt2Atlas
+		};
+	}
+
+	private bool IsBiomeGroundAtlas(Vector2I atlas)
+	{
+		return atlas == GetCurrentGroundMainAtlas()
+			|| atlas == GetCurrentGroundAlt1Atlas()
+			|| atlas == GetCurrentGroundAlt2Atlas();
+	}
+
+	private bool IsLakeAtlas(Vector2I atlas)
+	{
+		return atlas == WaterAtlas
+			|| atlas == DeepWaterAtlas
+			|| atlas == FrozenWaterAtlas
+			|| atlas == FrozenDeepWaterAtlas;
+	}
+
+	private Vector2I GetShallowLakeAtlas()
+	{
+		return IsSnowlandsBiome() ? FrozenWaterAtlas : WaterAtlas;
+	}
+
+	private Vector2I GetDeepLakeAtlas()
+	{
+		return IsSnowlandsBiome() ? FrozenDeepWaterAtlas : DeepWaterAtlas;
 	}
 
 	private bool IsPortalValidGroundAtlas(Vector2I atlas)
@@ -1052,7 +1290,16 @@ public partial class RubyGen : Node2D
 			|| atlas == ForestGroundAlt2Atlas
 			|| atlas == DarkForestGroundMainAtlas
 			|| atlas == DarkForestGroundAlt1Atlas
-			|| atlas == DarkForestGroundAlt2Atlas;
+			|| atlas == DarkForestGroundAlt2Atlas
+			|| atlas == SnowForestGroundMainAtlas
+			|| atlas == SnowForestGroundAlt1Atlas
+			|| atlas == SnowForestGroundAlt2Atlas
+			|| atlas == DesertGroundMainAtlas
+			|| atlas == DesertGroundAlt1Atlas
+			|| atlas == DesertGroundAlt2Atlas
+			|| atlas == SnowlandsGroundMainAtlas
+			|| atlas == SnowlandsGroundAlt1Atlas
+			|| atlas == SnowlandsGroundAlt2Atlas;
 	}
 
 	private bool HasEnoughSpaceForPortal(Vector2I centerCell, int radius)
@@ -1470,7 +1717,7 @@ public partial class RubyGen : Node2D
 							break;
 					}
 
-					world.Ground[cell] = nearNonLakeGround ? _owner.WaterAtlas : _owner.DeepWaterAtlas;
+					world.Ground[cell] = nearNonLakeGround ? _owner.GetShallowLakeAtlas() : _owner.GetDeepLakeAtlas();
 				}
 
 				int current = y + halfY + 1;
@@ -1709,7 +1956,9 @@ public partial class RubyGen : Node2D
 					if (IsNearAnotherTree(offsetCell, _owner.TreeMinDistance))
 						continue;
 
-					Vector2I treeAtlas = PickAtlasFromList(treeAtlases, offsetCell.X, offsetCell.Y, 22222);
+					Vector2I treeAtlas = PickTreeAtlasForCell(world, offsetCell);
+					if (treeAtlas == Vector2I.Zero)
+						continue;
 
 					world.Objects[offsetCell] = treeAtlas;
 					world.Shadows[offsetCell + _owner.ShadowOffset] = _owner.TreeShadowAtlas;
@@ -1742,10 +1991,7 @@ public partial class RubyGen : Node2D
 			if (!world.Ground.TryGetValue(cell, out Vector2I atlas))
 				return false;
 
-			if (_owner.IsDarkForestBiome())
-				return atlas == _owner.DarkForestGroundMainAtlas;
-
-			return atlas == _owner.ForestGroundMainAtlas;
+			return atlas == _owner.GetCurrentGroundMainAtlas();
 		}
 
 		public bool IsDirtCell(RubyThreadWorldData world, Vector2I cell)
@@ -1767,16 +2013,7 @@ public partial class RubyGen : Node2D
 			if (!world.Ground.TryGetValue(cell, out Vector2I atlas))
 				return false;
 
-			if (_owner.IsDarkForestBiome())
-			{
-				return atlas == _owner.DarkForestGroundMainAtlas
-					|| atlas == _owner.DarkForestGroundAlt1Atlas
-					|| atlas == _owner.DarkForestGroundAlt2Atlas;
-			}
-
-			return atlas == _owner.ForestGroundMainAtlas
-				|| atlas == _owner.ForestGroundAlt1Atlas
-				|| atlas == _owner.ForestGroundAlt2Atlas;
+			return _owner.IsBiomeGroundAtlas(atlas);
 		}
 
 		public bool IsRealTerrainCell(RubyThreadWorldData world, Vector2I cell)
@@ -1784,18 +2021,10 @@ public partial class RubyGen : Node2D
 			if (!world.Ground.TryGetValue(cell, out Vector2I atlas))
 				return false;
 
-			if (_owner.IsDarkForestBiome())
-			{
-				if (atlas == _owner.DarkForestGroundMainAtlas || atlas == _owner.DarkForestGroundAlt1Atlas || atlas == _owner.DarkForestGroundAlt2Atlas)
-					return true;
-			}
-			else
-			{
-				if (atlas == _owner.ForestGroundMainAtlas || atlas == _owner.ForestGroundAlt1Atlas || atlas == _owner.ForestGroundAlt2Atlas)
-					return true;
-			}
+			if (_owner.IsBiomeGroundAtlas(atlas))
+				return true;
 
-			if (atlas == _owner.SandAtlas || atlas == _owner.WaterAtlas || atlas == _owner.DeepWaterAtlas || atlas == _owner.VoidAtlas)
+			if (atlas == _owner.SandAtlas || _owner.IsLakeAtlas(atlas) || atlas == _owner.VoidAtlas)
 				return true;
 
 			foreach (Vector2I dirtAtlas in _owner.DirtAtlases)
@@ -1824,7 +2053,7 @@ public partial class RubyGen : Node2D
 					if (!world.Ground.TryGetValue(check, out Vector2I atlas))
 						continue;
 
-					if (atlas == _owner.WaterAtlas || atlas == _owner.DeepWaterAtlas)
+					if (_owner.IsLakeAtlas(atlas))
 						return true;
 				}
 			}
@@ -1896,6 +2125,29 @@ public partial class RubyGen : Node2D
 			}
 
 			return false;
+		}
+
+		public Vector2I PickTreeAtlasForCell(RubyThreadWorldData world, Vector2I cell)
+		{
+			if (_owner.IsSnowlandsBiome())
+			{
+				if (world.Ground.TryGetValue(cell, out Vector2I groundAtlas) && groundAtlas == _owner.SnowlandsGroundAlt1Atlas)
+				{
+					if (_owner.SnowlandsNormalPineTreeAtlases.Count > 0)
+						return PickAtlasFromList(_owner.SnowlandsNormalPineTreeAtlases, cell.X, cell.Y, 33333);
+				}
+
+				if (_owner.SnowlandsTreeAtlases.Count > 0)
+					return PickAtlasFromList(_owner.SnowlandsTreeAtlases, cell.X, cell.Y, 22222);
+
+				return Vector2I.Zero;
+			}
+
+			var treeAtlases = _owner.GetCurrentTreeAtlases();
+			if (treeAtlases.Count == 0)
+				return Vector2I.Zero;
+
+			return PickAtlasFromList(treeAtlases, cell.X, cell.Y, 22222);
 		}
 
 		public bool HasEnoughSpaceForTree(RubyThreadWorldData world, Vector2I centerCell)
@@ -1976,6 +2228,39 @@ public partial class RubyGen : Node2D
 					return _owner.DarkForestGroundAlt1Atlas;
 
 				return _owner.DarkForestGroundMainAtlas;
+			}
+
+			if (_owner.IsSnowForestBiome())
+			{
+				if (groundValue >= _owner.GroundAlt2Threshold)
+					return _owner.SnowForestGroundAlt2Atlas;
+
+				if (groundValue >= _owner.GroundAlt1Threshold)
+					return _owner.SnowForestGroundAlt1Atlas;
+
+				return _owner.SnowForestGroundMainAtlas;
+			}
+
+			if (_owner.IsDesertBiome())
+			{
+				if (groundValue >= _owner.GroundAlt2Threshold)
+					return _owner.DesertGroundAlt2Atlas;
+
+				if (groundValue >= _owner.GroundAlt1Threshold)
+					return _owner.DesertGroundAlt1Atlas;
+
+				return _owner.DesertGroundMainAtlas;
+			}
+
+			if (_owner.IsSnowlandsBiome())
+			{
+				if (groundValue >= 0.93f)
+					return _owner.SnowlandsGroundAlt1Atlas;
+
+				if (groundValue >= 0.72f)
+					return _owner.SnowlandsGroundAlt2Atlas;
+
+				return _owner.SnowlandsGroundMainAtlas;
 			}
 
 			if (groundValue >= _owner.GroundAlt2Threshold)

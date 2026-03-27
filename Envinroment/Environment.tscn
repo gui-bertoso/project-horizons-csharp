@@ -37,6 +37,7 @@ color = Color(0.34532225, 0.34532225, 0.34532225, 1)
 
 [node name="SnowBiomeEffects" type="Node2D" parent="." unique_id=1591965983]
 visible = false
+z_index = 3
 
 [node name="Modulate" type="CanvasModulate" parent="SnowBiomeEffects" unique_id=1659501640]
 visible = false
@@ -54,6 +55,7 @@ process_material = SubResource("ParticleProcessMaterial_pfccg")
 
 [node name="DesertBiomeEffects" type="Node2D" parent="." unique_id=1475915269]
 visible = false
+z_index = 3
 
 [node name="Modulate" type="CanvasModulate" parent="DesertBiomeEffects" unique_id=228346824]
 visible = false
@@ -72,6 +74,7 @@ process_material = SubResource("ParticleProcessMaterial_aw3l6")
 
 [node name="ForestBiomeEffects" type="Node2D" parent="." unique_id=1154006353]
 visible = false
+z_index = 3
 
 [node name="Modulate" type="CanvasModulate" parent="ForestBiomeEffects" unique_id=210928634]
 visible = false
@@ -93,6 +96,7 @@ process_material = SubResource("ParticleProcessMaterial_aw3l6")
 
 [node name="DarkForestBiomeEffects" type="Node2D" parent="." unique_id=380795522]
 visible = false
+z_index = 3
 
 [node name="Modulate" type="CanvasModulate" parent="DarkForestBiomeEffects" unique_id=2004841960]
 visible = false
@@ -113,3 +117,4 @@ lifetime = 5.029999999999999
 process_material = SubResource("ParticleProcessMaterial_aw3l6")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="." unique_id=1599067131]
+visible = false
