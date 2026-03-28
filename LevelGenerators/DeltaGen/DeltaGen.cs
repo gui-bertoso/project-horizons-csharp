@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace projecthorizonscs;
 
+
 public partial class DeltaGen : Node2D
 {
 	[ExportGroup("TileMap Layers")]
@@ -56,7 +57,6 @@ public partial class DeltaGen : Node2D
 
 		GD.Print($"DeltaGen: Ready. Streaming Map: {_worldName} | Level: {_currentLevel}");
 
-		// Try immediate load if player is already in the scene
 		if (Globals.I != null && Globals.I.LocalPlayer != null)
 		{
 			Vector2I playerCell = WorldToCell(Globals.I.LocalPlayer.GlobalPosition);
@@ -79,7 +79,6 @@ public partial class DeltaGen : Node2D
 		Vector2I playerCell = WorldToCell(Globals.I.LocalPlayer.GlobalPosition);
 		Vector2I newCenterChunk = WorldToChunk(playerCell);
 
-		// _currentCenterChunk starts at int.MinValue — triggers load on first valid frame
 		if (newCenterChunk != _currentCenterChunk)
 		{
 			GD.Print($"DeltaGen: Chunk center changed to {newCenterChunk}");
@@ -191,7 +190,7 @@ public partial class DeltaGen : Node2D
 
 		_loadedChunks.Remove(chunkCoord);
 
-		if (chunk == null) return; // Was an empty/void chunk placeholder
+		if (chunk == null) return;
 
 		if (_ground != null)
 			foreach (Vector4I tile in chunk.GroundTiles) _ground.EraseCell(new Vector2I(tile.X, tile.Y));
@@ -220,3 +219,4 @@ public partial class DeltaGen : Node2D
 		return _ground.LocalToMap(localToGround);
 	}
 }
+

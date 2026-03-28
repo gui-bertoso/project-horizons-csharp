@@ -1,3 +1,10 @@
+
+/*
+here has 5 hours of my life, yes five hours XD, 
+my mind is crazy now, I can't modify this more, 
+I'm tired, Same help me, please
+*/
+
 using Godot;
 using projecthorizonscs.Autoload;
 using System;
@@ -701,3 +708,5 @@ public partial class CreatingSaveLoading : Control
 	} // end ThreadGenerationContext
 } // end CreatingSaveLoading
 
+
+//I'm tired, one day I back to edit this
