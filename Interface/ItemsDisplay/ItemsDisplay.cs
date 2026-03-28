@@ -52,6 +52,26 @@ public partial class ItemsDisplay : Control
 		_consumableTextureRect = GetNode<TextureRect>("%ConsumableTextureRect");
 		_acessory1TextureRect = GetNode<TextureRect>("%Acessory1TextureRect");
 		_acessory2TextureRect = GetNode<TextureRect>("%Acessory2TextureRect");
+
+		LoadEquipment();
+	}
+
+	public void LoadEquipment()
+	{
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedBodyHead", out var headVar) && headVar.AsGodotObject() is Item headItem) 
+			EquipItem(Item.ITEM_TYPE.HeadArmor, headItem);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedBodyArmor", out var bodyVar) && bodyVar.AsGodotObject() is Item bodyItem) 
+			EquipItem(Item.ITEM_TYPE.BodyArmor, bodyItem);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedFootArmor", out var footVar) && footVar.AsGodotObject() is Item footItem) 
+			EquipItem(Item.ITEM_TYPE.FootArmor, footItem);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedWeapon", out var weaponVar) && weaponVar.AsGodotObject() is Item weaponItem) 
+			EquipItem(Item.ITEM_TYPE.Weapon, weaponItem);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedConsumable", out var consVar) && consVar.AsGodotObject() is Item consItem) 
+			EquipItem(Item.ITEM_TYPE.Consumable, consItem);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedAcessory1", out var acc1Var) && acc1Var.AsGodotObject() is Item acc1Item) 
+			EquipItem(Item.ITEM_TYPE.Acessory1, acc1Item);
+		if (DataManager.I.CurrentWorldData.TryGetValue("EquippedAcessory2", out var acc2Var) && acc2Var.AsGodotObject() is Item acc2Item) 
+			EquipItem(Item.ITEM_TYPE.Acessory2, acc2Item);
 	}
 
 
@@ -67,6 +87,7 @@ public partial class ItemsDisplay : Control
 				_headArmorTextureRect.Texture = item.ItemTexture;
 				_headArmorPlaceholderTextureRect.Visible = false;
 				_equippedHeadArmor = item;
+				DataManager.I.CurrentWorldData["EquippedHeadArmor"] = item;
 
 				Globals.I.LocalPlayerBody.SetArmorTexture(item);
 				break;
@@ -74,6 +95,7 @@ public partial class ItemsDisplay : Control
 				_bodyArmorTextureRect.Texture = item.ItemTexture;
 				_bodyArmorPlaceholderTextureRect.Visible = false;
 				_equippedBodyArmor = item;
+				DataManager.I.CurrentWorldData["EquippedBodyArmor"] = item;
 
 				Globals.I.LocalPlayerBody.SetArmorTexture(item);
 				break;
@@ -84,6 +106,7 @@ public partial class ItemsDisplay : Control
 				_footArmorPlaceholderTextureRect.Visible = false;
 				GD.Print("Test 222");
 				_equippedFootArmor = item;
+				DataManager.I.CurrentWorldData["EquippedFootArmor"] = item;
 				GD.Print("Test 333");
 
 				Globals.I.LocalPlayerBody.SetArmorTexture(item);
@@ -92,6 +115,7 @@ public partial class ItemsDisplay : Control
 				_weaponTextureRect.Texture = item.ItemTexture;
 				_weaponPlaceholderTextureRect.Visible = false;
 				_equippedWeapon = item;
+				DataManager.I.CurrentWorldData["EquippedWeapon"] = item;
 				GD.Print("Equiping weapon");
 				Autoload.Globals.I.LocalPlayerHand.EquipItem(_equippedWeapon);
 				GD.Print("Weapon Equipped");
@@ -108,17 +132,20 @@ public partial class ItemsDisplay : Control
 					_equippedConsumable.ItemAmount += item.ItemAmount;
 					_consumableAmountLabel.Text = _equippedConsumable.ItemAmount.ToString();
 				}
+				DataManager.I.CurrentWorldData["EquippedConsumable"] = _equippedConsumable;
 
 				break;
 			case Item.ITEM_TYPE.Acessory1:
 				_acessory1TextureRect.Texture = item.ItemTexture;
 				_acessory1PlaceholderTextureRect.Visible = false;
 				_equippedAcessory1 = item;
+				DataManager.I.CurrentWorldData["EquippedAcessory1"] = item;
 				break;
 			case Item.ITEM_TYPE.Acessory2:
 				_acessory2TextureRect.Texture = item.ItemTexture;
 				_acessory2PlaceholderTextureRect.Visible = false;
 				_equippedAcessory2 = item;
+				DataManager.I.CurrentWorldData["EquippedAcessory2"] = item;
 				break;
 			case Item.ITEM_TYPE.Acessory:
 				break;
@@ -135,6 +162,7 @@ public partial class ItemsDisplay : Control
 		_consumableTextureRect.Visible = false;
 		_consumableTextureRect.Texture = null;
 		_consumableAmountLabel.Text = "";
+		DataManager.I.CurrentWorldData["EquippedConsumable"] = new Variant();
 	}
 
 	public override void _Process(double delta)

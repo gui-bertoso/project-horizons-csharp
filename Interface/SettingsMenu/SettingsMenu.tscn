@@ -406,13 +406,15 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(106, 0)
 layout_mode = 2
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "BruteGen"
 popup/item_0/id = 0
 popup/item_1/text = "FiberGen"
 popup/item_1/id = 1
 popup/item_2/text = "RubyGen"
 popup/item_2/id = 2
+popup/item_3/text = "DeltaGen"
+popup/item_3/id = 3
 
 [node name="PreviewBackground" type="ColorRect" parent="Panel" unique_id=1311327456]
 custom_minimum_size = Vector2(190, 190)

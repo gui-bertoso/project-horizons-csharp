@@ -1,12 +1,11 @@
 using Godot;
-using projecthorizonscs.Autoload;
 using System;
 
-public partial class RubyProceduralLevel : Node2D
+public partial class DeltaProceduralLevel : Node2D
 {
-	public override void _ExitTree()
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
-		DataManager.I.QuickSaveWorldData();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
