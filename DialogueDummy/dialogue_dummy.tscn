@@ -58,8 +58,6 @@ layout_mode = 2
 text = "bbb"
 
 [node name="NpcInteraction" parent="." unique_id=298732891 instance=ExtResource("3_1kpri")]
-collision_layer = 0
-collision_mask = 4
 DialogueComponentPath = NodePath("../CanvasLayer/DialogueComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NpcInteraction" unique_id=116016750]

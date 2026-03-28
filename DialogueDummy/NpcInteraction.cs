@@ -11,37 +11,33 @@ public partial class NpcInteraction : Area2D
     public override void _Ready()
     {
         _dialogue = GetNodeOrNull<DialogueComponent>(DialogueComponentPath);
-
-        BodyEntered += OnBodyEntered;
-        BodyExited += OnBodyExited;
     }
 
     public override void _Process(double delta)
     {
+        GD.Print("Can talk");
         if (!_playerInside)
             return;
+        GD.Print("Can2 talk");
 
         if (Input.IsActionJustPressed("interact"))
         {
+            GD.Print("init talk");
             if (_dialogue != null && !_dialogue.Visible)
                 _dialogue.StartDialogue(DialoguePath);
+            GD.Print("here talk");
         }
+        GD.Print("not talk");
     }
 
     private void OnBodyEntered(Node body)
     {
-        if (!body.IsInGroup("player"))
-            return;
-
         _playerInside = true;
         GD.Print("player entrou na área");
     }
 
     private void OnBodyExited(Node body)
     {
-        if (!body.IsInGroup("player"))
-            return;
-
         _playerInside = false;
 
         if (_dialogue != null && _dialogue.Visible)

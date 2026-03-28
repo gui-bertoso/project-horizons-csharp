@@ -1,53 +1,98 @@
 [start]
-position=20,200
+position=200,200
 type=start
-next=dialogue_233930347
+next=dialogue_2951667703
 
-[dialogue_233930347]
-position=180,80
+[dialogue_2951667703]
+position=407,34
 type=dialogue
-text=oi
-option_0_text=eae
-option_0_next=dialogue_946834098
-option_1_text=sai esquisito
-option_1_next=dialogue_3888362306
+text=Hey boy
+option_0_text=Hey
+option_0_next=dialogue_1232813519
+option_1_text=Do I know you?
+option_1_next=dialogue_79919938
 
-[dialogue_946834098]
-position=360,0
+[dialogue_79919938]
+position=602,188
 type=dialogue
-text=tudo bem?
-option_0_text=sim
-option_0_next=dialogue_2762869957
-option_1_text=não
-option_1_next=dialogue_2751823955
-
-[dialogue_2751823955]
-position=540,120
-type=dialogue
-text=ai é foda
+text=Why the aggression, kid?
 option_0_text=
-option_0_next=dialogue_3888362306
+option_0_next=dialogue_3674221040
 option_1_text=
-option_1_next=dialogue_3888362306
+option_1_next=dialogue_3674221040
 
-[end]
-position=940,120
-type=end
-
-[dialogue_2762869957]
-position=540,-40
+[dialogue_3674221040]
+position=820,100
 type=dialogue
-text=q bom
+text=The world is ending.
 option_0_text=
+option_0_next=dialogue_1232813519
+option_1_text=
+option_1_next=dialogue_1232813519
+
+[dialogue_1232813519]
+position=940,-120
+type=dialogue
+text=it's been a long time since I've seen anyone.
+option_0_text=
+option_0_next=dialogue_2350846096
+option_1_text=
+option_1_next=dialogue_2350846096
+
+[dialogue_2350846096]
+position=1160,-120
+type=dialogue
+text=are you hurt?
+option_0_text=yes
+option_0_next=dialogue_4210831415
+option_1_text=no
+option_1_next=dialogue_2773251755
+
+[dialogue_4210831415]
+position=1420,-260
+type=dialogue
+text=Take this and heal your wounds.
+option_0_text=
+option_0_next=dialogue_936271553
+option_1_text=
+option_1_next=dialogue_936271553
+
+[dialogue_2773251755]
+position=1420,-40
+type=dialogue
+text=Thank goodness.
+option_0_text=
+option_0_next=dialogue_936271553
+option_1_text=
+option_1_next=dialogue_936271553
+
+[dialogue_936271553]
+position=1660,-120
+type=dialogue
+text=the world is full of strange beings after that big tremor and flash and who knows what else.
+option_0_text=
+option_0_next=dialogue_4248109823
+option_1_text=
+option_1_next=dialogue_4248109823
+
+[dialogue_4248109823]
+position=1880,-200
+type=dialogue
+text=If you find more people, try to find out what happened.
+option_0_text=
+option_0_next=dialogue_1185514763
+option_1_text=
+option_1_next=dialogue_1185514763
+
+[dialogue_1185514763]
+position=2120,-180
+type=dialogue
+text=Good luck, kid, and take this with you {code.give.item ITEMID}. I found it when I fell into one of those shiny things that lead to other places.
+option_0_text=good bye
 option_0_next=end
 option_1_text=
 option_1_next=end
 
-[dialogue_3888362306]
-position=740,280
-type=dialogue
-text=então vsfd
-option_0_text=
-option_0_next=
-option_1_text=
-option_1_next=end
+[end]
+position=2360,-120
+type=end
