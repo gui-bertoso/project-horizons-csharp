@@ -14,19 +14,22 @@ script = ExtResource("1_n4r8t")
 
 [node name="Control3" type="Control" parent="." unique_id=72165492]
 visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VirtualJoystick" type="VirtualJoystick" parent="Control3" unique_id=1119284981]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 175.0
-offset_top = 401.0
-offset_right = 215.0
-offset_bottom = 441.0
+offset_left = 190.0
+offset_top = -222.0
+offset_right = 230.0
+offset_bottom = -182.0
 grow_vertical = 0
 joystick_mode = 1
 joystick_size = 159.0
@@ -42,10 +45,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 1072.0
-offset_top = 568.0
-offset_right = 1112.0
-offset_bottom = 608.0
+offset_left = -40.0
+offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 

@@ -10,6 +10,15 @@
 [node name="DebugPanel" parent="." unique_id=1513264503 instance=ExtResource("1_vy2b5")]
 
 [node name="ItemsDisplay" parent="." unique_id=603277340 instance=ExtResource("2_3fcnm")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = 8.0
+offset_top = 246.0
+offset_right = 8.0
+offset_bottom = 246.0
+grow_horizontal = 0
+grow_vertical = 1
 
 [node name="StatsContainer" parent="." unique_id=517590207 instance=ExtResource("3_qthrp")]
 
