@@ -68,7 +68,7 @@ public partial class SaveSlot : VBoxContainer
 		{
 			GetTree().ChangeSceneToFile("uid://caeqsflrr74fw");
 		}
-		else if ((int)DataManager.I.GameDataDictionary["Settings.WorldGeneration"] == 1)
+		else if ((int)DataManager.I.GameDataDictionary["Settings.WorldGeneration"] == 2)
 		{
 			GetTree().ChangeSceneToFile("uid://c335pmqkb34ev");
 		}
