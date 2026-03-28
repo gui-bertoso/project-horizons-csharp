@@ -16,9 +16,6 @@
 [sub_resource type="Environment" id="Environment_8485w"]
 background_mode = 3
 adjustment_enabled = true
-adjustment_brightness = 0.86
-adjustment_contrast = 1.25
-adjustment_saturation = 1.2
 
 [node name="DebugLevel" unique_id=1049057679 instance=ExtResource("1_mowe0")]
 script = ExtResource("2_wilel")
@@ -56,11 +53,14 @@ tile_set = ExtResource("4_qf5dj")
 rendering_quadrant_size = 32
 
 [node name="DialogueDummy" parent="." index="5" unique_id=1624981845 instance=ExtResource("62_jqk32")]
-position = Vector2(-571, 503)
+position = Vector2(1548, -115)
 
 [node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
 environment = SubResource("Environment_8485w")
 script = null
+
+[node name="BaseModulate" parent="WorldEnvironment" index="0" unique_id=312499868]
+visible = true
 
 [node name="PhysicItem" parent="." index="7" unique_id=654771301 instance=ExtResource("6_12w40")]
 position = Vector2(1133, 521)
