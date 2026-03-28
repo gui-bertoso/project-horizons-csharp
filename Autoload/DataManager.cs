@@ -53,6 +53,14 @@ public partial class DataManager : Node
 		{"PlayerExtraHealth", 100},
 		{"PlayerMoveSpeed", 50},
 		{"PlayerExtraMoveSpeed", 50},
+
+		{"EquippedHeadArmor", new Item()},
+		{"EquippedBodyArmor", new Item()},
+		{"EquippedFootArmor", new Item()},
+		{"EquippedWeapon", new Item()},
+		{"EquippedConsumable", new Item()},
+		{"EquippedAcessory1", new Item()},
+		{"EquippedAcessory2", new Item()},
 	};
 	
 	public void SaveGameData()
@@ -84,7 +92,7 @@ public partial class DataManager : Node
 	{
 		GD.Print("Saving world data...");
 		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".txt", Godot.FileAccess.ModeFlags.Write);
-		file.StoreVar(CurrentWorldData);
+		file.StoreVar(CurrentWorldData, true);
 		GD.Print($"Saved world data: {CurrentWorldData}");
 	}
 
@@ -112,7 +120,7 @@ public partial class DataManager : Node
 	{
 		GD.Print("Loading world data...");
 		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".txt", Godot.FileAccess.ModeFlags.Read);
-		var data = file.GetVar();
+		var data = file.GetVar(true);
 
 		var dictionary = data.AsGodotDictionary();
 
@@ -125,6 +133,7 @@ public partial class DataManager : Node
 		}
 		_currentSaveName = saveName;
 		GD.Print("Loaded world data");
+		GD.Print($"Loaded game data {CurrentWorldData}");
 	}
 
 	public override void _EnterTree()

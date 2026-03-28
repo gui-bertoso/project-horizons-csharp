@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://c5kpx6e4716b0"]
+
+[ext_resource type="PackedScene" uid="uid://bo41mbgikuxqk" path="res://Levels/LevelTemplate.tscn" id="1_cvyb0"]
+[ext_resource type="Script" uid="uid://bgavdpmm8bfa6" path="res://Levels/DeltaProceduralLevel.cs" id="2_cvyb0"]
+[ext_resource type="PackedScene" uid="uid://dsn1iynynytm6" path="res://LevelGenerators/DeltaGen/DeltaGen.tscn" id="3_pbe4m"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="4_agdal"]
+[ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="5_sdk7x"]
+[ext_resource type="Resource" uid="uid://croxmhimhnbcc" path="res://Items/Armor1Foot.tres" id="6_4sqi4"]
+[ext_resource type="Resource" uid="uid://c18m1bymar3kw" path="res://Items/Armor2Tome.tres" id="7_68jie"]
+[ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="8_la2uw"]
+[ext_resource type="Resource" uid="uid://dxu00pmxlk06y" path="res://Items/BrokenSword.tres" id="9_wukl5"]
+[ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="10_8shxu"]
+[ext_resource type="Resource" uid="uid://luuuoctufjnv" path="res://Items/VenomPotion.tres" id="11_upamt"]
+[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="12_pbe4m"]
+
+[sub_resource type="Environment" id="Environment_lq7bx"]
+background_mode = 3
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldwd3"]
+atlas = ExtResource("4_agdal")
+region = Rect2(200, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i3lvr"]
+lifetime_randomness = 0.79
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(656, 49.755, 1)
+gravity = Vector3(-510.78, 62.155, 0)
+scale_min = 0.25
+scale_max = 0.25
+color = Color(0.61331886, 0.6012353, 3.85046e-07, 1)
+
+[node name="ChunkedProceduralLevel" unique_id=1049057679 instance=ExtResource("1_cvyb0")]
+script = ExtResource("2_cvyb0")
+
+[node name="DeltaGen" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=1349310333 instance=ExtResource("3_pbe4m")]
+
+[node name="MapCam" type="Camera2D" parent="." index="5" unique_id=195108495]
+enabled = false
+zoom = Vector2(0.09, 0.09)
+
+[node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
+environment = SubResource("Environment_lq7bx")
+script = null
+
+[node name="GPUParticles2D" parent="WorldEnvironment/DesertBiomeEffects/CanvasLayer" parent_id_path=PackedInt32Array(10120490, 1090217473) index="0" unique_id=1434601390]
+position = Vector2(1612, 187)
+texture = SubResource("AtlasTexture_ldwd3")
+process_material = SubResource("ParticleProcessMaterial_i3lvr")
+
+[node name="PhysicItem" parent="." index="7" unique_id=654771301 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("6_4sqi4")
+
+[node name="PhysicItem2" parent="." index="8" unique_id=1271091055 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("7_68jie")
+
+[node name="PhysicItem3" parent="." index="9" unique_id=1170201825 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("8_la2uw")
+
+[node name="PhysicItem4" parent="." index="10" unique_id=74636078 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("9_wukl5")
+
+[node name="PhysicItem5" parent="." index="11" unique_id=1240879892 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("10_8shxu")
+
+[node name="PhysicItem6" parent="." index="12" unique_id=1762926001 instance=ExtResource("5_sdk7x")]
+Item = ExtResource("11_upamt")
+
+[node name="PhysicItem7" parent="." index="13" unique_id=646322230 instance=ExtResource("5_sdk7x")]
+
+[node name="Player" parent="." index="14" unique_id=621873643 instance=ExtResource("12_pbe4m")]
+
+[editable path="WorldEnvironment"]

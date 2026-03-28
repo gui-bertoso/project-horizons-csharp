@@ -158,12 +158,10 @@ public partial class SavesManager : Control
 		DataManager.I.CurrentWorldData["Multiplayer"] = _newSaveMultiplayerEnabledCheckButton.ButtonPressed;
 		((Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"]).Add(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
+		DataManager.I.LoadWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveGameData();
 		GD.Print($"New save created {DataManager.I.CurrentWorldData}");
-		_newSavePanel.Visible = false;
-		_savesPanel.Visible = true;
-		ClearSaveSlots();
-		LoadSaves();
+		GetTree().ChangeSceneToFile("uid://c3px4n5nm3vcc");
 	}
 
 	public override void _Process(double delta)
