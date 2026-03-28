@@ -33,13 +33,17 @@ tile_map_data = PackedByteArray("AAAbABMAAAAkAAEAAAAbACAAAAAiAAAAAAAdAAoAAAAjAAA
 tile_set = ExtResource("4_qf5dj")
 
 [node name="TileMapLayer4" type="TileMapLayer" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="3" unique_id=719578429]
-position = Vector2(1422, 108.00001)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1108, 38)
 tile_map_data = PackedByteArray("AADy//3/AAAmABYAAADo/xIAAAAmABgAAAD7/xgAAAAiACEAAAD2/y4AAAAiABgAAAD6/ykAAAAiABgAAAD0/zgAAAAWACYAAADp/yEAAAAUACIAAADn/x8AAAAVACIAAAD0/xcAAAAYABgAAAD7/xYAAAAiABYAAADq/x4AAAATACEAAAD5/xoAAAAhAAAAAAD4/xYAAAAgAAAAAAA=")
 tile_set = ExtResource("4_qf5dj")
 rendering_quadrant_size = 32
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="4" unique_id=219879113]
-position = Vector2(1422, 108.00001)
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1108, 38)
 tile_map_data = PackedByteArray("AADy//3/AAAmACIAAADo/xIAAAAmACIAAAD7/xgAAAAiACEAAAD2/y4AAAAiACEAAAD6/ykAAAAiACEAAAD0/zgAAAAWACYAAADp/yEAAAAUACYAAADq/xwAAAATACYAAADn/x8AAAAVACYAAAD0/xcAAAAYACEAAAA=")
 tile_set = ExtResource("4_qf5dj")
 rendering_quadrant_size = 32
@@ -53,8 +57,5 @@ position = Vector2(-571, 503)
 [node name="WorldEnvironment" parent="." index="6" unique_id=10120490]
 environment = SubResource("Environment_8485w")
 script = null
-
-[node name="DirectionalLight2D" parent="WorldEnvironment" index="5" unique_id=1599067131]
-visible = false
 
 [editable path="WorldEnvironment"]
