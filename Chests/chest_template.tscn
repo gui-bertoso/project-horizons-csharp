@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cl6khqf4hkuad"]
+
+[ext_resource type="Script" uid="uid://7dhfu5shsh0t" path="res://Chests/ChestTemplate.cs" id="1_0n52l"]
+
+[node name="ChestTemplate" type="Node2D" unique_id=1958636200]
+script = ExtResource("1_0n52l")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=578965039]
