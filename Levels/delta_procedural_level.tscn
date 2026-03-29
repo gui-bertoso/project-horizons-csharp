@@ -11,7 +11,6 @@
 [ext_resource type="Resource" uid="uid://dxu00pmxlk06y" path="res://Items/BrokenSword.tres" id="9_wukl5"]
 [ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="10_8shxu"]
 [ext_resource type="Resource" uid="uid://luuuoctufjnv" path="res://Items/VenomPotion.tres" id="11_upamt"]
-[ext_resource type="PackedScene" uid="uid://br5t1lo3wng1y" path="res://Player/Player.tscn" id="12_pbe4m"]
 
 [sub_resource type="Environment" id="Environment_lq7bx"]
 background_mode = 3
@@ -34,6 +33,11 @@ color = Color(0.61331886, 0.6012353, 3.85046e-07, 1)
 script = ExtResource("2_cvyb0")
 
 [node name="DeltaGen" parent="Scenario" parent_id_path=PackedInt32Array(2043432428) index="0" unique_id=1349310333 instance=ExtResource("3_pbe4m")]
+HorizontalRenderRadius = 2
+VerticalRenderRadius = 5
+DebugLogs = true
+ExtraChunkMargin = 2
+BaseCameraZoom = Vector2(2, 2)
 
 [node name="MapCam" type="Camera2D" parent="." index="5" unique_id=195108495]
 enabled = false
@@ -67,7 +71,5 @@ Item = ExtResource("10_8shxu")
 Item = ExtResource("11_upamt")
 
 [node name="PhysicItem7" parent="." index="13" unique_id=646322230 instance=ExtResource("5_sdk7x")]
-
-[node name="Player" parent="." index="14" unique_id=621873643 instance=ExtResource("12_pbe4m")]
 
 [editable path="WorldEnvironment"]
