@@ -1,8 +1,8 @@
 [gd_scene format=4 uid="uid://c3px4n5nm3vcc"]
 
+[ext_resource type="Script" uid="uid://drswhx010gbhf" path="res://Interface/CreatingSaveLoading/CreatingSaveLoading.cs" id="1_csl"]
 [ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="1_n7kdf"]
 [ext_resource type="Texture2D" uid="uid://b0qe16g6krl6i" path="res://Assets/Player/playerBaseSprite.png" id="2_ons8d"]
-[ext_resource type="Script" path="res://Interface/CreatingSaveLoading/CreatingSaveLoading.cs" id="1_csl"]
 
 [sub_resource type="Animation" id="Animation_s1rgi"]
 resource_name = "walk_forward_side"
@@ -184,13 +184,15 @@ _data = {
 }
 
 [node name="CreatingSaveScreen" type="Control" unique_id=2110633203]
-script = ExtResource("1_csl")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_csl")
+ChunksX = 20
+ChunksY = 40
 
 [node name="Control" type="Control" parent="." unique_id=227312322]
 layout_mode = 1
