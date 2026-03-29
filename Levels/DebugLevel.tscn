@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://dxu00pmxlk06y" path="res://Items/BrokenSword.tres" id="10_8dhhy"]
 [ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="11_a7yu2"]
 [ext_resource type="Resource" uid="uid://luuuoctufjnv" path="res://Items/VenomPotion.tres" id="12_r1rf8"]
+[ext_resource type="PackedScene" uid="uid://bss1tglk20lfh" path="res://Chests/debug_chest.tscn" id="13_yhvl1"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
@@ -88,5 +89,8 @@ Item = ExtResource("12_r1rf8")
 
 [node name="PhysicItem7" parent="." index="13" unique_id=1732381101 instance=ExtResource("6_12w40")]
 position = Vector2(894, 815)
+
+[node name="ChestTemplate" parent="." index="14" unique_id=1958636200 instance=ExtResource("13_yhvl1")]
+position = Vector2(623, -161)
 
 [editable path="WorldEnvironment"]

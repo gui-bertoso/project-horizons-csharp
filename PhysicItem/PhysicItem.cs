@@ -4,73 +4,94 @@ namespace projecthorizonscs;
 
 public partial class PhysicItem : Node2D
 {
-	private Sprite2D _sprite;
-	private Label _label;
+    [Signal]
+    public delegate void CollectedEventHandler();
 
-	private float _collectDistance = 40f;
+    private Sprite2D _sprite;
+    private Label _label;
 
-	private bool _canCollect;
+    private const float CollectDistance = 40f;
+    private bool _canCollect;
+    private bool _collected = false;
 
-	private int _tickCounter;
-	private int _ticksToLive = 300;
+    [Export]
+    public Item Item;
 
-	private bool collected = false;
+    public override void _Ready()
+    {
+        _sprite = GetNodeOrNull<Sprite2D>("Sprite");
+        _label = GetNodeOrNull<Label>("Label");
 
-	[Export]
-	public Item Item;
+        if (_label != null)
+            _label.Visible = false;
 
-	public override void _Ready()
-	{
-		GD.Print("Item here");
-		GD.Print($"ITEM {GlobalPosition}");
-		_sprite = GetNode<Sprite2D>("Sprite");
-		_label = GetNode<Label>("Label");
-		if (Item != null)
-		{
-			UpdateData();
-		}
-		else
-		{
-			QueueFree();
-		}
-	}
+        if (Item != null)
+        {
+            UpdateData();
+        }
+        else
+        {
+            QueueFree();
+        }
+    }
 
-	public override void _Process(double delta)
-	{
-		UpdateCanCollect();
-		if (!Input.IsActionJustPressed("collect") || !_canCollect) return;
-		Autoload.Globals.I.LocalPlayer.CollectItem(this);
-		GD.Print("Collect 1");
-	}
+    public override void _Process(double delta)
+    {
+        UpdateCanCollect();
 
-	public void Collect()
-	{
-		GD.Print("Collect 5");
-		Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType,Item);
-		QueueFree();
-	}
+        if (!Input.IsActionJustPressed("collect") || !_canCollect)
+            return;
 
-	private void UpdateCanCollect()
-	{
-		if (Autoload.Globals.I.LocalPlayer == null){
-			return;
-		}
-		var distanceToPlayer = Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
-		
-		if (distanceToPlayer <= _collectDistance)
-		{
-			_canCollect = true;
-			_label.Visible = true;
-		}
-		else
-		{
-			_label.Visible = false;
-			_canCollect = false;
-		}
-	}
+        Autoload.Globals.I.LocalPlayer?.CollectItem(this);
+    }
 
-	private void UpdateData()
-	{
-		_sprite.Texture = Item.ItemTexture;
-	}
+    public void Collect()
+    {
+        if (_collected)
+            return;
+
+        _collected = true;
+
+        Autoload.Globals.I.LocalItemsDisplay.EquipItem(Item.ItemType, Item);
+
+        EmitSignal(SignalName.Collected);
+        QueueFree();
+    }
+
+    private void UpdateCanCollect()
+    {
+        if (Autoload.Globals.I.LocalPlayer == null)
+        {
+            _canCollect = false;
+
+            if (_label != null)
+                _label.Visible = false;
+
+            return;
+        }
+
+        float distanceToPlayer =
+            Autoload.Globals.I.LocalPlayer.GlobalPosition.DistanceTo(GlobalPosition);
+
+        if (distanceToPlayer <= CollectDistance)
+        {
+            _canCollect = true;
+
+            if (_label != null)
+                _label.Visible = true;
+        }
+        else
+        {
+            _canCollect = false;
+
+            if (_label != null)
+                _label.Visible = false;
+        }
+    }
+
+    private void UpdateData()
+    {
+        if (_sprite != null && Item != null)
+            _sprite.Texture = Item.ItemTexture;
+    }
 }
