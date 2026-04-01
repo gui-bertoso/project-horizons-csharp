@@ -10,13 +10,54 @@ full delta pass:
 all ruby ghosts were evicted from this file
 */
 
+
 using Godot;
 using projecthorizonscs.Autoload;
+using projecthorizonscs;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace projecthorizonscs;
+
+[GlobalClass]
+public sealed class DeltaChestSpawnData
+{
+	public string ChestScenePath = "";
+	public Vector2I Cell = Vector2I.Zero;
+
+	public Godot.Collections.Dictionary Serialize()
+	{
+		return new()
+		{
+			{ "scene", ChestScenePath },
+			{ "cell_x", Cell.X },
+			{ "cell_y", Cell.Y },
+		};
+	}
+
+	public void Deserialize(Godot.Collections.Dictionary dict)
+	{
+		ChestScenePath = dict.ContainsKey("scene") ? dict["scene"].AsString() : "";
+
+		int x = dict.ContainsKey("cell_x") ? dict["cell_x"].AsInt32() : 0;
+		int y = dict.ContainsKey("cell_y") ? dict["cell_y"].AsInt32() : 0;
+
+		Cell = new Vector2I(x, y);
+	}
+}
+
+public sealed class ChestBakeEntry
+{
+	public string ScenePath;
+	public float Chance;
+
+	public ChestBakeEntry(string scenePath, float chance)
+	{
+		ScenePath = scenePath;
+		Chance = chance;
+	}
+}
 
 public partial class CreatingSaveLoading : Control
 {
@@ -206,6 +247,15 @@ public partial class CreatingSaveLoading : Control
 	[Export] public int MinEnemyDistanceFromInitialPortal = 10;
 	[Export] public int MinDistanceBetweenPregeneratedEnemies = 6;
 
+	[ExportGroup("Chests")]
+	[Export] public bool PregenerateChests = true;
+	[Export] public int MinChestDistanceFromInitialPortal = 8;
+	[Export] public int MinDistanceBetweenPregeneratedChests = 10;
+	[Export] public int MinChestDistanceFromExitPortal = 6;
+	[Export] public int MaxChestsPerLevel = 3;
+
+	[Export] public Godot.Collections.Array<DeltaChestSceneChanceData> ChestTable = new();
+
 	private Label _mainLabel;
 	private Label _subLabel;
 	private ProgressBar _progressBar;
@@ -228,6 +278,11 @@ public partial class CreatingSaveLoading : Control
 	public int HalfLevelSizeX => LevelSizeX / 2;
 	public int HalfLevelSizeY => LevelSizeY / 2;
 
+	public List<DeltaChestSpawnData> Chests = new();
+
+	private readonly List<ChestBakeEntry> _threadSafeChestTable = new();
+	private int _cachedSaveDifficulty = 0;
+
 	public override async void _Ready()
 	{
 		_mainLabel = GetNodeOrNull<Label>(MainLabelPath);
@@ -242,28 +297,92 @@ public partial class CreatingSaveLoading : Control
 		if (RandomizeSeedOnReady)
 			RandomizeSeed();
 
+		CacheThreadSafeData();
+
 		_ = BakeWorldAsync();
+	}
+
+	private void CacheThreadSafeData()
+	{
+		_threadSafeChestTable.Clear();
+
+		if (ChestTable != null)
+		{
+			for (int i = 0; i < ChestTable.Count; i++)
+			{
+				var entry = ChestTable[i];
+				if (entry == null)
+					continue;
+
+				string path = entry.ChestScenePath?.Trim() ?? "";
+				float chance = entry.Chance;
+
+				if (string.IsNullOrWhiteSpace(path) || chance <= 0f)
+					continue;
+
+				_threadSafeChestTable.Add(new ChestBakeEntry(path, chance));
+			}
+		}
+
+		_cachedSaveDifficulty = 0;
+
+		try
+		{
+			if (DataManager.I != null &&
+				DataManager.I.CurrentWorldData != null &&
+				DataManager.I.CurrentWorldData.ContainsKey("SaveDifficulty"))
+			{
+				_cachedSaveDifficulty = (int)DataManager.I.CurrentWorldData["SaveDifficulty"];
+			}
+		}
+		catch (Exception ex)
+		{
+			GD.PrintErr($"failed to cache save difficulty: {ex}");
+			_cachedSaveDifficulty = 0;
+		}
 	}
 
 	private async Task BakeWorldAsync()
 	{
 		GD.Print($"Starting Baking for {_worldName} with seed {SeedValue}");
-		var threadedTask = Task.Run(GenerateAllLevels);
 
-		while (!threadedTask.IsCompleted)
+		try
 		{
-			UpdateUISmooth();
-			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+			var threadedTask = Task.Run(GenerateAllLevels);
+
+			while (!threadedTask.IsCompleted)
+			{
+				UpdateUISmooth();
+				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+			}
+
+			await threadedTask;
+
+			ValidateBakeOutput();
+
+			GD.Print("Baking Complete!");
+			if (_mainLabel != null) _mainLabel.Text = "baking completo!";
+			if (_subLabel != null) _subLabel.Text = $"todos os {TotalLevelsToBake} níveis foram salvos.";
+			if (_progressBar != null) _progressBar.Value = 100;
+			await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
+			GetTree().ChangeSceneToFile("uid://c5kpx6e4716b0");
 		}
+		catch (Exception ex)
+		{
+			GD.PrintErr($"Bake failed: {ex}");
+			GD.PushError($"erro ao gerar mundo: {ex}");
 
-		await threadedTask;
+			if (_mainLabel != null) _mainLabel.Text = "erro ao gerar mundo";
+			if (_subLabel != null) _subLabel.Text = ex.Message;
+			if (_progressBar != null) _progressBar.Value = 0;
+		}
+	}
 
-		GD.Print("Baking Complete!");
-		if (_mainLabel != null) _mainLabel.Text = "baking completo!";
-		if (_subLabel != null) _subLabel.Text = $"todos os {TotalLevelsToBake} níveis foram salvos.";
-		if (_progressBar != null) _progressBar.Value = 100;
-		await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
-		GetTree().ChangeSceneToFile("uid://c5kpx6e4716b0");
+	private void ValidateBakeOutput()
+	{
+		string firstMetadata = $"user://saves/{_worldName}/level_0/level_metadata.dat";
+		if (!FileAccess.FileExists(firstMetadata))
+			throw new Exception($"o bake terminou mas o level_0 não existe: {firstMetadata}");
 	}
 
 	private void UpdateUISmooth()
@@ -282,31 +401,49 @@ public partial class CreatingSaveLoading : Control
 	private void GenerateAllLevels()
 	{
 		_threadStageCount = Mathf.Max(1, TotalLevelsToBake);
-		int completed = 0;
 
-		Parallel.For(0, TotalLevelsToBake, new ParallelOptions { MaxDegreeOfParallelism = Mathf.Max(1, MaxBakeThreads) }, levelId =>
+		if (TotalLevelsToBake <= 0)
+			throw new Exception("TotalLevelsToBake está 0. nada para gerar.");
+
+		for (int levelId = 0; levelId < TotalLevelsToBake; levelId++)
 		{
 			int biomeId = GetDeterministicBiome(levelId);
-			DeltaThreadGenerationResult result = GenerateChunksDataThreaded(levelId, biomeId);
-			DeltaLevelMetadata metadata = BuildLevelMetadata(levelId, biomeId, result);
-			SaveLevelToDisk(levelId, result, metadata);
-
-			result.Chunks.Clear();
-
-			int done = System.Threading.Interlocked.Increment(ref completed);
 
 			lock (_progressLock)
 			{
-				_threadStageIndex = done - 1;
+				_threadStageIndex = levelId;
+				_threadStageCurrent = 0;
+				_threadStageMax = 1;
+				_threadStageTitle = $"gerando nível {levelId + 1}/{TotalLevelsToBake}...";
+				_threadStageSubText = $"bioma: {GetBiomeNameForId(biomeId)}";
+			}
+
+			DeltaThreadGenerationResult result = GenerateChunksDataThreaded(levelId, biomeId);
+
+			if (result == null)
+				throw new Exception($"GenerateChunksDataThreaded retornou null no nível {levelId}.");
+
+			if (result.Chunks == null || result.Chunks.Count == 0)
+				throw new Exception($"nível {levelId} não gerou chunks.");
+
+			DeltaLevelMetadata metadata = BuildLevelMetadata(levelId, biomeId, result);
+			SaveLevelToDisk(levelId, result, metadata);
+			ValidateSavedLevel(levelId);
+
+			result.Clear();
+
+			lock (_progressLock)
+			{
+				_threadStageIndex = levelId;
 				_threadStageCurrent = 1;
 				_threadStageMax = 1;
-				_threadStageTitle = $"{done}/{TotalLevelsToBake} níveis concluídos...";
+				_threadStageTitle = $"{levelId + 1}/{TotalLevelsToBake} níveis concluídos...";
 				_threadStageSubText = $"bioma: {GetBiomeNameForId(biomeId)} (nível {levelId + 1})";
 			}
 
-			if (GcCollectEveryLevels > 0 && done % GcCollectEveryLevels == 0)
+			if (GcCollectEveryLevels > 0 && (levelId + 1) % GcCollectEveryLevels == 0)
 				GC.Collect(2, GCCollectionMode.Optimized, false);
-		});
+		}
 	}
 
 	private string GetBiomeNameForId(int biomeId) => biomeId switch
@@ -327,6 +464,15 @@ public partial class CreatingSaveLoading : Control
 		if (levelId <= 30) return roll < 0.20f ? 0 : roll < 0.75f ? 1 : 3;
 		if (levelId <= 50) return roll < 0.10f ? 1 : roll < 0.80f ? 3 : 4;
 		return roll < 0.30f ? 2 : roll < 0.80f ? 4 : 3;
+	}
+
+	private void ValidateSavedLevel(int levelId)
+	{
+		string levelPath = $"user://saves/{_worldName}/level_{levelId}";
+		string metadataFile = $"{levelPath}/level_metadata.dat";
+
+		if (!FileAccess.FileExists(metadataFile))
+			throw new Exception($"metadata do nível {levelId} não foi salva em {metadataFile}");
 	}
 
 	private void SaveLevelToDisk(int levelId, DeltaThreadGenerationResult result, DeltaLevelMetadata metadata)
@@ -386,7 +532,10 @@ public partial class CreatingSaveLoading : Control
 			GeneratePortalsForLevel(metadata, result);
 
 		if (PregenerateEnemies)
-			GenerateEnemiesForLevel(metadata, result, biomeId, levelId);
+			GenerateEnemiesForLevel(metadata, result, biomeId, levelId, _cachedSaveDifficulty);
+
+		if (PregenerateChests)
+			GenerateChestsForLevel(metadata, result, levelId);
 
 		return metadata;
 	}
@@ -461,20 +610,120 @@ public partial class CreatingSaveLoading : Control
 		metadata.ExitPortalCell = chosenExit;
 	}
 
-	private void GenerateEnemiesForLevel(DeltaLevelMetadata metadata, DeltaThreadGenerationResult result, int biomeId, int levelId)
+	private void GenerateChestsForLevel(DeltaLevelMetadata metadata, DeltaThreadGenerationResult result, int levelId)
 	{
-		int difficulty = 0;
+		if (_threadSafeChestTable.Count == 0)
+			return;
 
-		try
+		var candidateCells = new List<Vector2I>();
+
+		foreach (var pair in result.Chunks)
 		{
-			if (DataManager.I != null && DataManager.I.CurrentWorldData != null && DataManager.I.CurrentWorldData.ContainsKey("SaveDifficulty"))
-				difficulty = (int)DataManager.I.CurrentWorldData["SaveDifficulty"];
-		}
-		catch
-		{
-			difficulty = 0;
+			DeltaBakeChunkData chunk = pair.Value;
+			if (!IsSpawnableChunk(chunk))
+				continue;
+
+			foreach (Vector2I cell in chunk.ValidGroundCells)
+			{
+				if (HasObjectAtCell(result.Chunks, cell))
+					continue;
+
+				if (metadata.HasInitialPortal &&
+					cell.DistanceSquaredTo(metadata.InitialPortalCell) < MinChestDistanceFromInitialPortal * MinChestDistanceFromInitialPortal)
+					continue;
+
+				if (metadata.HasExitPortal &&
+					cell.DistanceSquaredTo(metadata.ExitPortalCell) < MinChestDistanceFromExitPortal * MinChestDistanceFromExitPortal)
+					continue;
+
+				if (IsTooCloseToEnemies(metadata.Enemies, cell, 3))
+					continue;
+
+				candidateCells.Add(cell);
+			}
 		}
 
+		if (candidateCells.Count == 0)
+			return;
+
+		var rng = new Random(HashInt(SeedValue, levelId, 424242));
+		int chestAmount = Mathf.Min(MaxChestsPerLevel, Mathf.Max(1, candidateCells.Count / 800));
+
+		for (int i = 0; i < chestAmount && candidateCells.Count > 0; i++)
+		{
+			int index = rng.Next(0, candidateCells.Count);
+			Vector2I chosenCell = candidateCells[index];
+			candidateCells.RemoveAt(index);
+
+			if (!CanPlacePregeneratedChest(metadata.Chests, chosenCell))
+				continue;
+
+			string chestScene = GetDeterministicChestScene(chosenCell, levelId);
+			if (string.IsNullOrEmpty(chestScene))
+				continue;
+
+			metadata.Chests.Add(new DeltaChestSpawnData
+			{
+				ChestScenePath = chestScene,
+				Cell = chosenCell
+			});
+		}
+	}
+
+	private bool CanPlacePregeneratedChest(List<DeltaChestSpawnData> existing, Vector2I cell)
+	{
+		foreach (DeltaChestSpawnData chest in existing)
+		{
+			if (chest.Cell.DistanceSquaredTo(cell) < MinDistanceBetweenPregeneratedChests * MinDistanceBetweenPregeneratedChests)
+				return false;
+		}
+
+		return true;
+	}
+
+	private bool IsTooCloseToEnemies(List<DeltaEnemySpawnData> enemies, Vector2I cell, int minDistance)
+	{
+		int minDistSq = minDistance * minDistance;
+
+		foreach (DeltaEnemySpawnData enemy in enemies)
+		{
+			if (enemy.Cell.DistanceSquaredTo(cell) < minDistSq)
+				return true;
+		}
+
+		return false;
+	}
+
+	private string GetDeterministicChestScene(Vector2I cell, int levelId)
+	{
+		if (_threadSafeChestTable.Count == 0)
+			return "";
+
+		float totalChance = 0f;
+		for (int i = 0; i < _threadSafeChestTable.Count; i++)
+			totalChance += Mathf.Max(0f, _threadSafeChestTable[i].Chance);
+
+		if (totalChance <= 0f)
+			return "";
+
+		int hash = Math.Abs(HashInt(cell.X, cell.Y, levelId, SeedValue, 8181));
+		float roll = (hash % 100000) / 100000f * totalChance;
+
+		float acc = 0f;
+		for (int i = 0; i < _threadSafeChestTable.Count; i++)
+		{
+			var entry = _threadSafeChestTable[i];
+			acc += Mathf.Max(0f, entry.Chance);
+
+			if (roll <= acc)
+				return entry.ScenePath;
+		}
+
+		return _threadSafeChestTable[_threadSafeChestTable.Count - 1].ScenePath;
+	}
+
+	private void GenerateEnemiesForLevel(DeltaLevelMetadata metadata, DeltaThreadGenerationResult result, int biomeId, int levelId, int difficulty)
+	{
 		int enemyAmount = (int)Mathf.Round(
 			Mathf.Max(1f, (result.Chunks.Count / 1000f) * ((difficulty + 1) / 2f))
 		);
@@ -534,13 +783,6 @@ public partial class CreatingSaveLoading : Control
 
 	private string GetDeterministicEnemyIdForBiome(int biomeId, Vector2I cell, int levelId)
 	{
-		if (EnemysManager.I != null)
-		{
-			string runtimeEnemy = EnemysManager.I.GetRandomEnemyByChance(biomeId);
-			if (!string.IsNullOrEmpty(runtimeEnemy))
-				return runtimeEnemy;
-		}
-
 		int roll = Math.Abs(HashInt(cell.X, cell.Y, levelId, biomeId)) % 3;
 
 		return biomeId switch
@@ -813,11 +1055,6 @@ public partial class CreatingSaveLoading : Control
 			return hash;
 		}
 	}
-
-	private bool IsDarkForestBiome(int biomeId) => biomeId == 1;
-	private bool IsSnowForestBiome(int biomeId) => biomeId == 2;
-	private bool IsDesertBiome(int biomeId) => biomeId == 3;
-	private bool IsSnowlandsBiome(int biomeId) => biomeId == 4;
 
 	private enum DeltaBakeLayerType { Ground, SmallDetails, MediumDetails, Objects, Shadows }
 
@@ -1279,7 +1516,6 @@ public partial class CreatingSaveLoading : Control
 	}
 }
 
-
 public sealed class DeltaBakeChunkData : RefCounted
 {
 	public List<DeltaBakeTileData> GroundTiles = new();
@@ -1471,12 +1707,17 @@ public sealed class DeltaLevelMetadata
 	public Vector2I ExitPortalCell = Vector2I.Zero;
 
 	public List<DeltaEnemySpawnData> Enemies = new();
+	public List<DeltaChestSpawnData> Chests = new();
 
 	public Godot.Collections.Dictionary Serialize()
 	{
 		var enemiesArray = new Godot.Collections.Array<Godot.Collections.Dictionary>();
 		foreach (DeltaEnemySpawnData enemy in Enemies)
 			enemiesArray.Add(enemy.Serialize());
+
+		var chestsArray = new Godot.Collections.Array<Godot.Collections.Dictionary>();
+		foreach (DeltaChestSpawnData chest in Chests)
+			chestsArray.Add(chest.Serialize());
 
 		return new Godot.Collections.Dictionary
 		{
@@ -1490,6 +1731,7 @@ public sealed class DeltaLevelMetadata
 			{ "exit_portal_x", ExitPortalCell.X },
 			{ "exit_portal_y", ExitPortalCell.Y },
 			{ "enemies", enemiesArray },
+			{ "chests", chestsArray },
 		};
 	}
 
@@ -1522,6 +1764,18 @@ public sealed class DeltaLevelMetadata
 				Enemies.Add(enemy);
 			}
 		}
+
+		Chests.Clear();
+		if (dict.ContainsKey("chests"))
+		{
+			var arr = dict["chests"].AsGodotArray<Godot.Collections.Dictionary>();
+			foreach (Godot.Collections.Dictionary chestDict in arr)
+			{
+				var chest = new DeltaChestSpawnData();
+				chest.Deserialize(chestDict);
+				Chests.Add(chest);
+			}
+		}
 	}
 }
 
@@ -1532,6 +1786,7 @@ public static class DeltaChunkTileData
 		return new Vector4I(cell.X, cell.Y, atlas.X, atlas.Y);
 	}
 }
+
 
 
 //I'm tired, one day I back to edit this
