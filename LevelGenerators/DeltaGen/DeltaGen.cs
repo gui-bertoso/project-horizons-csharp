@@ -61,6 +61,9 @@ public partial class DeltaGen : Node2D
 	private bool _levelEntitiesSpawned = false;
 	private bool _triedLatePlayerSnap = false;
 
+	private readonly List<Node2D> _chestReferences = new();
+	private readonly Dictionary<string, PackedScene> _chestSceneCache = new();
+
 	public override void _Ready()
 	{
 		GD.Print("DEPOIS DO RELOAD:", DataManager.I.CurrentWorldData["CurrentLevel"]);
@@ -256,11 +259,18 @@ public partial class DeltaGen : Node2D
 		if (_levelMetadata.HasExitPortal && _exitPortalReference == null && _exitPortalScene != null)
 			_exitPortalReference = SpawnSceneAtCell(_exitPortalScene, _levelMetadata.ExitPortalCell);
 
-		if (EnemysManager.I == null)
-			return;
+		foreach (DeltaChestSpawnData chest in _levelMetadata.Chests)
+		{
+			Node2D chestNode = SpawnChestAtCell(chest);
+			if (chestNode != null)
+				_chestReferences.Add(chestNode);
+		}
 
-		foreach (DeltaEnemySpawnData enemy in _levelMetadata.Enemies)
-			EnemysManager.I.SpawnEnemy(enemy.EnemyId, CellToWorldCenter(enemy.Cell));
+		if (EnemysManager.I != null)
+		{
+			foreach (DeltaEnemySpawnData enemy in _levelMetadata.Enemies)
+				EnemysManager.I.SpawnEnemy(enemy.EnemyId, CellToWorldCenter(enemy.Cell));
+		}
 
 		_levelEntitiesSpawned = true;
 	}
@@ -272,7 +282,39 @@ public partial class DeltaGen : Node2D
 		AddChild(node);
 		return node;
 	}
+	private Node2D SpawnChestAtCell(DeltaChestSpawnData chestData)
+	{
+		if (chestData == null || string.IsNullOrWhiteSpace(chestData.ChestScenePath))
+			return null;
 
+		if (!_chestSceneCache.TryGetValue(chestData.ChestScenePath, out PackedScene scene))
+		{
+			scene = ResourceLoader.Load<PackedScene>(chestData.ChestScenePath);
+
+			if (scene == null)
+			{
+				GD.PrintErr($"DeltaGen: failed to load chest scene: {chestData.ChestScenePath}");
+				return null;
+			}
+
+			_chestSceneCache[chestData.ChestScenePath] = scene;
+		}
+
+		Node2D chestNode = scene.Instantiate<Node2D>();
+		if (chestNode == null)
+		{
+			GD.PrintErr($"DeltaGen: chest scene root is not Node2D: {chestData.ChestScenePath}");
+			return null;
+		}
+
+		chestNode.GlobalPosition = CellToWorldCenter(chestData.Cell);
+		AddChild(chestNode);
+
+		if (DebugLogs)
+			GD.Print($"DeltaGen: chest spawned at cell {chestData.Cell} using scene {chestData.ChestScenePath}");
+
+		return chestNode;
+	}
 	private void RefreshTargetChunks(Vector2I centerChunk)
 	{
 		_targetChunks.Clear();
