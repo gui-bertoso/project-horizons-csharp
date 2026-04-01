@@ -1,10 +1,10 @@
-# ⚙️ project horizons (c# version)
+# project horizons (c# version)
 
 c# implementation of project horizons focused on performance and architecture.
 
 ---
 
-## 🚀 features
+## features
 
 - same systems reimplemented in c#  
 - performance comparison with gdscript  
@@ -12,13 +12,13 @@ c# implementation of project horizons focused on performance and architecture.
 
 ---
 
-## 🎯 goal
+## goal
 
 explore performance gains and architectural patterns using c# in godot.
 
 ---
 
-## ⚙️ stack
+## stack
 
 - godot (c#)
 - systems design
@@ -26,6 +26,6 @@ explore performance gains and architectural patterns using c# in godot.
 
 ---
 
-## 📌 status
+## status
 
 in development
