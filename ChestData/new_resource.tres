@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DeltaChestSceneChanceData" format=3 uid="uid://ca0lbs5wuvpaj"]
+
+[ext_resource type="Script" uid="uid://dl7c2yw7hs3lg" path="res://ChestData/DeltaChestSceneChanceData.cs" id="1_vufdv"]
+
+[resource]
+script = ExtResource("1_vufdv")
+ChestScenePath = "res://Chests/debug_chest.tscn"
+Chance = 100.0
