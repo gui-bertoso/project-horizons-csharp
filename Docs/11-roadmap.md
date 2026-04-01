@@ -53,8 +53,6 @@
 
 ## dívida técnica conhecida
 
-> preencher continuamente
-
 - [ ] nomes temporários ainda em produção
 - [ ] classes grandes demais
 - [ ] sistemas sem testes
