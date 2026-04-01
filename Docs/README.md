@@ -1,9 +1,5 @@
 # project horizons docs
 
-este pacote é uma base de documentação para o projeto `project horizons csharp`.
-
-ele foi montado para você jogar dentro da pasta `docs/` do projeto e já sair com uma estrutura decente em vez daquele clássico estado espiritual chamado “depois eu documento” kkk.
-
 ## estrutura
 
 - `01-overview.md` — visão geral do jogo
