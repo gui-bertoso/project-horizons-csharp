@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://drswhx010gbhf" path="res://Interface/CreatingSaveLoading/CreatingSaveLoading.cs" id="1_csl"]
 [ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="1_n7kdf"]
+[ext_resource type="Script" uid="uid://dl7c2yw7hs3lg" path="res://ChestData/DeltaChestSceneChanceData.cs" id="2_0i3vi"]
 [ext_resource type="Texture2D" uid="uid://b0qe16g6krl6i" path="res://Assets/Player/playerBaseSprite.png" id="2_ons8d"]
+[ext_resource type="Resource" uid="uid://ca0lbs5wuvpaj" path="res://ChestData/new_resource.tres" id="3_1g2rp"]
 
 [sub_resource type="Animation" id="Animation_s1rgi"]
 resource_name = "walk_forward_side"
@@ -193,6 +195,7 @@ grow_vertical = 2
 script = ExtResource("1_csl")
 ChunksX = 20
 ChunksY = 40
+ChestTable = Array[ExtResource("2_0i3vi")]([ExtResource("3_1g2rp")])
 
 [node name="Control" type="Control" parent="." unique_id=227312322]
 layout_mode = 1

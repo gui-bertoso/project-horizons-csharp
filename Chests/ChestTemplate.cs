@@ -1,4 +1,6 @@
 using Godot;
+using System;
+using projecthorizonscs.Autoload;
 
 namespace projecthorizonscs;
 
@@ -18,11 +20,13 @@ public partial class ChestDrop : Resource
         Item = item;
     }
 }
-
-public partial class ChestTemplate : Node2D
+public partial class ChestTemplate : Node2D, IGeneratedChest
 {
     private Sprite2D _sprite;
     private Label _label;
+    private string _chestId = "";
+	private int _levelId = 0;
+	private Vector2I _cell = Vector2I.Zero;
 
     private const float OpenDistance = 40f;
     private bool _canOpen = false;
@@ -126,6 +130,23 @@ public partial class ChestTemplate : Node2D
         AddDrop(6, "res://Items/VenomPotion.tres");
     }
 
+    public void SetupChest(string chestId, int levelId, Vector2I cell)
+    {
+        _chestId = chestId;
+        _levelId = levelId;
+        _cell = cell;
+
+        if (DataManager.I != null && DataManager.I.IsChestOpened(_chestId))
+        {
+            IsOpened = true;
+
+            if (_sprite != null)
+                _sprite.Frame = 1;
+
+            DisableChestLogic();
+        }
+    }
+
     private void AddDrop(int chance, string itemPath)
     {
         Item item = ResourceLoader.Load<Item>(itemPath);
@@ -170,47 +191,47 @@ public partial class ChestTemplate : Node2D
         }
     }
 
-    public Item GetRandomDrop()
-    {
-        if (Drops == null || Drops.Count == 0)
-        {
-            GD.PrintErr("drops vazio ou null.");
-            return null;
-        }
+	public Item GetRandomDrop()
+	{
+		if (Drops == null || Drops.Count == 0)
+		{
+			GD.PrintErr("drops vazio ou null.");
+			return null;
+		}
 
-        int totalChance = 0;
+		int totalChance = 0;
 
-        foreach (ChestDrop drop in Drops)
-        {
-            GD.Print($"drop debug -> drop:{drop} item:{drop?.Item} chance:{drop?.Chance}");
+		foreach (ChestDrop drop in Drops)
+		{
+			if (drop == null || drop.Item == null || drop.Chance <= 0)
+				continue;
 
-            if (drop == null || drop.Item == null || drop.Chance <= 0)
-                continue;
+			totalChance += drop.Chance;
+		}
 
-            totalChance += drop.Chance;
-        }
+		if (totalChance <= 0)
+			return null;
 
-        GD.Print($"total chance: {totalChance}");
+		int seed = HashCode.Combine(_chestId, _levelId, _cell.X, _cell.Y);
+		RandomNumberGenerator rng = new RandomNumberGenerator();
+		rng.Seed = (ulong)Mathf.Abs(seed);
 
-        if (totalChance <= 0)
-            return null;
+		int roll = rng.RandiRange(0, totalChance - 1);
+		int current = 0;
 
-        int roll = (int)(GD.Randi() % (uint)totalChance);
-        int current = 0;
+		foreach (ChestDrop drop in Drops)
+		{
+			if (drop == null || drop.Item == null || drop.Chance <= 0)
+				continue;
 
-        foreach (ChestDrop drop in Drops)
-        {
-            if (drop == null || drop.Item == null || drop.Chance <= 0)
-                continue;
+			current += drop.Chance;
 
-            current += drop.Chance;
+			if (roll < current)
+				return drop.Item;
+		}
 
-            if (roll < current)
-                return drop.Item;
-        }
-
-        return null;
-    }
+		return null;
+	}
 
     public void SpawnDroppedItem(Item item)
     {
@@ -268,6 +289,13 @@ public partial class ChestTemplate : Node2D
 
         IsOpened = true;
         _canOpen = false;
+
+
+        if (DataManager.I != null)
+        {
+            DataManager.I.SetChestOpened(_chestId, true);
+            DataManager.I.QuickSaveWorldData();
+        }
 
         if (_label != null)
             _label.Visible = false;
