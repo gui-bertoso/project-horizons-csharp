@@ -61,6 +61,8 @@ public partial class DataManager : Node
 		{"EquippedConsumable", new Item()},
 		{"EquippedAcessory1", new Item()},
 		{"EquippedAcessory2", new Item()},
+
+		{"OpenedChests", new Array<string>()},
 	};
 	
 	public void SaveGameData()
@@ -114,6 +116,43 @@ public partial class DataManager : Node
 			return;
 		}
 		LoadWorldData(_currentSaveName);
+	}
+
+	public bool IsChestOpened(string chestId)
+	{
+		if (string.IsNullOrWhiteSpace(chestId))
+			return false;
+
+		if (!CurrentWorldData.TryGetValue("OpenedChests", out Variant openedVar))
+			return false;
+
+		Array<string> openedChests = openedVar.AsGodotArray<string>();
+		return openedChests.Contains(chestId);
+	}
+
+	public void SetChestOpened(string chestId, bool opened = true)
+	{
+		if (string.IsNullOrWhiteSpace(chestId))
+			return;
+
+		Array<string> openedChests;
+
+		if (CurrentWorldData.TryGetValue("OpenedChests", out Variant openedVar))
+			openedChests = openedVar.AsGodotArray<string>();
+		else
+			openedChests = new Array<string>();
+
+		if (opened)
+		{
+			if (!openedChests.Contains(chestId))
+				openedChests.Add(chestId);
+		}
+		else
+		{
+			openedChests.Remove(chestId);
+		}
+
+		CurrentWorldData["OpenedChests"] = openedChests;
 	}
 	
 	public void LoadWorldData(string saveName)

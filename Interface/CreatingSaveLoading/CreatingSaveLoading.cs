@@ -23,6 +23,7 @@ namespace projecthorizonscs;
 [GlobalClass]
 public sealed class DeltaChestSpawnData
 {
+	public string ChestId = "";
 	public string ChestScenePath = "";
 	public Vector2I Cell = Vector2I.Zero;
 
@@ -30,6 +31,7 @@ public sealed class DeltaChestSpawnData
 	{
 		return new()
 		{
+			{ "chest_id", ChestId },
 			{ "scene", ChestScenePath },
 			{ "cell_x", Cell.X },
 			{ "cell_y", Cell.Y },
@@ -38,6 +40,7 @@ public sealed class DeltaChestSpawnData
 
 	public void Deserialize(Godot.Collections.Dictionary dict)
 	{
+		ChestId = dict.ContainsKey("chest_id") ? dict["chest_id"].AsString() : "";
 		ChestScenePath = dict.ContainsKey("scene") ? dict["scene"].AsString() : "";
 
 		int x = dict.ContainsKey("cell_x") ? dict["cell_x"].AsInt32() : 0;
@@ -664,6 +667,7 @@ public partial class CreatingSaveLoading : Control
 
 			metadata.Chests.Add(new DeltaChestSpawnData
 			{
+				ChestId = $"lvl_{levelId}_x_{chosenCell.X}_y_{chosenCell.Y}",
 				ChestScenePath = chestScene,
 				Cell = chosenCell
 			});

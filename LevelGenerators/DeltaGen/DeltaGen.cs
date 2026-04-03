@@ -308,6 +308,16 @@ public partial class DeltaGen : Node2D
 		}
 
 		chestNode.GlobalPosition = CellToWorldCenter(chestData.Cell);
+
+		if (chestNode is IGeneratedChest generatedChest)
+		{
+			generatedChest.SetupChest(
+				chestData.ChestId,
+				_currentLevel,
+				chestData.Cell
+			);
+		}
+
 		AddChild(chestNode);
 
 		if (DebugLogs)
