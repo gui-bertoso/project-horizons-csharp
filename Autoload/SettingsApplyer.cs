@@ -1,6 +1,5 @@
 using Godot;
 using projecthorizonscs.Autoload;
-using System;
 
 public partial class SettingsApplyer : Node
 {
@@ -9,7 +8,7 @@ public partial class SettingsApplyer : Node
     public override void _Ready()
     {
         I = this;
-		ApplySettings();
+        ApplySettings();
     }
 
     public Godot.Collections.Array<Vector2I> AvailableResolutions = new()
@@ -24,12 +23,12 @@ public partial class SettingsApplyer : Node
         new Vector2I(1920, 1200)
     };
 
-	public void ApplySettings()
-	{
-		SetResolution(AvailableResolutions[(int)DataManager.I.GameDataDictionary["Settings.Resolution"]]);
-		SetVSync((int)DataManager.I.GameDataDictionary["Settings.Vsync"] == 1);
-		SetFullscreen((int)DataManager.I.GameDataDictionary["Settings.Fullscreen"] == 1);
-	}
+    public void ApplySettings()
+    {
+        SetResolution(AvailableResolutions[(int)DataManager.I.GameDataDictionary["Settings.Resolution"]]);
+        SetVSync((int)DataManager.I.GameDataDictionary["Settings.Vsync"] == 1);
+        SetFullscreen((int)DataManager.I.GameDataDictionary["Settings.Fullscreen"] == 1);
+    }
 
     public void SetResolution(Vector2I newResolution)
     {
@@ -41,8 +40,6 @@ public partial class SettingsApplyer : Node
             Vector2I windowPos = (screenSize - newResolution) / 2;
             DisplayServer.WindowSetPosition(windowPos);
         }
-
-        GD.Print($"resolução alterada para: {newResolution.X}x{newResolution.Y}");
     }
 
     public void SetVSync(bool enabled)
@@ -52,8 +49,6 @@ public partial class SettingsApplyer : Node
             : DisplayServer.VSyncMode.Disabled;
 
         DisplayServer.WindowSetVsyncMode(mode);
-
-        GD.Print($"vsync: {(enabled ? "ligado" : "desligado")}");
     }
 
     public void SetFullscreen(bool enabled)
@@ -63,8 +58,5 @@ public partial class SettingsApplyer : Node
             : DisplayServer.WindowMode.Windowed;
 
         DisplayServer.WindowSetMode(mode);
-
-        GD.Print($"fullscreen: {(enabled ? "ligado" : "desligado")}");
     }
-	
 }

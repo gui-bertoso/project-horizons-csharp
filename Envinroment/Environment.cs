@@ -2,11 +2,11 @@ using Godot;
 
 namespace projecthorizonscs;
 
-public partial class Environment(Node2D desertBiomeEffects) : WorldEnvironment
+public partial class Environment : WorldEnvironment
 {
 	private CanvasModulate _baseModulate;
 	private Node2D _snowBiomeEffects;
-	private Node2D _desertBiomeEffects = desertBiomeEffects;
+	private Node2D _desertBiomeEffects;
 	private Node2D _forestBiomeEffects;
 	private Node2D _darkForestBiomeEffects;
 

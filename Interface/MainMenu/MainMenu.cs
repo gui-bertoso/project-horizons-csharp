@@ -7,8 +7,9 @@ public partial class MainMenu : Control
 	private Button _continueButton;
 	public override void _Ready()
 	{
-		_continueButton = GetNode<Button>("VBoxContainer/Button2");
-		_continueButton.Disabled = true;
+		_continueButton = GetNodeOrNull<Button>("VBoxContainer/Button2");
+		if (_continueButton != null)
+			_continueButton.Disabled = true;
 	}
 
 	private void _OnPlayButtonUp()

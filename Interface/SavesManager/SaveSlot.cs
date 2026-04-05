@@ -19,7 +19,7 @@ public partial class SaveSlot : VBoxContainer
 	private Label _levelDifficultyLabel;
 	private Label _seedLabel;
 
-	private Dictionary<string, Variant> _saveData;
+	private string _saveId = "";
 
 	public override void _Ready()
 	{
@@ -51,15 +51,21 @@ public partial class SaveSlot : VBoxContainer
 		_hideDataButton.Visible = false;
 	}
 
-	private static void _OnDeleteButtonUp()
+	private void _OnDeleteButtonUp()
 	{
-		
+		if (string.IsNullOrWhiteSpace(_saveId))
+			return;
+
+		DataManager.I.DeleteWorldData(_saveId);
+		QueueFree();
 	}
 
 	private void _OnPlayButtonUp()
 	{
-		var saveName = _levelNameLabel.Text;
-		DataManager.I.LoadWorldData(saveName.ToSnakeCase());
+		if (string.IsNullOrWhiteSpace(_saveId))
+			return;
+
+		DataManager.I.LoadWorldData(_saveId);
 		if ((int)DataManager.I.GameDataDictionary["Settings.WorldGeneration"] == 0)
 		{
 			GetTree().ChangeSceneToFile("uid://caeqsflrr74fw");
@@ -80,6 +86,8 @@ public partial class SaveSlot : VBoxContainer
 
 	public void SetData(Dictionary<string, Variant> saveData)
 	{
+		_saveId = Name;
+
 		int playedTime = (int)(float)saveData["PlayedTime"];
 
 		int hours = playedTime / 3600;
