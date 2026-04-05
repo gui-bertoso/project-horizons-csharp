@@ -47,50 +47,50 @@ public partial class AchievementsManager : Node
 		if (!EnemiesKilled.ContainsKey(enemyName))
 			EnemiesKilled[enemyName] = 0;
 		EnemiesKilled[enemyName] += amount;
-		checkAchievements("EnemyKilled");
+		CheckAchievements("EnemyKilled");
 	}
 
 	public void SetCurrentLevel(int level)
 	{
 		CurrentLevel = level;
-		checkAchievements("CurrentLevel");
+		CheckAchievements("CurrentLevel");
 	}
 
 	public void RegisterPlayerDeath()
 	{
 		PlayerDeathsCount++;
-		checkAchievements("PlayerDefeated");
+		CheckAchievements("PlayerDefeated");
 	}
 
 	public void RegisterBossDefeated(string bossName)
 	{
 		if (!BossesDefeated.Contains(bossName))
 			BossesDefeated.Add(bossName);
-		checkAchievements("BossDefeated");
+		CheckAchievements("BossDefeated");
 	}
 
 	public void RegisterDiscoveredItem(string itemName)
 	{
 		if (!DiscoveredItems.Contains(itemName))
 			DiscoveredItems.Add(itemName);
-		checkAchievements("ItemDiscovered");
+		CheckAchievements("ItemDiscovered");
 	}
 
 	public void RegisterDiscoveredBiome(string itemName)
 	{
 		if (!DiscoveredBiomes.Contains(itemName))
 			DiscoveredBiomes.Add(itemName);
-		checkAchievements("BiomeDiscovered");
+		CheckAchievements("BiomeDiscovered");
 	}
 
 	public void RegisterDiscoveredBiomeEvent(string itemName)
 	{
 		if (!DiscoveredBiomeEvents.Contains(itemName))
 			DiscoveredBiomeEvents.Add(itemName);
-		checkAchievements("BiomeEventDiscovered");
+		CheckAchievements("BiomeEventDiscovered");
 	}
 
-	private void checkAchievements(string TriggerEvent)
+	private void CheckAchievements(string triggerEvent)
 	{
 		foreach (var achievement in Achievements)
 		{
@@ -98,14 +98,13 @@ public partial class AchievementsManager : Node
 				continue;
 			if (achievement.Unlocked)
 				continue;
-			if (achievement.TriggerEvent != TriggerEvent)
+			if (achievement.TriggerEvent != triggerEvent)
 				continue;
 			
 			if (achievement.IsUnlocked(this))
 			{
 				achievement.Unlocked = true;
 				NotifyAchievementUnlocked(achievement);
-				GD.Print($"achievement unlocked: {achievement.AchievementName}");
 			}
 		}
 	}
@@ -116,8 +115,6 @@ public partial class AchievementsManager : Node
 		{
 			return;
 		}
-		GD.Print($"overlay: {Globals.I.LocalAchievementsOverlay}");
-		GD.Print($"notifiyng achievement: {achievement.AchievementName}");
 		Globals.I.LocalAchievementsOverlay.Notify(achievement);
 	}
 }

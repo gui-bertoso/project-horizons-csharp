@@ -15,25 +15,19 @@ public partial class NpcInteraction : Area2D
 
     public override void _Process(double delta)
     {
-        GD.Print("Can talk");
         if (!_playerInside)
             return;
-        GD.Print("Can2 talk");
 
         if (Input.IsActionJustPressed("interact"))
         {
-            GD.Print("init talk");
             if (_dialogue != null && !_dialogue.Visible)
                 _dialogue.StartDialogue(DialoguePath);
-            GD.Print("here talk");
         }
-        GD.Print("not talk");
     }
 
     private void OnBodyEntered(Node body)
     {
         _playerInside = true;
-        GD.Print("player entrou na área");
     }
 
     private void OnBodyExited(Node body)
@@ -42,7 +36,5 @@ public partial class NpcInteraction : Area2D
 
         if (_dialogue != null && _dialogue.Visible)
             _dialogue.StopDialogue();
-
-        GD.Print("player saiu da área");
     }
 }

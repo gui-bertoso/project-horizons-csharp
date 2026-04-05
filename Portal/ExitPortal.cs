@@ -27,7 +27,6 @@ public partial class ExitPortal : Node2D
 
 		_isTransitioning = true;
 
-		// mantém os dois sincronizados
 		if (Globals.I != null)
 			Globals.I.CurrentLevel = nextLevel;
 
@@ -41,9 +40,6 @@ public partial class ExitPortal : Node2D
 				DataManager.I.CurrentWorldData["SaveName"] = saveName;
 			}
 		}
-
-		GD.Print($"ExitPortal: generationMode={generationMode} currentLevel={currentLevel} nextLevel={nextLevel}");
-		GD.Print("ANTES DO RELOAD:", DataManager.I.CurrentWorldData["CurrentLevel"]);
 
 		GetTree().CallDeferred(SceneTree.MethodName.ReloadCurrentScene);
 	}
@@ -61,14 +57,12 @@ public partial class ExitPortal : Node2D
 
 	private int GetCurrentLevel(int generationMode)
 	{
-		// modo delta: fonte de verdade = CurrentWorldData
 		if (generationMode == 3 && DataManager.I != null)
 		{
 			if (DataManager.I.CurrentWorldData.TryGetValue("CurrentLevel", out Variant currentLevelValue))
 				return currentLevelValue.AsInt32();
 		}
 
-		// fallback
 		if (Globals.I != null)
 			return Globals.I.CurrentLevel;
 

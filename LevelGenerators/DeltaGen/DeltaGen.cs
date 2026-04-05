@@ -531,7 +531,7 @@ public partial class DeltaGen : Node2D
 		int neededChunksY = Mathf.CeilToInt(visibleTilesY / ChunkSize);
 
 		int newHorizontalRadius = Mathf.Max(1, Mathf.CeilToInt(neededChunksX * 0.5f) + ExtraChunkMargin);
-		int newVerticalRadius = Mathf.Max(1, Mathf.CeilToInt(neededChunksY * 0.5f) + ExtraChunkMargin);
+		int newVerticalRadius = Mathf.Max(1, Mathf.CeilToInt(neededChunksY * 0.5f) + ExtraChunkMargin + 1);
 
 		Vector2I newRadius = new(newHorizontalRadius, newVerticalRadius);
 		if (newRadius == _lastComputedRadius)

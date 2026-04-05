@@ -7,20 +7,14 @@ namespace projecthorizonscs.Interface.SavesManager;
 public partial class SavesManager : Control
 {
 	private PackedScene _saveSlotScene;
-
 	private VBoxContainer _savesVBoxContainer;
-
 	private Panel _newSavePanel;
 	private Panel _savesPanel;
-
 	private Button _createSaveButton;
-
 	private TextEdit _newSaveNameTextEdit;
 	private TextEdit _newSaveSeedTextEdit;
 	private OptionButton _newSaveDifficultyOptionButton;
-
 	private CheckButton _newSaveMultiplayerEnabledCheckButton;
-
 
 	private Godot.Collections.Array<string> _saveNames1 =
 	[
@@ -106,8 +100,8 @@ public partial class SavesManager : Control
 
 		_newSaveNameTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer/TextEdit");
 		_newSaveSeedTextEdit = GetNode<TextEdit>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer3/TextEdit");
-		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/OptionButton");	
-		_newSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");	
+		_newSaveDifficultyOptionButton = GetNode<OptionButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer2/OptionButton");
+		_newSaveMultiplayerEnabledCheckButton = GetNode<CheckButton>("Panel2/HBoxContainer/VBoxContainer/VBoxContainer/HBoxContainer4/CheckButton");
 
 		ClearSaveSlots();
 		LoadSaves();
@@ -117,9 +111,7 @@ public partial class SavesManager : Control
 	{
 		var placeholderSaveSlots = _savesVBoxContainer.GetChildren();
 		foreach (var child in placeholderSaveSlots)
-		{
 			child.QueueFree();
-		}
 	}
 
 	private void _OnBackButtonUp()
@@ -151,7 +143,6 @@ public partial class SavesManager : Control
 
 	private void _OnNewSaveButtonUp()
 	{
-		GD.Print("Creating new save");
 		DataManager.I.CurrentWorldData["SaveName"] = _newSaveNameTextEdit.Text;
 		DataManager.I.CurrentWorldData["SaveDifficulty"] = _newSaveDifficultyOptionButton.Selected;
 		DataManager.I.CurrentWorldData["SaveSeed"] = _newSaveSeedTextEdit.Text;
@@ -159,7 +150,7 @@ public partial class SavesManager : Control
 		((Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"]).Add(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveGameData();
-		GD.Print($"New save created {DataManager.I.CurrentWorldData}");
+
 		if ((int)DataManager.I.GameDataDictionary["Settings.WorldGeneration"] == 3)
 		{
 			DataManager.I.LoadWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
@@ -177,69 +168,40 @@ public partial class SavesManager : Control
 	public override void _Process(double delta)
 	{
 		if (_newSavePanel.Visible)
-		{
 			UpdateCanCreate();
-		}
 	}
 
 	private void UpdateCanCreate()
 	{
-		var canCreate = false;
-		if (_newSaveNameTextEdit.Text != "")
-		{
-			if (_newSaveSeedTextEdit.Text != "")
-			{
-				canCreate = true;
-			}
-		}
-
-		if (canCreate)
-		{
-			if (_createSaveButton.Disabled)
-			{
-				_createSaveButton.Disabled = false;
-			}
-		}
-		else
-		{
-			if (!_createSaveButton.Disabled)
-			{
-				_createSaveButton.Disabled = true;
-			}
-		}
+		bool canCreate = _newSaveNameTextEdit.Text != "" && _newSaveSeedTextEdit.Text != "";
+		_createSaveButton.Disabled = !canCreate;
 	}
 
 	private void LoadSaves()
 	{
-		GD.Print("Loading saves");
 		foreach (string saveName in (Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"])
 		{
-			GD.Print($"Loading slot >{saveName}<");
 			DataManager.I.LoadWorldData(saveName);
 			var saveData = DataManager.I.CurrentWorldData;
-			GD.Print($"Loaded save slot data: {saveName}");
 
 			var saveSlot = _saveSlotScene.Instantiate<SaveSlot>();
 			_savesVBoxContainer.AddChild(saveSlot);
 			saveSlot.Name = saveName;
 			saveSlot.SetData(saveData);
-			GD.Print($"Loaded save slot: {saveSlot}");
-			
 		}
-		GD.Print("Saves loaded");
 	}
 
 	private static int CreateRandomSeed()
 	{
 		Random random = new();
-		var seed = random.Next(int.MinValue, int.MaxValue);
-		return seed;
+		return random.Next(int.MinValue, int.MaxValue);
 	}
 
 	private string CreateRandomSaveName()
 	{
 		Random random = new();
-		var saveName = _saveNames1[random.Next(_saveNames1.Count)] + " " + _saveNames2[random.Next(_saveNames2.Count)] + " " + _saveNames3[random.Next(_saveNames3.Count)];
-		return saveName;
+		return _saveNames1[random.Next(_saveNames1.Count)] + " " +
+			   _saveNames2[random.Next(_saveNames2.Count)] + " " +
+			   _saveNames3[random.Next(_saveNames3.Count)];
 	}
 }

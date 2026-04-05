@@ -28,7 +28,7 @@ public partial class Player : CharacterBody2D
 	public int UsedDashCharges;
 	private Vector2 _dashDirection;
 
-	public int currentSide = 1;
+	private int _currentSide = 1;
 	private int _attackSide = 1;
 
 	public float NotDashingTime;
@@ -39,10 +39,11 @@ public partial class Player : CharacterBody2D
 
 	private RangedAttackState _rangedState = RangedAttackState.None;
 
+	public int CurrentSide => _currentSide;
+
 	public override void _Ready()
 	{
 		Autoload.Globals.I.LocalPlayer = this;
-		GD.Print($"player {GlobalPosition}");
 
 		_topSprite = GetNode<Node2D>("Body/Back");
 		_bottomSprite = GetNode<Node2D>("Body/Side");
@@ -110,7 +111,7 @@ public partial class Player : CharacterBody2D
 		_isSwordAttacking = true;
 		_isAttacking = true;
 
-		if (currentSide == 1)
+		if (_currentSide == 1)
 			_animationPlayer.Play("sword_attack_side");
 		else
 			_animationPlayer.Play("sword_attack_back");
@@ -153,7 +154,7 @@ public partial class Player : CharacterBody2D
 
 	private void StartRangedAttack()
 	{
-		_attackSide = currentSide;
+		_attackSide = _currentSide;
 		_rangedState = RangedAttackState.Starting;
 
 		if (_attackSide == 1)
@@ -217,7 +218,7 @@ public partial class Player : CharacterBody2D
 			case "collect_back":
 				_isCollecting = false;
 				break;
-			
+
 			case "sword_attack_side":
 			case "sword_attack_back":
 				_isSwordAttacking = false;
@@ -237,7 +238,7 @@ public partial class Player : CharacterBody2D
 		if (_rangedState != RangedAttackState.None)
 			ResetRangedAttack();
 
-		if (currentSide == 1)
+		if (_currentSide == 1)
 			_animationPlayer.Play("collect_side");
 		else
 			_animationPlayer.Play("collect_back");
@@ -295,13 +296,13 @@ public partial class Player : CharacterBody2D
 		{
 			_topSprite.Visible = true;
 			_bottomSprite.Visible = false;
-			currentSide = -1;
+			_currentSide = -1;
 		}
 		else if (direction.Y > 0f)
 		{
 			_topSprite.Visible = false;
 			_bottomSprite.Visible = true;
-			currentSide = 1;
+			_currentSide = 1;
 		}
 
 		if (direction.X < 0f)
@@ -313,7 +314,6 @@ public partial class Player : CharacterBody2D
 	public void ActionCurrentWeapon()
 	{
 		_hand.ActionCurrentWeapon();
-		GD.Print("Actionnnnn");
 	}
 
 	private void DashBehavior(float delta)

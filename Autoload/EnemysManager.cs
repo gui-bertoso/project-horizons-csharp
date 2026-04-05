@@ -25,19 +25,19 @@ public partial class EnemysManager : Node
 
     public int EnemysAlive = 0;
 
-    private readonly RandomNumberGenerator rng = new();
+    private readonly RandomNumberGenerator _rng = new();
     private int _nextEnemyId = 1;
 
     private float _groupUpdateTimer = 0f;
     private const float GroupUpdateInterval = 0.2f;
 
     public Godot.Collections.Dictionary<int, EnemyGroup> LodGroups = new();
-    private Godot.Collections.Array<EnemyTemplate> EnemysArray = new();
+    private Godot.Collections.Array<EnemyTemplate> _enemies = new();
 
     public override void _Ready()
     {
         I = this;
-        rng.Randomize();
+        _rng.Randomize();
     }
 
     public override void _Process(double delta)
@@ -59,10 +59,7 @@ public partial class EnemysManager : Node
 
         var enemyScene = GD.Load<PackedScene>(enemyScenePath);
         if (enemyScene == null)
-        {
-            GD.Print($"Could not load enemy scene: {enemyScenePath}");
             return;
-        }
 
         if (EnemysContainer != null)
             spawnContainer = EnemysContainer;
@@ -75,27 +72,26 @@ public partial class EnemysManager : Node
         spawnContainer.CallDeferred(Node.MethodName.AddChild, newEnemy);
         newEnemy.CallDeferred(Node2D.MethodName.SetGlobalPosition, spawnPosition);
 
-        EnemysArray.Add(newEnemy);
-        GD.Print($"EnemySpawner: spawned {spawnPosition}");
+        _enemies.Add(newEnemy);
     }
 
     public void ClearEnemies()
     {
-        foreach (var enemy in EnemysArray)
+        foreach (var enemy in _enemies)
         {
             if (GodotObject.IsInstanceValid(enemy))
                 enemy.QueueFree();
         }
 
-        EnemysArray.Clear();
+        _enemies.Clear();
     }
 
     public void ClearInvalidEnemies()
     {
-        for (int i = EnemysArray.Count - 1; i >= 0; i--)
+        for (int i = _enemies.Count - 1; i >= 0; i--)
         {
-            if (!GodotObject.IsInstanceValid(EnemysArray[i]))
-                EnemysArray.RemoveAt(i);
+            if (!GodotObject.IsInstanceValid(_enemies[i]))
+                _enemies.RemoveAt(i);
         }
     }
 
@@ -110,7 +106,7 @@ public partial class EnemysManager : Node
         ClearInvalidEnemies();
         ClearAllGroupEnemies();
 
-        foreach (var enemy in EnemysArray)
+        foreach (var enemy in _enemies)
         {
             var lod = GetEnemyLod(enemy.DistanceToPlayer);
 
