@@ -4,7 +4,7 @@ namespace projecthorizonscs.Player;
 
 public partial class PlayerHand : Marker2D
 {
-	private Item equippedItem;
+	private Item _equippedItem;
 	private Node2D _equippedItemReference;
 	private Node2D _handOffset;
 	private Node2D _body;
@@ -24,33 +24,32 @@ public partial class PlayerHand : Marker2D
 		_handOffset.Rotation = mouseAngle.Angle();
 		Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
 		_body.Scale = _handOffset.Rotation is < -1f or > 1.5f ? new Vector2(-1f, 1f) : new Vector2(1f, 1f);
-		GD.Print(_handOffset.Rotation);
 		*/
 	}
 
 	public void ActionCurrentWeapon()
 	{
-		if (equippedItem==null) return;
+		if (_equippedItem == null)
+			return;
+
 		if (GetWeaponClass() == "ranged")
-		{
 			((Weapon)_equippedItemReference).Action();
-		}
-		GD.Print("Actionnnnn 22222");
 	}
 
 	public void EquipItem(Item item)
 	{
 		ClearEquippedItem();
-		equippedItem = item;
-		if (equippedItem.ItemScene != null)
+		_equippedItem = item;
+
+		if (_equippedItem.ItemScene != null)
 		{
-            _equippedItemReference = equippedItem.ItemScene.Instantiate<Node2D>();
+            _equippedItemReference = _equippedItem.ItemScene.Instantiate<Node2D>();
 		}
 		else
 		{
 			_equippedItemReference = new Sprite2D();
-			((Sprite2D)_equippedItemReference).Texture = equippedItem.ItemTexture;
-			((Sprite2D)_equippedItemReference).Offset = new Vector2(0, -(equippedItem.ItemTexture.GetSize().Y/2)+4);
+			((Sprite2D)_equippedItemReference).Texture = _equippedItem.ItemTexture;
+			((Sprite2D)_equippedItemReference).Offset = new Vector2(0, -(_equippedItem.ItemTexture.GetSize().Y / 2) + 4);
 		}
 
 		AddChild(_equippedItemReference);
@@ -58,11 +57,10 @@ public partial class PlayerHand : Marker2D
 
 	private void ClearEquippedItem()
 	{
-		foreach (var i in GetChildren())
-		{
-			i.QueueFree();
-		}
-		equippedItem = null;
+		foreach (var item in GetChildren())
+			item.QueueFree();
+
+		_equippedItem = null;
 		_equippedItemReference = null;
 	}
 
@@ -70,7 +68,7 @@ public partial class PlayerHand : Marker2D
 	{
 		var droppedItem = (PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
 		droppedItem.GlobalPosition = GlobalPosition;
-		droppedItem.Item = equippedItem;
+		droppedItem.Item = _equippedItem;
 		ClearEquippedItem();
 		GetTree().CurrentScene.AddChild(droppedItem);
 	}
@@ -87,17 +85,20 @@ public partial class PlayerHand : Marker2D
 
 	public bool HasWeaponEquipped()
 	{
-		return equippedItem!=null;
+		return _equippedItem != null;
 	}
 
 	public string GetWeaponClass()
 	{
-		if (equippedItem==null) return "hand";
-		switch (equippedItem.ItemClass)
+		if (_equippedItem == null)
+			return "hand";
+
+		switch (_equippedItem.ItemClass)
 		{
-			case Item.ITEM_CLASS.Ranged: return  "ranged";
-			case Item.ITEM_CLASS.Mellee: return  "sword";
+			case Item.ITEM_CLASS.Ranged: return "ranged";
+			case Item.ITEM_CLASS.Mellee: return "sword";
 		}
+
 		return "hand";
 	}
- }
+}

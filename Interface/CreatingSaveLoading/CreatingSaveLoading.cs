@@ -17,6 +17,7 @@ using projecthorizonscs;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace projecthorizonscs;
 
@@ -56,6 +57,18 @@ public sealed class ChestBakeEntry
 	public float Chance;
 
 	public ChestBakeEntry(string scenePath, float chance)
+	{
+		ScenePath = scenePath;
+		Chance = chance;
+	}
+}
+
+public sealed class EnemyBakeEntry
+{
+	public string ScenePath;
+	public int Chance;
+
+	public EnemyBakeEntry(string scenePath, int chance)
 	{
 		ScenePath = scenePath;
 		Chance = chance;
@@ -284,7 +297,10 @@ public partial class CreatingSaveLoading : Control
 	public List<DeltaChestSpawnData> Chests = new();
 
 	private readonly List<ChestBakeEntry> _threadSafeChestTable = new();
+	private float _threadSafeChestTotalChance = 0f;
+	private readonly Dictionary<int, List<EnemyBakeEntry>> _threadSafeEnemyTable = new();
 	private int _cachedSaveDifficulty = 0;
+	private int _resolvedBakeThreads = 1;
 
 	public override async void _Ready()
 	{
@@ -301,6 +317,8 @@ public partial class CreatingSaveLoading : Control
 			RandomizeSeed();
 
 		CacheThreadSafeData();
+		_resolvedBakeThreads = ResolveBakeThreadsFromPlayerSettings();
+		MaxBakeThreads = _resolvedBakeThreads;
 
 		_ = BakeWorldAsync();
 	}
@@ -308,6 +326,8 @@ public partial class CreatingSaveLoading : Control
 	private void CacheThreadSafeData()
 	{
 		_threadSafeChestTable.Clear();
+		_threadSafeChestTotalChance = 0f;
+		_threadSafeEnemyTable.Clear();
 
 		if (ChestTable != null)
 		{
@@ -324,6 +344,28 @@ public partial class CreatingSaveLoading : Control
 					continue;
 
 				_threadSafeChestTable.Add(new ChestBakeEntry(path, chance));
+				_threadSafeChestTotalChance += chance;
+			}
+		}
+
+		if (EnemysManager.I != null && EnemysManager.I.enemyPathsToBiome != null)
+		{
+			foreach (var pair in EnemysManager.I.enemyPathsToBiome)
+			{
+				if (pair.Value == null || pair.Value.Count == 0)
+					continue;
+
+				var entries = new List<EnemyBakeEntry>(pair.Value.Count);
+				foreach (EnemySpawnData enemy in pair.Value)
+				{
+					if (enemy == null || string.IsNullOrWhiteSpace(enemy.Path) || enemy.Chance <= 0)
+						continue;
+
+					entries.Add(new EnemyBakeEntry(enemy.Path, enemy.Chance));
+				}
+
+				if (entries.Count > 0)
+					_threadSafeEnemyTable[pair.Key] = entries;
 			}
 		}
 
@@ -347,8 +389,6 @@ public partial class CreatingSaveLoading : Control
 
 	private async Task BakeWorldAsync()
 	{
-		GD.Print($"Starting Baking for {_worldName} with seed {SeedValue}");
-
 		try
 		{
 			var threadedTask = Task.Run(GenerateAllLevels);
@@ -363,7 +403,6 @@ public partial class CreatingSaveLoading : Control
 
 			ValidateBakeOutput();
 
-			GD.Print("Baking Complete!");
 			if (_mainLabel != null) _mainLabel.Text = "baking completo!";
 			if (_subLabel != null) _subLabel.Text = $"todos os {TotalLevelsToBake} níveis foram salvos.";
 			if (_progressBar != null) _progressBar.Value = 100;
@@ -485,24 +524,23 @@ public partial class CreatingSaveLoading : Control
 
 		foreach (var chunkPair in result.Chunks)
 		{
-			DeltaBakeChunkData rubyChunk = chunkPair.Value;
+			DeltaBakeChunkData chunk = chunkPair.Value;
 
 			if (SkipSavingEmptyChunks &&
-				rubyChunk.GroundTiles.Count == 0 &&
-				rubyChunk.SmallDetailTiles.Count == 0 &&
-				rubyChunk.MediumDetailTiles.Count == 0 &&
-				rubyChunk.ObjectTiles.Count == 0 &&
-				rubyChunk.ShadowTiles.Count == 0)
+				chunk.GroundTiles.Count == 0 &&
+				chunk.SmallDetailTiles.Count == 0 &&
+				chunk.MediumDetailTiles.Count == 0 &&
+				chunk.ObjectTiles.Count == 0 &&
+				chunk.ShadowTiles.Count == 0)
 			{
 				continue;
 			}
 
-			DeltaChunkData delta = ConvertToDeltaChunk(rubyChunk);
 			string chunkFile = $"{levelPath}/chunk_{chunkPair.Key.X}_{chunkPair.Key.Y}.dat";
 
 			using var file = FileAccess.Open(chunkFile, FileAccess.ModeFlags.Write);
 			if (file != null)
-				file.StoreVar(delta.Serialize());
+				file.StoreVar(SerializeChunk(chunk));
 		}
 
 		string metadataFile = $"{levelPath}/level_metadata.dat";
@@ -511,17 +549,24 @@ public partial class CreatingSaveLoading : Control
 			metaFile.StoreVar(metadata.Serialize());
 	}
 
-	private DeltaChunkData ConvertToDeltaChunk(DeltaBakeChunkData oldChunk)
+	private Godot.Collections.Dictionary SerializeChunk(DeltaBakeChunkData chunk)
 	{
-		var d = new DeltaChunkData();
+		return new Godot.Collections.Dictionary
+		{
+			{ "ground", PackTiles(chunk.GroundTiles) },
+			{ "small", PackTiles(chunk.SmallDetailTiles) },
+			{ "medium", PackTiles(chunk.MediumDetailTiles) },
+			{ "objects", PackTiles(chunk.ObjectTiles) },
+			{ "shadows", PackTiles(chunk.ShadowTiles) },
+		};
+	}
 
-		foreach (var tile in oldChunk.GroundTiles) d.GroundTiles.Add(DeltaChunkTileData.Pack(tile.Cell, tile.Atlas));
-		foreach (var tile in oldChunk.SmallDetailTiles) d.SmallDetailTiles.Add(DeltaChunkTileData.Pack(tile.Cell, tile.Atlas));
-		foreach (var tile in oldChunk.MediumDetailTiles) d.MediumDetailTiles.Add(DeltaChunkTileData.Pack(tile.Cell, tile.Atlas));
-		foreach (var tile in oldChunk.ObjectTiles) d.ObjectTiles.Add(DeltaChunkTileData.Pack(tile.Cell, tile.Atlas));
-		foreach (var tile in oldChunk.ShadowTiles) d.ShadowTiles.Add(DeltaChunkTileData.Pack(tile.Cell, tile.Atlas));
-
-		return d;
+	private static Godot.Collections.Array<Vector4I> PackTiles(List<DeltaBakeTileData> tiles)
+	{
+		var packed = new Godot.Collections.Array<Vector4I>();
+		for (int i = 0; i < tiles.Count; i++)
+			packed.Add(DeltaChunkTileData.Pack(tiles[i].Cell, tiles[i].Atlas));
+		return packed;
 	}
 
 	private DeltaLevelMetadata BuildLevelMetadata(int levelId, int biomeId, DeltaThreadGenerationResult result)
@@ -618,13 +663,11 @@ public partial class CreatingSaveLoading : Control
 		if (_threadSafeChestTable.Count == 0)
 			return;
 
-		var candidateCells = new List<Vector2I>();
+		var candidateCells = new List<Vector2I>(2048);
 
 		foreach (var pair in result.Chunks)
 		{
 			DeltaBakeChunkData chunk = pair.Value;
-			if (!IsSpawnableChunk(chunk))
-				continue;
 
 			foreach (Vector2I cell in chunk.ValidGroundCells)
 			{
@@ -656,7 +699,8 @@ public partial class CreatingSaveLoading : Control
 		{
 			int index = rng.Next(0, candidateCells.Count);
 			Vector2I chosenCell = candidateCells[index];
-			candidateCells.RemoveAt(index);
+			candidateCells[index] = candidateCells[candidateCells.Count - 1];
+			candidateCells.RemoveAt(candidateCells.Count - 1);
 
 			if (!CanPlacePregeneratedChest(metadata.Chests, chosenCell))
 				continue;
@@ -700,18 +744,11 @@ public partial class CreatingSaveLoading : Control
 
 	private string GetDeterministicChestScene(Vector2I cell, int levelId)
 	{
-		if (_threadSafeChestTable.Count == 0)
-			return "";
-
-		float totalChance = 0f;
-		for (int i = 0; i < _threadSafeChestTable.Count; i++)
-			totalChance += Mathf.Max(0f, _threadSafeChestTable[i].Chance);
-
-		if (totalChance <= 0f)
+		if (_threadSafeChestTable.Count == 0 || _threadSafeChestTotalChance <= 0f)
 			return "";
 
 		int hash = Math.Abs(HashInt(cell.X, cell.Y, levelId, SeedValue, 8181));
-		float roll = (hash % 100000) / 100000f * totalChance;
+		float roll = (hash % 100000) / 100000f * _threadSafeChestTotalChance;
 
 		float acc = 0f;
 		for (int i = 0; i < _threadSafeChestTable.Count; i++)
@@ -732,12 +769,10 @@ public partial class CreatingSaveLoading : Control
 			Mathf.Max(1f, (result.Chunks.Count / 1000f) * ((difficulty + 1) / 2f))
 		);
 
-		var candidateCells = new List<Vector2I>();
+		var candidateCells = new List<Vector2I>(4096);
 		foreach (var pair in result.Chunks)
 		{
 			DeltaBakeChunkData chunk = pair.Value;
-			if (!IsSpawnableChunk(chunk))
-				continue;
 
 			foreach (Vector2I cell in chunk.ValidGroundCells)
 			{
@@ -758,18 +793,19 @@ public partial class CreatingSaveLoading : Control
 		{
 			int index = rng.Next(0, candidateCells.Count);
 			Vector2I chosenCell = candidateCells[index];
-			candidateCells.RemoveAt(index);
+			candidateCells[index] = candidateCells[candidateCells.Count - 1];
+			candidateCells.RemoveAt(candidateCells.Count - 1);
 
 			if (!CanPlacePregeneratedEnemy(metadata.Enemies, chosenCell))
 				continue;
 
-			string enemyId = GetDeterministicEnemyIdForBiome(biomeId, chosenCell, levelId);
-			if (string.IsNullOrEmpty(enemyId))
+			string enemyScenePath = GetDeterministicEnemySceneForBiome(biomeId, chosenCell, levelId);
+			if (string.IsNullOrEmpty(enemyScenePath))
 				continue;
 
 			metadata.Enemies.Add(new DeltaEnemySpawnData
 			{
-				EnemyId = enemyId,
+				EnemyId = enemyScenePath,
 				Cell = chosenCell
 			});
 		}
@@ -785,18 +821,33 @@ public partial class CreatingSaveLoading : Control
 		return true;
 	}
 
-	private string GetDeterministicEnemyIdForBiome(int biomeId, Vector2I cell, int levelId)
+	private string GetDeterministicEnemySceneForBiome(int biomeId, Vector2I cell, int levelId)
 	{
-		int roll = Math.Abs(HashInt(cell.X, cell.Y, levelId, biomeId)) % 3;
-
-		return biomeId switch
+		if (!_threadSafeEnemyTable.TryGetValue(biomeId, out List<EnemyBakeEntry> enemies) || enemies.Count == 0)
 		{
-			1 => roll switch { 0 => "dark_slime", 1 => "dark_wolf", _ => "shadow_beast" },
-			2 => roll switch { 0 => "snow_slime", 1 => "ice_wolf", _ => "frozen_beast" },
-			3 => roll switch { 0 => "sand_slime", 1 => "scorpion", _ => "desert_beast" },
-			4 => roll switch { 0 => "snow_wolf", 1 => "frozen_wisp", _ => "ice_beast" },
-			_ => roll switch { 0 => "slime", 1 => "wolf", _ => "forest_beast" }
-		};
+			if (!_threadSafeEnemyTable.TryGetValue(0, out enemies) || enemies.Count == 0)
+				return "";
+		}
+
+		int totalChance = 0;
+		for (int i = 0; i < enemies.Count; i++)
+			totalChance += enemies[i].Chance;
+
+		if (totalChance <= 0)
+			return "";
+
+		int hash = Math.Abs(HashInt(cell.X, cell.Y, levelId, biomeId, SeedValue, 9191));
+		int roll = hash % totalChance;
+		int currentChance = 0;
+
+		for (int i = 0; i < enemies.Count; i++)
+		{
+			currentChance += enemies[i].Chance;
+			if (roll < currentChance)
+				return enemies[i].ScenePath;
+		}
+
+		return enemies[enemies.Count - 1].ScenePath;
 	}
 
 	private bool IsSpawnableChunk(DeltaBakeChunkData chunk)
@@ -806,7 +857,7 @@ public partial class CreatingSaveLoading : Control
 			return false;
 		if (chunk.WaterCells > validGround / 2)
 			return false;
-		if (chunk.VoidCells > 0)
+		if (chunk.VoidCells > Mathf.Max(8, validGround / 3))
 			return false;
 		return true;
 	}
@@ -823,27 +874,71 @@ public partial class CreatingSaveLoading : Control
 		context.SetupNoises();
 
 		var world = new DeltaThreadWorldData();
+		var terrainCells = new List<Vector2I>(HalfLevelSizeX * HalfLevelSizeY / 2);
 		int halfX = HalfLevelSizeX;
 		int halfY = HalfLevelSizeY;
+		object groundLock = new();
+		int totalRows = halfY * 2;
+		int processedRows = 0;
 
-		for (int y = -halfY; y < halfY; y++)
+		lock (_progressLock)
 		{
+			_threadStageMax = Mathf.Max(1, totalRows);
+			_threadStageCurrent = 0;
+		}
+
+		var parallelOptions = new ParallelOptions
+		{
+			MaxDegreeOfParallelism = Mathf.Max(1, _resolvedBakeThreads)
+		};
+
+		Parallel.For(0, totalRows, parallelOptions, rowIndex =>
+		{
+			int y = rowIndex - halfY;
+			var localGround = new List<KeyValuePair<Vector2I, Vector2I>>();
+			var localTerrainCells = new List<Vector2I>();
+
 			for (int x = -halfX; x < halfX; x++)
 			{
 				if (!context.IsGroundCell(x, y))
 					continue;
 
+				Vector2I cell = new(x, y);
 				float groundValue = context.GetNoise01(context.GroundNoise, x, y);
-				world.Ground[new Vector2I(x, y)] = context.PickGroundAtlas(groundValue);
+				localGround.Add(new KeyValuePair<Vector2I, Vector2I>(cell, context.PickGroundAtlas(groundValue)));
+				localTerrainCells.Add(cell);
 			}
+
+			lock (groundLock)
+			{
+				for (int i = 0; i < localGround.Count; i++)
+				{
+					var pair = localGround[i];
+					world.Ground[pair.Key] = pair.Value;
+				}
+
+				terrainCells.AddRange(localTerrainCells);
+			}
+
+			int currentRows = Interlocked.Increment(ref processedRows);
+			lock (_progressLock)
+			{
+				_threadStageCurrent = currentRows;
+			}
+		});
+
+		lock (_progressLock)
+		{
+			_threadStageCurrent = 0;
+			_threadStageMax = 1;
 		}
 
-		if (GenerateLakes) context.GenerateLakesPass(world);
-		if (GenerateBeach) context.GenerateBeachPass(world);
-		if (GenerateVoidBorder) context.GenerateVoidBorderPass(world);
-		if (GenerateSmallDetails) context.GenerateSmallDetailsPass(world);
-		if (GenerateMediumDetails) context.GenerateMediumDetailsPass(world);
-		if (GenerateEdgeDecorations) context.GenerateEdgeDecorationsPass(world);
+		if (GenerateLakes) context.GenerateLakesPass(world, terrainCells);
+		if (GenerateBeach) context.GenerateBeachPass(world, terrainCells);
+		if (GenerateVoidBorder) context.GenerateVoidBorderPass(world, terrainCells);
+		if (GenerateSmallDetails) context.GenerateSmallDetailsPass(world, terrainCells);
+		if (GenerateMediumDetails) context.GenerateMediumDetailsPass(world, terrainCells);
+		if (GenerateEdgeDecorations) context.GenerateEdgeDecorationsPass(world, terrainCells);
 		if (GenerateTrees) context.GenerateTreesPass(world);
 
 		return BuildChunksFromWorldData(world);
@@ -868,6 +963,45 @@ public partial class CreatingSaveLoading : Control
 		world.Shadows.Clear();
 
 		return result;
+	}
+
+	private int ResolveBakeThreadsFromPlayerSettings()
+	{
+		int cpuThreads = Math.Max(1, global::System.Environment.ProcessorCount);
+		int maxSafeThreads = Math.Max(1, cpuThreads - 2);
+		int resolvedThreads = Math.Min(Math.Max(1, MaxBakeThreads), maxSafeThreads);
+
+		if (DataManager.I == null)
+			return resolvedThreads;
+
+		int details = GetSettingInt("Settings.Details", 1);
+		int particles = GetSettingInt("Settings.Particles", 1);
+		int postProcessing = GetSettingInt("Settings.PostProcessing", 1);
+		int frameRate = GetSettingInt("Settings.FrameRate", 1);
+
+		int qualityScore = details + particles + postProcessing;
+
+		if (qualityScore <= 1)
+			resolvedThreads = Math.Min(resolvedThreads, Math.Max(1, cpuThreads / 4));
+		else if (qualityScore <= 3)
+			resolvedThreads = Math.Min(resolvedThreads, Math.Max(2, cpuThreads / 3));
+		else if (qualityScore >= 5)
+			resolvedThreads = Math.Min(maxSafeThreads, resolvedThreads + 1);
+
+		if (frameRate <= 0)
+			resolvedThreads = Math.Max(1, resolvedThreads - 1);
+		else if (frameRate >= 2)
+			resolvedThreads = Math.Min(maxSafeThreads, resolvedThreads + 1);
+
+		return Mathf.Clamp(resolvedThreads, 1, Math.Max(1, maxSafeThreads));
+	}
+
+	private static int GetSettingInt(string key, int fallback)
+	{
+		if (DataManager.I == null || !DataManager.I.GameDataDictionary.TryGetValue(key, out Variant value))
+			return fallback;
+
+		return value.AsInt32();
 	}
 
 	private void AddTileToChunk(Dictionary<Vector2I, DeltaBakeChunkData> chunks, Vector2I cell, Vector2I atlas, DeltaBakeLayerType layerType)
@@ -1072,6 +1206,13 @@ public partial class CreatingSaveLoading : Control
 		private readonly bool _isSnowForest;
 		private readonly bool _isDesert;
 		private readonly bool _isSnowlands;
+		private readonly Vector2I _currentGroundMainAtlas;
+		private readonly Vector2I _currentGroundAlt1Atlas;
+		private readonly Vector2I _currentGroundAlt2Atlas;
+		private readonly Godot.Collections.Array<Vector2I> _currentSmallDetailAtlases;
+		private readonly Godot.Collections.Array<Vector2I> _currentMediumDetailAtlases;
+		private readonly Godot.Collections.Array<Vector2I> _currentTreeAtlases;
+		private readonly HashSet<Vector2I> _dirtAtlasSet;
 
 		public FastNoiseLite GroundNoise;
 		public FastNoiseLite DensityNoise;
@@ -1090,6 +1231,16 @@ public partial class CreatingSaveLoading : Control
 			_isSnowForest = biomeId == 2;
 			_isDesert = biomeId == 3;
 			_isSnowlands = biomeId == 4;
+			_currentSmallDetailAtlases = GetCurrentSmallDetailAtlases();
+			_currentMediumDetailAtlases = GetCurrentMediumDetailAtlases();
+			_currentTreeAtlases = GetCurrentTreeAtlases();
+			_currentGroundMainAtlas = GetCurrentGroundMainAtlas();
+			_currentGroundAlt1Atlas = GetCurrentGroundAlt1Atlas();
+			_currentGroundAlt2Atlas = GetCurrentGroundAlt2Atlas();
+			_dirtAtlasSet = new HashSet<Vector2I>();
+
+			foreach (Vector2I atlas in _owner.DirtAtlases)
+				_dirtAtlasSet.Add(atlas);
 		}
 
 		public void SetupNoises()
@@ -1101,192 +1252,163 @@ public partial class CreatingSaveLoading : Control
 			LakeNoise = new FastNoiseLite { Seed = _owner.SeedValue + 5000 + _levelId, NoiseType = FastNoiseLite.NoiseTypeEnum.Perlin, Frequency = _owner.LakeNoiseFrequency };
 		}
 
-		public void GenerateLakesPass(DeltaThreadWorldData world)
+		public void GenerateLakesPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
+				Vector2I cell = terrainCells[i];
+
+				if (!IsGroundFamilyCell(world, cell))
+					continue;
+
+				float lakeNoise = GetNoise01(LakeNoise, cell.X, cell.Y);
+				if (lakeNoise < _owner.LakeThreshold)
+					continue;
+
+				if (IsBorderRealTerrainCell(world, cell, 3))
+					continue;
+
+				bool nearNonLakeGround = false;
+
+				for (int oy = -_owner.LakeEdgeDepth; oy <= _owner.LakeEdgeDepth && !nearNonLakeGround; oy++)
 				{
-					Vector2I cell = new(x, y);
-
-					if (!IsGroundFamilyCell(world, cell))
-						continue;
-
-					if (IsBorderRealTerrainCell(world, cell, 3))
-						continue;
-
-					float lakeNoise = GetNoise01(LakeNoise, x, y);
-					if (lakeNoise < _owner.LakeThreshold)
-						continue;
-
-					bool nearNonLakeGround = false;
-
-					for (int oy = -_owner.LakeEdgeDepth; oy <= _owner.LakeEdgeDepth && !nearNonLakeGround; oy++)
+					for (int ox = -_owner.LakeEdgeDepth; ox <= _owner.LakeEdgeDepth; ox++)
 					{
-						for (int ox = -_owner.LakeEdgeDepth; ox <= _owner.LakeEdgeDepth; ox++)
+						Vector2I check = cell + new Vector2I(ox, oy);
+
+						if (!IsInsideBounds(check))
 						{
-							Vector2I check = cell + new Vector2I(ox, oy);
+							nearNonLakeGround = true;
+							break;
+						}
 
-							if (!IsInsideBounds(check))
-							{
-								nearNonLakeGround = true;
-								break;
-							}
+						if (!IsGroundFamilyCell(world, check))
+						{
+							nearNonLakeGround = true;
+							break;
+						}
 
-							if (!IsGroundFamilyCell(world, check))
-							{
-								nearNonLakeGround = true;
-								break;
-							}
-
-							float otherLakeNoise = GetNoise01(LakeNoise, check.X, check.Y);
-							if (otherLakeNoise < _owner.LakeThreshold)
-							{
-								nearNonLakeGround = true;
-								break;
-							}
+						float otherLakeNoise = GetNoise01(LakeNoise, check.X, check.Y);
+						if (otherLakeNoise < _owner.LakeThreshold)
+						{
+							nearNonLakeGround = true;
+							break;
 						}
 					}
-
-					world.Ground[cell] = nearNonLakeGround ? GetShallowLakeAtlas() : GetDeepLakeAtlas();
 				}
+
+				world.Ground[cell] = nearNonLakeGround ? GetShallowLakeAtlas() : GetDeepLakeAtlas();
 			}
 		}
 
-		public void GenerateBeachPass(DeltaThreadWorldData world)
+		public void GenerateBeachPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
-				{
-					Vector2I cell = new(x, y);
+				Vector2I cell = terrainCells[i];
 
-					if (!IsGroundFamilyCell(world, cell) && !IsDirtCell(world, cell))
-						continue;
+				if (!IsGroundFamilyCell(world, cell) && !IsDirtCell(world, cell))
+					continue;
 
-					if (!IsNearWater(world, cell, _owner.BeachBorderDistance))
-						continue;
+				if (!IsNearWater(world, cell, _owner.BeachBorderDistance))
+					continue;
 
-					if (RandomFloat01FromPosition(x, y, 6060) <= _owner.BeachChance)
-						world.Ground[cell] = _owner.SandAtlas;
-				}
+				if (RandomFloat01FromPosition(cell.X, cell.Y, 6060) <= _owner.BeachChance)
+					world.Ground[cell] = _owner.SandAtlas;
 			}
 		}
 
-		public void GenerateVoidBorderPass(DeltaThreadWorldData world)
+		public void GenerateVoidBorderPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
+				Vector2I origin = terrainCells[i];
+
+				for (int y = -_owner.VoidBorderThickness; y <= _owner.VoidBorderThickness; y++)
 				{
-					Vector2I cell = new(x, y);
+					for (int x = -_owner.VoidBorderThickness; x <= _owner.VoidBorderThickness; x++)
+					{
+						Vector2I cell = origin + new Vector2I(x, y);
 
-					if (IsRealTerrainCell(world, cell))
-						continue;
+						if (!IsInsideBounds(cell) || IsRealTerrainCell(world, cell))
+							continue;
 
-					if (HasNeighborRealTerrain(world, cell, _owner.VoidBorderThickness))
 						world.Ground[cell] = _owner.VoidAtlas;
+					}
 				}
 			}
 		}
 
-		public void GenerateSmallDetailsPass(DeltaThreadWorldData world)
+		public void GenerateSmallDetailsPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
-			var atlases = GetCurrentSmallDetailAtlases();
+			var atlases = _currentSmallDetailAtlases;
 			if (atlases.Count == 0)
 				return;
 
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
-				{
-					Vector2I cell = new(x, y);
+				Vector2I cell = terrainCells[i];
 
-					if (!IsGroundMainCell(world, cell) || world.MediumDetails.ContainsKey(cell) || world.Objects.ContainsKey(cell))
-						continue;
+				if (!IsGroundMainCell(world, cell) || world.MediumDetails.ContainsKey(cell) || world.Objects.ContainsKey(cell))
+					continue;
 
-					float spawnChance = _owner.SmallDetailBaseChance + (GetNoise01(DensityNoise, x, y) * _owner.SmallDetailDensityChance);
-					if (RandomFloat01FromPosition(x, y, 5551) <= spawnChance)
-						world.SmallDetails[cell] = PickAtlasFromList(atlases, x, y, 7777);
-				}
+				float spawnChance = _owner.SmallDetailBaseChance + (GetNoise01(DensityNoise, cell.X, cell.Y) * _owner.SmallDetailDensityChance);
+				if (RandomFloat01FromPosition(cell.X, cell.Y, 5551) <= spawnChance)
+					world.SmallDetails[cell] = PickAtlasFromList(atlases, cell.X, cell.Y, 7777);
 			}
 		}
 
-		public void GenerateMediumDetailsPass(DeltaThreadWorldData world)
+		public void GenerateMediumDetailsPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
-			var atlases = GetCurrentMediumDetailAtlases();
+			var atlases = _currentMediumDetailAtlases;
 			if (atlases.Count == 0)
 				return;
 
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
-				{
-					Vector2I cell = new(x, y);
+				Vector2I cell = terrainCells[i];
 
-					if (!IsGroundMainCell(world, cell) || world.Objects.ContainsKey(cell))
-						continue;
+				if (!IsGroundMainCell(world, cell) || world.Objects.ContainsKey(cell))
+					continue;
 
-					float spawnChance =
-						_owner.MediumDetailBaseChance +
-						(GetNoise01(DensityNoise, x, y) * _owner.MediumDetailDensityChance) +
-						(GetNoise01(MediumDetailsNoise, x, y) * _owner.MediumDetailRegionChance);
+				float spawnChance =
+					_owner.MediumDetailBaseChance +
+					(GetNoise01(DensityNoise, cell.X, cell.Y) * _owner.MediumDetailDensityChance) +
+					(GetNoise01(MediumDetailsNoise, cell.X, cell.Y) * _owner.MediumDetailRegionChance);
 
-					if (RandomFloat01FromPosition(x, y, 9127) <= spawnChance && !HasNeighborMediumDetail(world, cell, 1))
-						world.MediumDetails[cell] = PickAtlasFromList(atlases, x, y, 9999);
-				}
+				if (RandomFloat01FromPosition(cell.X, cell.Y, 9127) <= spawnChance && !HasNeighborMediumDetail(world, cell, 1))
+					world.MediumDetails[cell] = PickAtlasFromList(atlases, cell.X, cell.Y, 9999);
 			}
 		}
 
-		public void GenerateEdgeDecorationsPass(DeltaThreadWorldData world)
+		public void GenerateEdgeDecorationsPass(DeltaThreadWorldData world, List<Vector2I> terrainCells)
 		{
 			if (!_owner.GenerateEdgeDecorations || _owner.EdgeDecorAtlases.Count == 0)
 				return;
 
-			int halfX = _owner.HalfLevelSizeX;
-			int halfY = _owner.HalfLevelSizeY;
-
-			for (int y = -halfY; y < halfY; y++)
+			for (int i = 0; i < terrainCells.Count; i++)
 			{
-				for (int x = -halfX; x < halfX; x++)
-				{
-					Vector2I cell = new(x, y);
+				Vector2I cell = terrainCells[i];
 
-					if (!IsGroundMainCell(world, cell))
-						continue;
+				if (!IsGroundMainCell(world, cell))
+					continue;
 
-					if (!IsNearDirt(world, cell, _owner.EdgeDecorRadius))
-						continue;
+				if (!IsNearDirt(world, cell, _owner.EdgeDecorRadius))
+					continue;
 
-					if (world.Objects.ContainsKey(cell) || world.MediumDetails.ContainsKey(cell))
-						continue;
+				if (world.Objects.ContainsKey(cell) || world.MediumDetails.ContainsKey(cell))
+					continue;
 
-					if (RandomFloat01FromPosition(x, y, 45454) > _owner.EdgeDecorChance)
-						continue;
+				if (RandomFloat01FromPosition(cell.X, cell.Y, 45454) > _owner.EdgeDecorChance)
+					continue;
 
-					world.MediumDetails[cell] = PickAtlasFromList(_owner.EdgeDecorAtlases, x, y, 56565);
-				}
+				world.MediumDetails[cell] = PickAtlasFromList(_owner.EdgeDecorAtlases, cell.X, cell.Y, 56565);
 			}
 		}
 
 		public void GenerateTreesPass(DeltaThreadWorldData world)
 		{
-			var atlases = GetCurrentTreeAtlases();
+			var atlases = _currentTreeAtlases;
 			if (atlases.Count == 0 && !_isSnowlands)
 				return;
 
@@ -1301,9 +1423,6 @@ public partial class CreatingSaveLoading : Control
 					Vector2I cell = ApplyTreeRandomOffset(new Vector2I(x, y));
 
 					if (!IsInsideBounds(cell))
-						continue;
-
-					if (!HasEnoughSpaceForTree(world, cell))
 						continue;
 
 					if (!IsGroundMainCell(world, cell) || world.Objects.ContainsKey(cell))
@@ -1321,6 +1440,9 @@ public partial class CreatingSaveLoading : Control
 					}
 
 					if (IsNearAnotherTree(cell, _owner.TreeMinDistance))
+						continue;
+
+					if (!HasEnoughSpaceForTree(world, cell))
 						continue;
 
 					Vector2I atlas = PickTreeAtlasForCell(world, cell);
@@ -1408,8 +1530,7 @@ public partial class CreatingSaveLoading : Control
 			if (_isSnowlands && _owner.SnowlandsTreeAtlases.Count > 0)
 				return PickAtlasFromList(_owner.SnowlandsTreeAtlases, cell.X, cell.Y, 22222);
 
-			var atlases = GetCurrentTreeAtlases();
-			return atlases.Count > 0 ? PickAtlasFromList(atlases, cell.X, cell.Y, 22222) : Vector2I.Zero;
+			return _currentTreeAtlases.Count > 0 ? PickAtlasFromList(_currentTreeAtlases, cell.X, cell.Y, 22222) : Vector2I.Zero;
 		}
 
 		private Godot.Collections.Array<Vector2I> GetCurrentSmallDetailAtlases() => _biomeId switch { 1 => _owner.DarkForestSmallDetailAtlases, 2 => _owner.SnowForestSmallDetailAtlases, 3 => _owner.DesertSmallDetailAtlases, 4 => _owner.SnowlandsSmallDetailAtlases, _ => _owner.ForestSmallDetailAtlases };
@@ -1418,7 +1539,7 @@ public partial class CreatingSaveLoading : Control
 		private Vector2I GetCurrentGroundMainAtlas() => _biomeId switch { 1 => _owner.DarkForestGroundMainAtlas, 2 => _owner.SnowForestGroundMainAtlas, 3 => _owner.DesertGroundMainAtlas, 4 => _owner.SnowlandsGroundMainAtlas, _ => _owner.ForestGroundMainAtlas };
 		private Vector2I GetCurrentGroundAlt1Atlas() => _biomeId switch { 1 => _owner.DarkForestGroundAlt1Atlas, 2 => _owner.SnowForestGroundAlt1Atlas, 3 => _owner.DesertGroundAlt1Atlas, 4 => _owner.SnowlandsGroundAlt1Atlas, _ => _owner.ForestGroundAlt1Atlas };
 		private Vector2I GetCurrentGroundAlt2Atlas() => _biomeId switch { 1 => _owner.DarkForestGroundAlt2Atlas, 2 => _owner.SnowForestGroundAlt2Atlas, 3 => _owner.DesertGroundAlt2Atlas, 4 => _owner.SnowlandsGroundAlt2Atlas, _ => _owner.ForestGroundAlt2Atlas };
-		private bool IsBiomeGroundAtlas(Vector2I a) => a == GetCurrentGroundMainAtlas() || a == GetCurrentGroundAlt1Atlas() || a == GetCurrentGroundAlt2Atlas();
+		private bool IsBiomeGroundAtlas(Vector2I a) => a == _currentGroundMainAtlas || a == _currentGroundAlt1Atlas || a == _currentGroundAlt2Atlas;
 		private bool IsLakeAtlas(Vector2I atlas) => atlas == _owner.WaterAtlas || atlas == _owner.DeepWaterAtlas || atlas == _owner.FrozenWaterAtlas || atlas == _owner.FrozenDeepWaterAtlas;
 		private Vector2I GetDeepLakeAtlas() => _isSnowlands ? _owner.FrozenDeepWaterAtlas : _owner.DeepWaterAtlas;
 		private Vector2I GetShallowLakeAtlas() => _isSnowlands ? _owner.FrozenWaterAtlas : _owner.WaterAtlas;
@@ -1504,8 +1625,8 @@ public partial class CreatingSaveLoading : Control
 			return Mathf.Clamp(1f - Mathf.Pow(Mathf.Clamp(d, 0f, 1f), _owner.IslandFalloffPower), 0f, 1f);
 		}
 
-		public bool IsGroundMainCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && a == GetCurrentGroundMainAtlas();
-		public bool IsDirtCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && _owner.DirtAtlases.Contains(a);
+		public bool IsGroundMainCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && a == _currentGroundMainAtlas;
+		public bool IsDirtCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && _dirtAtlasSet.Contains(a);
 		public bool IsGroundFamilyCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && IsBiomeGroundAtlas(a);
 		public bool IsRealTerrainCell(DeltaThreadWorldData world, Vector2I cell) => world.Ground.TryGetValue(cell, out Vector2I a) && (IsBiomeGroundAtlas(a) || a == _owner.SandAtlas || IsLakeAtlas(a) || _owner.DirtAtlases.Contains(a) || a == _owner.VoidAtlas);
 

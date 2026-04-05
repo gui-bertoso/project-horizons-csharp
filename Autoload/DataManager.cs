@@ -8,6 +8,16 @@ public partial class DataManager : Node
 {
 	private const string SavePath = "user://save.txt";
 	private const string WorldSavesPath = "user://";
+	private static readonly string[] EquippedItemKeys =
+	[
+		"EquippedHeadArmor",
+		"EquippedBodyArmor",
+		"EquippedFootArmor",
+		"EquippedWeapon",
+		"EquippedConsumable",
+		"EquippedAcessory1",
+		"EquippedAcessory2"
+	];
 
 	public static DataManager I {get; private set;}
 
@@ -67,15 +77,12 @@ public partial class DataManager : Node
 	
 	public void SaveGameData()
 	{
-		GD.Print("Saving game data...");
 		using var file = Godot.FileAccess.Open(SavePath, Godot.FileAccess.ModeFlags.Write);
 		file.StoreVar(GameDataDictionary);
-		GD.Print($"Saved game data {GameDataDictionary}");
 	}
 
 	public void LoadGameData()
 	{
-		GD.Print("Loading game data");
 		using var file = Godot.FileAccess.Open(SavePath, Godot.FileAccess.ModeFlags.Read);
 		var data = file.GetVar();
 
@@ -87,34 +94,44 @@ public partial class DataManager : Node
 		{
 			GameDataDictionary[key.AsString()] = dictionary[key];
 		}
-		GD.Print($"Loaded game data {GameDataDictionary}");
 	}
 
 	public void SaveWorldData(string saveName)
 	{
-		GD.Print("Saving world data...");
 		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".txt", Godot.FileAccess.ModeFlags.Write);
-		file.StoreVar(CurrentWorldData, true);
-		GD.Print($"Saved world data: {CurrentWorldData}");
+		file.StoreVar(SerializeWorldData(), true);
+	}
+
+	public void DeleteWorldData(string saveName)
+	{
+		if (string.IsNullOrWhiteSpace(saveName))
+			return;
+
+		var saveFilePath = ProjectSettings.GlobalizePath(WorldSavesPath + saveName + ".txt");
+		if (File.Exists(saveFilePath))
+			File.Delete(saveFilePath);
+
+		Array<string> saves = GameDataDictionary["Saves"].AsGodotArray<string>();
+		saves.Remove(saveName);
+		GameDataDictionary["Saves"] = saves;
+
+		if (_currentSaveName == saveName)
+			_currentSaveName = "";
+
+		SaveGameData();
 	}
 
 	public void QuickSaveWorldData()
 	{
 		if (_currentSaveName == "")
-		{
-			GD.Print("No save name set, cannot quicksave world data");
 			return;
-		}
 		SaveWorldData(_currentSaveName);
 	}
 
 	public void QuickLoadWorldData()
 	{
 		if (_currentSaveName == "")
-		{
-			GD.Print("No save name set, cannot quickload world data");
 			return;
-		}
 		LoadWorldData(_currentSaveName);
 	}
 
@@ -157,22 +174,96 @@ public partial class DataManager : Node
 	
 	public void LoadWorldData(string saveName)
 	{
-		GD.Print("Loading world data...");
 		using var file = Godot.FileAccess.Open(WorldSavesPath + saveName + ".txt", Godot.FileAccess.ModeFlags.Read);
 		var data = file.GetVar(true);
 
 		var dictionary = data.AsGodotDictionary();
 
-		GD.Print($"New Data: {dictionary}");
-
 		foreach (var variable in dictionary)
 		{
-			CurrentWorldData[(string)variable.Key] = variable.Value;
-			GD.Print($"Loaded Data Variable: {variable}");
+			string key = (string)variable.Key;
+			CurrentWorldData[key] = DeserializeWorldValue(key, variable.Value);
 		}
 		_currentSaveName = saveName;
-		GD.Print("Loaded world data");
-		GD.Print($"Loaded game data {CurrentWorldData}");
+	}
+
+	private Dictionary<string, Variant> SerializeWorldData()
+	{
+		var serializedData = new Dictionary<string, Variant>();
+
+		foreach (var entry in CurrentWorldData)
+		{
+			serializedData[entry.Key] = SerializeWorldValue(entry.Key, entry.Value);
+		}
+
+		return serializedData;
+	}
+
+	private static Variant SerializeWorldValue(string key, Variant value)
+	{
+		if (System.Array.IndexOf(EquippedItemKeys, key) < 0)
+			return value;
+
+		if (value.AsGodotObject() is not Item item || IsEmptyItem(item))
+			return new Godot.Collections.Dictionary();
+
+		return Variant.From(SerializeItem(item));
+	}
+
+	private static Variant DeserializeWorldValue(string key, Variant value)
+	{
+		if (System.Array.IndexOf(EquippedItemKeys, key) < 0)
+			return value;
+
+		if (value.VariantType == Variant.Type.Nil)
+			return new Item();
+
+		if (value.AsGodotObject() is Item item)
+			return item;
+
+		var itemData = value.AsGodotDictionary();
+		if (itemData.Count == 0)
+			return new Item();
+
+		return DeserializeItem(itemData);
+	}
+
+	private static Godot.Collections.Dictionary SerializeItem(Item item)
+	{
+		return new Godot.Collections.Dictionary
+		{
+			{ "ItemName", item.ItemName ?? "" },
+			{ "ItemType", (int)item.ItemType },
+			{ "ItemClass", (int)item.ItemClass },
+			{ "ItemDescription", item.ItemDescription ?? "" },
+			{ "ItemAmount", item.ItemAmount },
+			{ "ItemTexture", item.ItemTexture },
+			{ "ItemScene", item.ItemScene },
+			{ "ArmorSpriteSheet", item.ArmorSpriteSheet }
+		};
+	}
+
+	private static Item DeserializeItem(Godot.Collections.Dictionary itemData)
+	{
+		return new Item
+		{
+			ItemName = itemData.ContainsKey("ItemName") ? itemData["ItemName"].AsString() : "",
+			ItemType = (Item.ITEM_TYPE)(itemData.ContainsKey("ItemType") ? itemData["ItemType"].AsInt32() : 0),
+			ItemClass = (Item.ITEM_CLASS)(itemData.ContainsKey("ItemClass") ? itemData["ItemClass"].AsInt32() : 0),
+			ItemDescription = itemData.ContainsKey("ItemDescription") ? itemData["ItemDescription"].AsString() : "",
+			ItemAmount = itemData.ContainsKey("ItemAmount") ? itemData["ItemAmount"].AsInt32() : 1,
+			ItemTexture = itemData.ContainsKey("ItemTexture") ? itemData["ItemTexture"].AsGodotObject() as CompressedTexture2D : null,
+			ItemScene = itemData.ContainsKey("ItemScene") ? itemData["ItemScene"].AsGodotObject() as PackedScene : null,
+			ArmorSpriteSheet = itemData.ContainsKey("ArmorSpriteSheet") ? itemData["ArmorSpriteSheet"].AsGodotObject() as CompressedTexture2D : null,
+		};
+	}
+
+	private static bool IsEmptyItem(Item item)
+	{
+		return string.IsNullOrWhiteSpace(item.ItemName) &&
+			   item.ItemTexture == null &&
+			   item.ItemScene == null &&
+			   item.ArmorSpriteSheet == null;
 	}
 
 	public override void _EnterTree()
