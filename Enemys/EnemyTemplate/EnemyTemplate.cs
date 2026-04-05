@@ -15,8 +15,11 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	[Export]
 	public int Damage = 2;
+	[Export]
+	public int XpReward = 25;
 
 	private PackedScene _floatTextScene;
+	private bool _deathRewardGranted;
 
 	protected Player.Player PlayerReference;
 
@@ -84,12 +87,30 @@ public partial class EnemyTemplate : CharacterBody2D
 
 	public void ApplyDamage(int value)
 	{
+		if (CurrentState == EnemyState.Death)
+			return;
+
 		Health -= value;
 		SpawnFloatDamage(value);
-		if (Health < 0)
+		if (Health <= 0)
 		{
+			GiveDeathRewards();
 			CurrentState = EnemyState.Death;
 		}
+	}
+
+	private void GiveDeathRewards()
+	{
+		if (_deathRewardGranted || Autoload.Globals.I?.LocalPlayer == null)
+			return;
+
+		var playerStats = Autoload.Globals.I.LocalPlayer.GetNodeOrNull<Player.PlayerStats>("Stats");
+		if (playerStats == null)
+			return;
+
+		_deathRewardGranted = true;
+		playerStats.AddKill();
+		playerStats.AddXp(XpReward);
 	}
 
 	public void SpawnFloatDamage(int value)

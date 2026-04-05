@@ -63,6 +63,9 @@ public partial class DataManager : Node
 		{"PlayerExtraHealth", 100},
 		{"PlayerMoveSpeed", 50},
 		{"PlayerExtraMoveSpeed", 50},
+		{"PlayerXp", 0},
+		{"PlayerLevel", 1},
+		{"PlayerKills", 0},
 
 		{"EquippedHeadArmor", new Item()},
 		{"EquippedBodyArmor", new Item()},
