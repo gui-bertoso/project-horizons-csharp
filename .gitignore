@@ -1,8 +1,37 @@
-
-# Godot 4+ specific ignores
+# Godot
 .godot/
 /android/
 
-.idea
-.vscode
-.vs
+# .NET / C#
+bin/
+obj/
+.mono/
+
+# JetBrains / Rider
+.idea/
+!.idea/.gitignore
+*.sln.iml
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Local run configs
+.run/
+!.run/Run Game.run.xml
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Godot mono generated caches outside .godot
+**/.mono/
+**/ExportDebug/
+**/ExportRelease/
