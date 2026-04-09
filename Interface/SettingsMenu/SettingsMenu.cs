@@ -7,6 +7,11 @@ public partial class SettingsMenu : Control
 	[Signal]
 	public delegate void CloseRequestedEventHandler();
 
+	
+	
+	
+	
+	
 	private OptionButton _fullscreenOption;
 	private OptionButton _resolutionOption;
 	private OptionButton _frameRateOption;
