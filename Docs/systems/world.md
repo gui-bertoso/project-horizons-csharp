@@ -1,26 +1,55 @@
-﻿# World System
+# World System
 
 ## Overview
 
-Handles world structure, levels, and environment configuration.
+The project contains more than one generation path and more than one level type at the same time.
 
-## Structure
+That is useful for experimentation, but it also means not everything represents the final main gameplay path.
 
-- Levels/ → game scenes
-- BiomeEnvironments/ → environment data
+## Main level scenes
 
-## Responsibilities
+- `Levels/ProceduralLevel.tscn`
+- `Levels/ruby_procedural_level.tscn`
+- `Levels/delta_procedural_level.tscn`
+- `Levels/ChunkedProceduralLevel.tscn`
+- `Levels/EmeraldLevel.tscn`
 
-- world loading
-- environment configuration
-- spatial organization
+## Generators
 
-## Observations
+- `LevelGenerators/BruteGen/`
+- `LevelGenerators/RubyGen/`
+- `LevelGenerators/DeltaGen/`
+- `LevelGenerators/FiberGen/`
+- `LevelGenerators/EmeraldGen/`
 
-Presence of ChunkData suggests future chunk-based streaming system.
+## World-related persistence
 
-## Future Improvements
+The world save currently stores:
 
-- chunk streaming
-- procedural generation
-- LOD systems
+- current level
+- played time
+- seed
+- difficulty
+- opened chests
+- equipment
+- player stats
+
+## Chests
+
+`ChestTemplate` uses `DataManager` and `ChestStateRegistry` to control opening state and drops.
+
+In `DeltaGen`, dynamically generated chests can implement `IGeneratedChest`.
+
+## Environments
+
+Biome and visual profiles are spread across:
+
+- `BiomeEnvironments/`
+- `Environment/`
+- generator-specific configuration
+
+## Notes
+
+- `FiberGen` still uses its own `ChunkData`
+- `RubyGen` and `SaveCreationLoading` still concentrate several internal classes in very large files
+- the project still mixes experimental paths with the current playable path

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Achievements/010.png" id="1_tex"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+Id = "Mission_01"
+AchievementName = "First Fall"
+ClassType = 2
+AchievementDescription = "Die once."
+AchievementTexture = ExtResource("1_tex")
+Type = 2
+TriggerEvent = "PlayerDefeated"
+RequiredAmount = 1

@@ -6,3 +6,5 @@
 script = ExtResource("1_0n52l")
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=578965039]
+z_index = 1
+y_sort_enabled = true

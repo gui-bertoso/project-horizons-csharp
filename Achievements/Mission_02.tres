@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Achievements/016.png" id="1_tex"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+Id = "Mission_02"
+AchievementName = "Bushbreaker"
+ClassType = 2
+AchievementDescription = "Defeat the BushBoss."
+AchievementTexture = ExtResource("1_tex")
+Type = 5
+TriggerEvent = "BossDefeated"
+TargetId = "BushBoss"
+RequiredAmount = 1

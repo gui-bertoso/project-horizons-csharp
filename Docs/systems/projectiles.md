@@ -1,21 +1,52 @@
-﻿# Projectile System
+# Projectile System
 
 ## Overview
 
-Responsible for handling all projectile-based interactions.
+Projectiles are scenes derived from `Projectile.tscn` with shared behavior in `Projectile.cs`.
 
-## Structure
+## Common base
 
-- DebugProjectile.tscn → base projectile scene
+`Projectile.cs` controls:
 
-## Responsibilities
+- speed
+- direction through `Rotation`
+- lifetime
+- damage
 
-- movement
-- collision detection
-- damage application
+Each variant changes:
 
-## Future Improvements
+- sprite
+- collision shape
+- `Damage`
+- `Speed`
 
-- projectile pooling
-- different projectile types
-- networking sync
+## Main files
+
+- `Projectiles/Projectile.cs`
+- `Projectiles/Projectile.tscn`
+- `Weapons/DistanceWeapon.cs`
+
+## Flow
+
+1. a ranged weapon points to a projectile `PackedScene`
+2. `DistanceWeapon` instantiates the projectile
+3. the projectile spawns at `ProjectileSpawn`
+4. collision on a valid target applies `Damage`
+
+## Current variants
+
+There are projectile variants for:
+
+- debug book / magic weapons
+- bows
+- guns
+- rod
+- spell
+- boomerang
+- enemy attacks such as `SeedProjectile` and `greenSeed`
+
+## Important notes
+
+- the collision shape must be configured in the scene
+- the real gameplay damage currently lives on the projectile itself
+- if two weapons share the same projectile scene, they also share balancing

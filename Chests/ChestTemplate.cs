@@ -31,14 +31,14 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
     private const float OpenDistance = 40f;
     private bool _canOpen = false;
 
-    private PhysicItem _spawnedItem;
+    private PhysicsItem _spawnedItem;
 
     [Export]
     public bool IsOpened = false;
 
     public Godot.Collections.Array<ChestDrop> Drops = new();
 
-    private static readonly PackedScene PhysicItemScene =
+    private static readonly PackedScene PhysicsItemScene =
         ResourceLoader.Load<PackedScene>("uid://bqjq1yutufivv");
 
     public override void _Ready()
@@ -238,13 +238,13 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
         if (item == null)
             return;
 
-        if (PhysicItemScene == null)
+        if (PhysicsItemScene == null)
         {
             GD.PrintErr("erro: physicitem.tscn não carregou.");
             return;
         }
 
-        PhysicItem physicItem = PhysicItemScene.Instantiate<PhysicItem>();
+        PhysicsItem physicItem = PhysicsItemScene.Instantiate<PhysicsItem>();
         physicItem.Item = item;
 
         GetParent().AddChild(physicItem);

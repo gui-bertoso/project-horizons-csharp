@@ -3,17 +3,34 @@
 [ext_resource type="Script" uid="uid://b1h16isk05i2n" path="res://addons/dialogue_editor/nodes/StartNode.cs" id="1_grqcu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4bgia"]
-bg_color = Color(4.6927482e-07, 0.49013484, 9.62615e-07, 1)
+bg_color = Color(0.101961, 0.239216, 0.14902, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.509804, 0.890196, 0.596078, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8dnu"]
-bg_color = Color(0.38044125, 0.38044122, 0.38044122, 1)
+bg_color = Color(0.164706, 0.356863, 0.239216, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.654902, 0.956863, 0.713726, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
 [node name="StartDialogueNode" type="GraphNode" unique_id=1004435678]
-offset_right = 119.0
-offset_bottom = 44.0
+offset_right = 180.0
+offset_bottom = 58.0
+theme_override_font_sizes/title_font_size = 15
 theme_override_styles/panel = SubResource("StyleBoxFlat_4bgia")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_o8dnu")
-title = " Initial Dialogue"
+title = "Start"
 slot/0/left_enabled = false
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -26,4 +43,5 @@ slot/0/draw_stylebox = true
 script = ExtResource("1_grqcu")
 
 [node name="Control" type="Control" parent="." unique_id=2100736348]
+custom_minimum_size = Vector2(120, 12)
 layout_mode = 2

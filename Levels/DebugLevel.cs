@@ -5,7 +5,7 @@ using System;
 
 public partial class DebugLevel : Node2D
 {
-	private Godot.Collections.Array<string> EnemysScenePath = new()
+	private Godot.Collections.Array<string> EnemiesScenePath = new()
 	{
 		"uid://cbi26ck84a7vt",
 		"uid://834fniewtsf1",
@@ -20,7 +20,7 @@ public partial class DebugLevel : Node2D
 		var rng = new RandomNumberGenerator();
 		for (var i = 0; i < 10; i++)
 		{
-			EnemysManager.I.SpawnEnemy(EnemysScenePath[rng.RandiRange(0, EnemysScenePath.Count-1)]);
+			EnemiesManager.I.SpawnEnemy(EnemiesScenePath[rng.RandiRange(0, EnemiesScenePath.Count-1)]);
 		}
 	}
 

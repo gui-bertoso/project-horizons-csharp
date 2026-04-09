@@ -1,21 +1,67 @@
 [gd_scene format=3 uid="uid://dq10vrexs7p4r"]
 
 [ext_resource type="Script" uid="uid://bydowhdn128na" path="res://DialogueDummy/DialogueDummy.cs" id="1_hqxj1"]
+[ext_resource type="Texture2D" uid="uid://i235yivmemja" path="res://Assets/Armors/Armor0.png" id="2_r8pk6"]
 [ext_resource type="Script" uid="uid://b2qvogrekdxiy" path="res://DialogueDummy/DialogueComponent.cs" id="2_vg2d7"]
 [ext_resource type="PackedScene" uid="uid://c4gflemuspk4v" path="res://DialogueDummy/npc_interaction.tscn" id="3_1kpri"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vg2d7"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_1kpri"]
-radius = 246.81168
+radius = 114.03947
 
 [node name="DialogueDummy" type="Node2D" unique_id=1624981845]
 script = ExtResource("1_hqxj1")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1445779607]
-position = Vector2(-1.0000153, -46.000015)
-scale = Vector2(0.12890625, 0.18554688)
-texture = SubResource("NoiseTexture2D_vg2d7")
+[node name="Body" type="Node2D" parent="." unique_id=1445779607]
+position = Vector2(-1.0000153, -14.000015)
+
+[node name="Layer0" type="Sprite2D" parent="Body" unique_id=160282731]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 13
+
+[node name="Layer1" type="Sprite2D" parent="Body" unique_id=1564808476]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 11
+
+[node name="Layer2" type="Sprite2D" parent="Body" unique_id=27524252]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 9
+
+[node name="Layer4" type="Sprite2D" parent="Body" unique_id=607022515]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 5
+
+[node name="Layer5" type="Sprite2D" parent="Body" unique_id=1217622834]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 7
+
+[node name="Layer6" type="Sprite2D" parent="Body" unique_id=676822467]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 1
+
+[node name="Layer3" type="Sprite2D" parent="Body" unique_id=520530937]
+position = Vector2(1.0000153, -17.999985)
+texture = ExtResource("2_r8pk6")
+hframes = 2
+vframes = 7
+frame = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=803659004]
 

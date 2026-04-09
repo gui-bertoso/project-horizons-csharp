@@ -1,10 +1,13 @@
 [gd_resource type="Resource" format=3 uid="uid://bcg8kptyhhel2"]
 
+[ext_resource type="PackedScene" uid="uid://b1uokkbxu72te" path="res://Weapons/book_2.tscn" id="1_2o8a1"]
 [ext_resource type="Texture2D" uid="uid://cki6v8hreykks" path="res://Assets/Weapons/Mage/FireBook.png" id="1_d7iw5"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_28dgc"]
 
 [resource]
 script = ExtResource("2_28dgc")
 ItemName = "Orange"
+ItemClass = 5
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_d7iw5")
+ItemScene = ExtResource("1_2o8a1")

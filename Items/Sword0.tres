@@ -1,6 +1,6 @@
 [gd_resource type="Resource" format=3 uid="uid://by5vaxm5nm501"]
 
-[ext_resource type="Texture2D" uid="uid://d4lcwcnh3xtou" path="res://Assets/Weapons/Mellee/sword0.png" id="1_o313u"]
+[ext_resource type="Texture2D" uid="uid://d4lcwcnh3xtou" path="res://Assets/Weapons/Melee/sword0.png" id="1_o313u"]
 [ext_resource type="PackedScene" uid="uid://bp18mc66auboa" path="res://Weapons/sword_5.tscn" id="1_wsklq"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_wsklq"]
 

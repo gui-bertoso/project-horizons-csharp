@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Achievements/024.png" id="1_tex"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+Id = "Collection_02"
+AchievementName = "Heavy Head"
+ClassType = 3
+AchievementDescription = "Find the Armor3Hat."
+AchievementTexture = ExtResource("1_tex")
+Type = 6
+TriggerEvent = "ItemDiscovered"
+TargetId = "Armor3Hat"
+RequiredAmount = 1

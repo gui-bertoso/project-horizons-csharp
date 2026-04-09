@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://b2ubndb6p4ht5" path="res://Weapons/physics_weapon.tscn" id="1_wttq8"]
+[ext_resource type="Texture2D" uid="uid://cjdexf5t6gn37" path="res://Assets/Weapons/HeavyMelee/DebugHammer.png" id="2_u7f5o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7f5o"]
+size = Vector2(10, 24)
+
+[node name="Hammer0" instance=ExtResource("1_wttq8")]
+Damage = 3
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(0, -13)
+texture = ExtResource("2_u7f5o")
+
+[node name="Collision" parent="AttackArea" parent_id_path=PackedInt32Array(1955743263) index="0" unique_id=1652481084]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_u7f5o")

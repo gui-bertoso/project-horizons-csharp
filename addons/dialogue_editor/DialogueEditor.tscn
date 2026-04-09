@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://n4bx04gdodl5"]
 
+[ext_resource type="Script" path="res://addons/dialogue_editor/DialogueEditor.cs" id="1_dialogue_editor_script"]
+
 [sub_resource type="CSharpScript" id="CSharpScript_27j2y"]
 script/source = "using Godot;
 using System;
@@ -899,18 +901,16 @@ public partial class DialogueEditor : Control
 }"
 
 [node name="DialogueEditor" type="Control" unique_id=1834357493]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("CSharpScript_27j2y")
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+clip_contents = true
+script = ExtResource("1_dialogue_editor_script")
 
 [node name="PopupMenu" type="PopupMenu" parent="." unique_id=2118762461]
 
-[node name="LeftPanel" type="Control" parent="." unique_id=934923853]
-custom_minimum_size = Vector2(901.37, 0)
+[node name="Root" type="VBoxContainer" parent="." unique_id=190243615]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -918,7 +918,97 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GraphEdit" type="GraphEdit" parent="LeftPanel" unique_id=1609876634]
+[node name="Toolbar" type="PanelContainer" parent="Root" unique_id=140243111]
+layout_mode = 2
+
+[node name="ToolbarMargin" type="MarginContainer" parent="Root/Toolbar" unique_id=194552121]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="ToolbarContent" type="VBoxContainer" parent="Root/Toolbar/ToolbarMargin" unique_id=184948122]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TopRow" type="HBoxContainer" parent="Root/Toolbar/ToolbarMargin/ToolbarContent" unique_id=137736210]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="FileMenuButton" type="MenuButton" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/TopRow" unique_id=193331600]
+unique_name_in_owner = true
+layout_mode = 2
+text = "File"
+
+[node name="PathLabel" type="Label" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/TopRow" unique_id=175886703]
+layout_mode = 2
+text = ".dalge"
+
+[node name="FilePathEdit" type="LineEdit" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/TopRow" unique_id=890615592]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "res://Dialogues/example.dalge"
+
+[node name="BrowseLoadButton" type="Button" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/TopRow" unique_id=113468820]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Open..."
+
+[node name="BrowseSaveButton" type="Button" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/TopRow" unique_id=890906183]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save As..."
+
+[node name="BottomRow" type="HBoxContainer" parent="Root/Toolbar/ToolbarMargin/ToolbarContent" unique_id=163289744]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RefreshPreviewButton" type="Button" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/BottomRow" unique_id=1312990980]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh"
+
+[node name="LoadDatButton" type="Button" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/BottomRow" unique_id=518273245]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Current"
+
+[node name="SaveDatButton" type="Button" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/BottomRow" unique_id=1321367193]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save Current"
+
+[node name="ToolbarSpacer" type="Control" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/BottomRow" unique_id=382238194]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StatusInline" type="Label" parent="Root/Toolbar/ToolbarMargin/ToolbarContent/BottomRow" unique_id=570040805]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ready."
+horizontal_alignment = 2
+
+[node name="MainSplit" type="HSplitContainer" parent="Root" unique_id=188209011]
+layout_mode = 2
+size_flags_vertical = 3
+split_offset = 980
+
+[node name="LeftPanel" type="PanelContainer" parent="Root/MainSplit" unique_id=934923853]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftMargin" type="MarginContainer" parent="Root/MainSplit/LeftPanel" unique_id=122429010]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="GraphEdit" type="GraphEdit" parent="Root/MainSplit/LeftPanel/LeftMargin" unique_id=1609876634]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -927,28 +1017,56 @@ grow_horizontal = 2
 grow_vertical = 2
 grid_pattern = 1
 
-[node name="RightPanel" type="VBoxContainer" parent="." unique_id=1415787084]
-layout_mode = 0
-offset_left = 897.0
-offset_top = 6.0
-offset_right = 1136.0
-offset_bottom = 654.0
+[node name="RightPanel" type="PanelContainer" parent="Root/MainSplit" unique_id=1415787084]
+layout_mode = 2
+custom_minimum_size = Vector2(260, 0)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="RightPanel" unique_id=799242479]
+[node name="RightMargin" type="MarginContainer" parent="Root/MainSplit/RightPanel" unique_id=177493330]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="RightVBox" type="VBoxContainer" parent="Root/MainSplit/RightPanel/RightMargin" unique_id=124214701]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PreviewHeader" type="Label" parent="Root/MainSplit/RightPanel/RightMargin/RightVBox" unique_id=628786510]
+layout_mode = 2
+text = "Preview"
+
+[node name="PreviewText" type="CodeEdit" parent="Root/MainSplit/RightPanel/RightMargin/RightVBox" unique_id=711269676]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatusBar" type="PanelContainer" parent="Root" unique_id=167430018]
 layout_mode = 2
 
-[node name="RefreshPreviewButton" type="Button" parent="RightPanel/HBoxContainer" unique_id=1312990980]
+[node name="StatusMargin" type="MarginContainer" parent="Root/StatusBar" unique_id=295842100]
 layout_mode = 2
-text = "Refresh"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
 
-[node name="SaveDatButton" type="Button" parent="RightPanel/HBoxContainer" unique_id=1321367193]
+[node name="StatusLabel" type="Label" parent="Root/StatusBar/StatusMargin" unique_id=145721987]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Save"
+text = "Dialogue Editor ready."
 
-[node name="LoadDatButton" type="Button" parent="RightPanel/HBoxContainer" unique_id=518273245]
-layout_mode = 2
-text = "Load"
+[node name="OpenFileDialog" type="FileDialog" parent="." unique_id=151168480]
+unique_name_in_owner = true
+title = "Open Dialogue File"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.dalge ; Dialogue Files")
 
-[node name="PreviewText" type="CodeEdit" parent="RightPanel" unique_id=711269676]
-custom_minimum_size = Vector2(0, 428.795)
-layout_mode = 2
+[node name="SaveFileDialog" type="FileDialog" parent="." unique_id=145337902]
+unique_name_in_owner = true
+title = "Save Dialogue File"
+file_mode = 4
+access = 2
+filters = PackedStringArray("*.dalge ; Dialogue Files")

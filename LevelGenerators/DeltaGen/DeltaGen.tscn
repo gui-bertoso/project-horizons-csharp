@@ -27,3 +27,7 @@ tile_set = ExtResource("2_dccel")
 z_index = 2
 y_sort_enabled = true
 tile_set = ExtResource("2_dccel")
+
+[node name="Canopy" type="TileMapLayer" parent="." unique_id=1324567890]
+z_index = 6
+tile_set = ExtResource("2_dccel")

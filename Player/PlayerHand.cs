@@ -1,4 +1,5 @@
 using Godot;
+using projecthorizonscs.Combat;
 
 namespace projecthorizonscs.Player;
 
@@ -53,6 +54,7 @@ public partial class PlayerHand : Marker2D
 		}
 
 		AddChild(_equippedItemReference);
+		ApplyEquippedItemProfile();
 	}
 
 	private void ClearEquippedItem()
@@ -66,7 +68,7 @@ public partial class PlayerHand : Marker2D
 
 	private void UnequipItem()
 	{
-		var droppedItem = (PhysicItem)Autoload.Globals.I.PhysicItemScene.Instantiate();
+		var droppedItem = (PhysicsItem)Autoload.Globals.I.PhysicsItemScene.Instantiate();
 		droppedItem.GlobalPosition = GlobalPosition;
 		droppedItem.Item = _equippedItem;
 		ClearEquippedItem();
@@ -75,12 +77,12 @@ public partial class PlayerHand : Marker2D
 
 	public void EnableWeaponAttackArea()
 	{
-		((PhysicWeapon)_equippedItemReference).EnableAttackArea();
+		((PhysicsWeapon)_equippedItemReference).EnableAttackArea();
 	}
 
 	public void DisableWeaponAttackArea()
 	{
-		((PhysicWeapon)_equippedItemReference).DisableAttackArea();
+		((PhysicsWeapon)_equippedItemReference).DisableAttackArea();
 	}
 
 	public bool HasWeaponEquipped()
@@ -95,10 +97,40 @@ public partial class PlayerHand : Marker2D
 
 		switch (_equippedItem.ItemClass)
 		{
-			case Item.ITEM_CLASS.Ranged: return "ranged";
-			case Item.ITEM_CLASS.Mellee: return "sword";
+			case Item.ITEM_CLASS.Ranged:
+			case Item.ITEM_CLASS.Archer:
+			case Item.ITEM_CLASS.Mage:
+			case Item.ITEM_CLASS.Wizard:
+			case Item.ITEM_CLASS.Bommet:
+				return "ranged";
+			case Item.ITEM_CLASS.Melee:
+			case Item.ITEM_CLASS.HeavyMelee:
+				return "sword";
 		}
 
 		return "hand";
+	}
+
+	public WeaponClassProfile GetCombatProfile()
+	{
+		if (_equippedItem == null)
+			return WeaponClassProfile.Default;
+
+		return WeaponClassProfile.FromItemClass(_equippedItem.ItemClass);
+	}
+
+	private void ApplyEquippedItemProfile()
+	{
+		WeaponClassProfile profile = GetCombatProfile();
+
+		switch (_equippedItemReference)
+		{
+			case PhysicsWeapon physicsWeapon:
+				physicsWeapon.ApplyClassProfile(profile);
+				break;
+			case DistanceWeapon distanceWeapon:
+				distanceWeapon.ApplyClassProfile(profile);
+				break;
+		}
 	}
 }

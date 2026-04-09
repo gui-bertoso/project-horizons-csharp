@@ -3,18 +3,35 @@
 [ext_resource type="Script" uid="uid://cfr8hbqaji7f0" path="res://addons/dialogue_editor/nodes/SwitchNode.cs" id="1_o2mys"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mmn17"]
-bg_color = Color(0.62334245, 0.29554936, 1.92523e-07, 1)
+bg_color = Color(0.239216, 0.141176, 0.101961, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.956863, 0.705882, 0.419608, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8dnu"]
-bg_color = Color(0.38044125, 0.38044122, 0.38044122, 1)
+bg_color = Color(0.392157, 0.215686, 0.129412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.988235, 0.780392, 0.529412, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
 [node name="DialogueSwitch" type="GraphNode" unique_id=1004435678]
-offset_right = 126.0
-offset_bottom = 69.0
-theme_override_constants/separation = 1
+offset_right = 250.0
+offset_bottom = 242.0
+theme_override_constants/separation = 4
+theme_override_font_sizes/title_font_size = 15
 theme_override_styles/panel = SubResource("StyleBoxFlat_mmn17")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_o8dnu")
-title = " Dialogue Switch"
+title = "Switch"
 slot/0/left_enabled = false
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -64,19 +81,41 @@ script = ExtResource("1_o2mys")
 
 [node name="Output1" type="Label" parent="." unique_id=82694167]
 layout_mode = 2
+theme_override_font_sizes/font_size = 13
 text = "Option 1"
+
+[node name="Option1" type="LineEdit" parent="." unique_id=196362411]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 30)
+layout_mode = 2
+placeholder_text = "option 1"
 
 [node name="Output2" type="Label" parent="." unique_id=1561060451]
 layout_mode = 2
+theme_override_font_sizes/font_size = 13
 text = "Option 2"
+
+[node name="Option2" type="LineEdit" parent="." unique_id=201897364]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 30)
+layout_mode = 2
+placeholder_text = "option 2"
 
 [node name="Output3" type="Label" parent="." unique_id=105603403]
 layout_mode = 2
+theme_override_font_sizes/font_size = 13
 text = "Option 3"
+
+[node name="Option3" type="LineEdit" parent="." unique_id=381442019]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 30)
+layout_mode = 2
+placeholder_text = "option 3"
 
 [node name="Control" type="HSeparator" parent="." unique_id=1889973831]
 layout_mode = 2
 
 [node name="Input" type="Label" parent="." unique_id=315550527]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "Input"

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Achievements/021.png" id="1_tex"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+Id = "Collection_01"
+AchievementName = "Fresh Snack"
+ClassType = 3
+AchievementDescription = "Find an Orange."
+AchievementTexture = ExtResource("1_tex")
+Type = 6
+TriggerEvent = "ItemDiscovered"
+TargetId = "Orange"
+RequiredAmount = 1

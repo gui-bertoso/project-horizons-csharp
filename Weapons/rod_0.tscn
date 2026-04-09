@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_35gmg"]
+[ext_resource type="Texture2D" uid="uid://dgk7wj6inaviq" path="res://Assets/Weapons/Fisher/DebugRod.png" id="2_7il1k"]
+[ext_resource type="PackedScene" path="res://Projectiles/rod_projectile_0.tscn" id="3_1c66q"]
+
+[node name="Rod0" instance=ExtResource("1_35gmg")]
+_projectileScene = ExtResource("3_1c66q")
+_projectileScale = 1.0
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(0, -11)
+texture = ExtResource("2_7il1k")
+
+[node name="ProjectileSpawn" parent="." index="1" unique_id=211260653]
+position = Vector2(10, -18)

@@ -1,55 +1,105 @@
-﻿# Architecture
+# Architecture
 
-## Overview
+## General view
 
-The project follows a modular and system-oriented architecture.
+The project is built around three main layers:
 
-Instead of tightly coupling logic, systems are separated into distinct responsibilities and interact through shared state and global managers.
+- Godot scenes for visual composition and hierarchy
+- C# scripts for behavior
+- `.tres` resources for data and content configuration
 
-## Core Layers
+This is not an ECS architecture. At the moment it follows an object-and-scene model with a few autoloads acting as global services.
 
-### Autoload Systems
+## Autoloads
 
-Global managers responsible for persistent logic:
+### `Globals`
 
-- AchievementsManager
-- EnemysManager
-- SettingsApplyer
+Stores runtime references to the player, HUD, local level generator, and global flags such as `InMenu`.
 
-These act as service layers accessible from anywhere.
+### `DataManager`
 
-### Game Systems
+Responsible for:
 
-- Items
-- Enemies
-- Projectiles
+- saving global settings into `user://save.txt`
+- saving the current world into `user://<slot>.txt`
+- serializing equipped items
+- tracking opened chests and player progression
 
-Each system is responsible for its own behavior and data.
+### `EnemiesManager`
 
-### Data Layer
+Centralizes:
 
-Uses Godot resources (.tres) for defining:
+- spawn tables per biome
+- enemy instantiation by path
+- simple LOD grouping through `EnemyGroup`
 
-- items
-- environments
-- configurations
+### `AchievementsManager`
 
-This allows content to be modified without changing code.
+Tracks progression and unlocks tied to exploration, deaths, bosses, and items.
 
-### Rendering Layer
+### `SettingsApplier`
 
-- shaders (hitflash, etc.)
-- sprites and UI assets
+Reads settings from `DataManager` and applies window, rendering, and quality options.
 
-## Design Goals
+## Main runtime
 
-- modularity
-- scalability
-- maintainability
-- performance readiness
+### Player
 
-## Future Direction
+Player logic is separated into:
 
-- chunk-based world system
-- ECS-like architecture
-- multithreading / job systems
+- input and state handling in `Player.cs`
+- persistent stats in `PlayerStats.cs`
+- equipped weapon handling in `PlayerHand.cs`
+
+At the moment, gameplay differentiation is much stronger between melee and ranged than between full weapon subclasses.
+
+### Items and Weapons
+
+- `Items/*.tres`: item data definitions
+- `Weapons/*.tscn`: concrete equipped weapon scenes
+- `Weapon.cs`, `PhysicsWeapon.cs`, `DistanceWeapon.cs`: weapon-system bases
+
+### Projectiles
+
+`Projectile.cs` handles movement, lifetime, and damage. Variants swap sprite, shape, speed, and damage through scenes.
+
+### Enemies
+
+`EnemyTemplate.cs` contains health, state, damage reception, and the base runtime flow. Concrete enemies specialize behavior and presentation.
+
+### World
+
+The project currently contains more than one generator and more than one level type:
+
+- `ProceduralLevel`
+- `RubyProceduralLevel`
+- `DeltaProceduralLevel`
+- `ChunkedProceduralLevel`
+- `EmeraldLevel`
+
+Not all of them are equally mature.
+
+## Persistence
+
+World saves currently store:
+
+- current level
+- played time
+- seed and difficulty
+- player position
+- health, XP, level, and kills
+- equipment
+- opened chests
+
+## Interface
+
+`Interface/` contains:
+
+- main menu
+- save manager
+- settings
+- HUD
+- pause menu
+- achievement overlays
+
+`PauseMenu` is embedded into the `HUD`; it does not switch scenes.

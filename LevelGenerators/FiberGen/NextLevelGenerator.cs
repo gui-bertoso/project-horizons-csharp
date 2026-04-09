@@ -46,7 +46,7 @@ public partial class NextLevelGenerator : TileMapLayer
 
 	private Vector2I _initialPortalCell;
 
-    public int EnemysAmount;
+    public int EnemiesAmount;
 
     public volatile int _threadProgress = 0;
     public volatile int _threadMaxProgress = 1;
@@ -57,7 +57,7 @@ public partial class NextLevelGenerator : TileMapLayer
     {
         public List<int> blocksID = new();
         public List<int> detailsID = new();
-        public bool SpawnEnemys;
+        public bool SpawnEnemies;
     }
 
     private class ThreadGenerationResult
@@ -161,8 +161,8 @@ public partial class NextLevelGenerator : TileMapLayer
             LoadingScreen.I?.SetSubText("inimigos: 0 / ?");
             LoadingScreen.I?.SetProgress(99f);
 
-            SpawnEnemys();
-            GD.Print("Enemys spawned");
+            SpawnEnemies();
+            GD.Print("Enemies spawned");
 
             LoadingScreen.I?.SetText("pronto");
             LoadingScreen.I?.SetSubText("mundo carregado");
@@ -180,39 +180,39 @@ public partial class NextLevelGenerator : TileMapLayer
         }
     }
 
-    public void SpawnEnemys()
+    public void SpawnEnemies()
     {
-        EnemysAmount = (int)GD.RandRange(
+        EnemiesAmount = (int)GD.RandRange(
             0,
             (chunksDictionary.Keys.Count / 1000)
             * ((int)DataManager.I.CurrentWorldData["SaveDifficulty"] + 1)
             / 2
         );
 
-        GD.Print($"Enemys To Spawn {EnemysAmount}");
+        GD.Print($"Enemies To Spawn {EnemiesAmount}");
 
         LoadingScreen.I?.SetText("despertando criaturas...");
-        LoadingScreen.I?.SetSubText($"inimigos: 0 / {EnemysAmount}");
+        LoadingScreen.I?.SetSubText($"inimigos: 0 / {EnemiesAmount}");
         LoadingScreen.I?.SetProgress(99f);
 
         int spawnedCount = 0;
 
-        for (int i = 0; i < EnemysAmount; i++)
+        for (int i = 0; i < EnemiesAmount; i++)
         {
             Vector2 spawnPosition = GetRandomSpawnPosition();
 
             if (spawnPosition == Vector2.Zero)
                 continue;
 
-            var newEnemy = EnemysManager.I.GetRandomEnemyByChance(LevelBiomeId);
+            var newEnemy = EnemiesManager.I.GetRandomEnemyByChance(LevelBiomeId);
 
             if (string.IsNullOrEmpty(newEnemy))
                 continue;
 
-            EnemysManager.I.SpawnEnemy(newEnemy, spawnPosition);
+            EnemiesManager.I.SpawnEnemy(newEnemy, spawnPosition);
 
             spawnedCount++;
-            LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemysAmount}");
+            LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemiesAmount}");
             GD.Print("Enemy spawned");
         }
     }
@@ -234,7 +234,7 @@ public partial class NextLevelGenerator : TileMapLayer
 
             ChunkData chunk = chunksDictionary[gridPosition];
 
-            if (!chunk.SpawnEnemys)
+            if (!chunk.SpawnEnemies)
                 continue;
 
             if (playerPosition != null)
@@ -399,7 +399,7 @@ public partial class NextLevelGenerator : TileMapLayer
                     }
                 }
 
-                chunkData.SpawnEnemys = IsSpawnableChunkThreaded(chunkData.blocksID);
+                chunkData.SpawnEnemies = IsSpawnableChunkThreaded(chunkData.blocksID);
                 result.chunksDictionary[chunkCoordinade] = chunkData;
 
                 _threadProgress = i + 1;
@@ -432,7 +432,7 @@ public partial class NextLevelGenerator : TileMapLayer
             foreach (var detailsId in pair.Value.detailsID)
                 chunkData.detailsID.Add(detailsId);
 
-            chunkData.SpawnEnemys = pair.Value.SpawnEnemys;
+            chunkData.SpawnEnemies = pair.Value.SpawnEnemies;
 
             chunksDictionary[pair.Key] = chunkData;
         }
@@ -806,7 +806,7 @@ public partial class NextLevelGenerator : TileMapLayer
                 }
             }
 
-            chunkData.SpawnEnemys = IsSpawnableChunk(chunkData.blocksID);
+            chunkData.SpawnEnemies = IsSpawnableChunk(chunkData.blocksID);
         }
     }
 

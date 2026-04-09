@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cmf7ih3a23rst" path="res://Portal/InitialPortal.tscn" id="2_aq0ab"]
 [ext_resource type="Script" uid="uid://5no4o07fkorj" path="res://Levels/DebugLevel.cs" id="2_wilel"]
 [ext_resource type="TileSet" uid="uid://cb8sdrkb2lwr7" path="res://Tilesets/MapTilemap2.tres" id="4_qf5dj"]
-[ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicItem/PhysicItem.tscn" id="6_12w40"]
+[ext_resource type="PackedScene" uid="uid://bqjq1yutufivv" path="res://PhysicsItem/PhysicsItem.tscn" id="6_12w40"]
 [ext_resource type="Resource" uid="uid://croxmhimhnbcc" path="res://Items/Armor1Foot.tres" id="7_yhvl1"]
 [ext_resource type="Resource" uid="uid://c18m1bymar3kw" path="res://Items/Armor2Tome.tres" id="8_qmej4"]
 [ext_resource type="Resource" uid="uid://bjv13ll65gm72" path="res://Items/Armor3Healmet.tres" id="9_wjncu"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://80jmqt7odv8r" path="res://Items/Orange.tres" id="11_a7yu2"]
 [ext_resource type="Resource" uid="uid://luuuoctufjnv" path="res://Items/VenomPotion.tres" id="12_r1rf8"]
 [ext_resource type="PackedScene" uid="uid://bss1tglk20lfh" path="res://Chests/debug_chest.tscn" id="13_yhvl1"]
+[ext_resource type="PackedScene" uid="uid://dk5dv7h5mckpb" path="res://Enemies/BushBoss/BushBoss.tscn" id="14_qmej4"]
 [ext_resource type="PackedScene" uid="uid://dq10vrexs7p4r" path="res://DialogueDummy/dialogue_dummy.tscn" id="62_jqk32"]
 
 [sub_resource type="Environment" id="Environment_8485w"]
@@ -63,34 +64,37 @@ script = null
 [node name="BaseModulate" parent="WorldEnvironment" index="0" unique_id=312499868]
 visible = true
 
-[node name="PhysicItem" parent="." index="7" unique_id=654771301 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem" parent="." index="7" unique_id=654771301 instance=ExtResource("6_12w40")]
 position = Vector2(1133, 521)
 Item = ExtResource("7_yhvl1")
 
-[node name="PhysicItem2" parent="." index="8" unique_id=1423558172 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem2" parent="." index="8" unique_id=1423558172 instance=ExtResource("6_12w40")]
 position = Vector2(973, 537)
 Item = ExtResource("8_qmej4")
 
-[node name="PhysicItem3" parent="." index="9" unique_id=1761811368 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem3" parent="." index="9" unique_id=1761811368 instance=ExtResource("6_12w40")]
 position = Vector2(1061, 612)
 Item = ExtResource("9_wjncu")
 
-[node name="PhysicItem4" parent="." index="10" unique_id=991839200 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem4" parent="." index="10" unique_id=991839200 instance=ExtResource("6_12w40")]
 position = Vector2(910, 662)
 Item = ExtResource("10_8dhhy")
 
-[node name="PhysicItem5" parent="." index="11" unique_id=650604311 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem5" parent="." index="11" unique_id=650604311 instance=ExtResource("6_12w40")]
 position = Vector2(1214, 687)
 Item = ExtResource("11_a7yu2")
 
-[node name="PhysicItem6" parent="." index="12" unique_id=152452350 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem6" parent="." index="12" unique_id=152452350 instance=ExtResource("6_12w40")]
 position = Vector2(1051, 787)
 Item = ExtResource("12_r1rf8")
 
-[node name="PhysicItem7" parent="." index="13" unique_id=1732381101 instance=ExtResource("6_12w40")]
+[node name="PhysicsItem7" parent="." index="13" unique_id=1732381101 instance=ExtResource("6_12w40")]
 position = Vector2(894, 815)
 
 [node name="ChestTemplate" parent="." index="14" unique_id=1958636200 instance=ExtResource("13_yhvl1")]
 position = Vector2(623, -161)
+
+[node name="BushBoss" parent="." index="15" unique_id=1875013965 instance=ExtResource("14_qmej4")]
+position = Vector2(-901, -450)
 
 [editable path="WorldEnvironment"]

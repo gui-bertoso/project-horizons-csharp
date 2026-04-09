@@ -1,12 +1,13 @@
 [gd_resource type="Resource" format=3 uid="uid://djstkq8sv78m6"]
 
 [ext_resource type="PackedScene" uid="uid://gxe0vnytkj5" path="res://Weapons/sword_3.tscn" id="1_gpsp6"]
-[ext_resource type="Texture2D" uid="uid://dgtnwumhe238i" path="res://Assets/Weapons/Mellee/OldSword.png" id="1_u8bh5"]
+[ext_resource type="Texture2D" uid="uid://dgtnwumhe238i" path="res://Assets/Weapons/Melee/OldSword.png" id="1_u8bh5"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_gpsp6"]
 
 [resource]
 script = ExtResource("2_gpsp6")
 ItemName = "Orange"
+ItemClass = 1
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_u8bh5")
 ItemScene = ExtResource("1_gpsp6")

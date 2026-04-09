@@ -1,6 +1,8 @@
 using Godot;
 using Godot.Collections;
 using projecthorizonscs;
+using projecthorizonscs.Autoload;
+using projecthorizonscs.Combat;
 using System;
 
 namespace projecthorizonscs;
@@ -14,9 +16,11 @@ public partial class DistanceWeapon : Weapon
 	public float _projectileScale = 1f;
 
 	public Marker2D _projectileSpawnMarker;
+	private WeaponClassProfile _classProfile = WeaponClassProfile.Default;
 
 	public override void _Ready()
 	{
+		base._Ready();
 		_projectileSpawnMarker = GetNode<Marker2D>("ProjectileSpawn");
 	}
 
@@ -29,8 +33,11 @@ public partial class DistanceWeapon : Weapon
 
 	public override void Action()
 	{
-		GD.Print("Actionnnnn 33333");
+		if (!CanUse())
+			return;
+
 		SpawnProjectile();
+		TriggerCooldown(1f / Mathf.Max(0.01f, _classProfile.AttackAnimationSpeedMultiplier));
 	}
 
 	public void SpawnProjectile()
@@ -38,13 +45,26 @@ public partial class DistanceWeapon : Weapon
 		if (_projectileScene == null)
 			return;
 
-		Projectile projectile = _projectileScene.Instantiate<Projectile>();
+		int projectileCount = Mathf.Max(1, _classProfile.ProjectileCount);
+		float spreadStep = projectileCount > 1 ? _classProfile.ProjectileSpreadDegrees / (projectileCount - 1) : 0f;
+		float spreadStart = -_classProfile.ProjectileSpreadDegrees * 0.5f;
 
-		GetTree().CurrentScene.AddChild(projectile);
+		for (int i = 0; i < projectileCount; i++)
+		{
+			Projectile projectile = _projectileScene.Instantiate<Projectile>();
+			GetTree().CurrentScene.AddChild(projectile);
 
-		projectile.GlobalPosition = _projectileSpawnMarker.GlobalPosition;
-		projectile.GlobalScale = Vector2.One * _projectileScale;
+			float spreadDegrees = spreadStart + (spreadStep * i);
+			projectile.GlobalPosition = _projectileSpawnMarker.GlobalPosition;
+			projectile.GlobalScale = Vector2.One * (_projectileScale * _classProfile.ProjectileScaleMultiplier);
+			projectile.Rotation = _projectileSpawnMarker.Rotation + Mathf.DegToRad(spreadDegrees);
+			projectile.Speed *= _classProfile.ProjectileSpeedMultiplier;
+			projectile.Damage += _classProfile.ProjectileDamageBonus;
+		}
+	}
 
-		projectile.Rotation = _projectileSpawnMarker.Rotation;
+	public void ApplyClassProfile(WeaponClassProfile profile)
+	{
+		_classProfile = profile ?? WeaponClassProfile.Default;
 	}
 }

@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_ckc54"]
+[ext_resource type="Texture2D" uid="uid://lhm2r1t5l6oy" path="res://Assets/Weapons/Wizard/DebugSpell.png" id="2_2eqfm"]
+[ext_resource type="PackedScene" path="res://Projectiles/spell_projectile_0.tscn" id="3_wu8ok"]
+
+[node name="Spell0" instance=ExtResource("1_ckc54")]
+_projectileScene = ExtResource("3_wu8ok")
+_projectileScale = 1.0
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(0, -8)
+texture = ExtResource("2_2eqfm")
+
+[node name="ProjectileSpawn" parent="." index="1" unique_id=211260653]
+position = Vector2(9, -9)

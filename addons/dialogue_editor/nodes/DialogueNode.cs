@@ -2,6 +2,7 @@ using Godot;
 using System.Text;
 using System.Collections.Generic;
 
+[Tool]
 public partial class DialogueNode : DialogueNodeTemplate
 {
     private LineEdit textEdit;
@@ -61,9 +62,9 @@ public partial class DialogueNode : DialogueNodeTemplate
     {
         var sb = new StringBuilder();
 
-        string mainText = Escape(textEdit?.Text?.Trim() ?? "");
-        string option1Text = Escape(option1?.Text?.Trim() ?? "");
-        string option2Text = Escape(option2?.Text?.Trim() ?? "");
+        string mainText = EscapeText(textEdit?.Text?.Trim() ?? "");
+        string option1Text = EscapeText(option1?.Text?.Trim() ?? "");
+        string option2Text = EscapeText(option2?.Text?.Trim() ?? "");
 
         Dictionary<int, string> connections = editor.GetConnectionsFrom(Name);
 
@@ -105,13 +106,5 @@ public partial class DialogueNode : DialogueNodeTemplate
     {
         if (option2 != null)
             option2.Text = text;
-    }
-
-    private string Escape(string text)
-    {
-        return text
-            .Replace("\\", "\\\\")
-            .Replace("\n", "\\n")
-            .Replace("\r", "");
     }
 }

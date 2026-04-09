@@ -12,6 +12,7 @@ public partial class DeltaGen : Node2D
 	[Export] public NodePath DetailsMediumPath = "DetailsMedium";
 	[Export] public NodePath ObjectsPath = "Objects";
 	[Export] public NodePath ShadowsPath = "Shadows";
+	[Export] public NodePath CanopyPath = "Canopy";
 
 	[ExportGroup("Streaming Settings")]
 	[Export] public int ChunkSize = 10;
@@ -39,6 +40,7 @@ public partial class DeltaGen : Node2D
 	private TileMapLayer _detailsMedium;
 	private TileMapLayer _objects;
 	private TileMapLayer _shadows;
+	private TileMapLayer _canopy;
 
 	private Vector2I _currentCenterChunk = new(int.MinValue, int.MinValue);
 	private readonly Dictionary<Vector2I, DeltaChunkData> _loadedChunks = new();
@@ -72,12 +74,14 @@ public partial class DeltaGen : Node2D
 		_detailsMedium = GetNodeOrNull<TileMapLayer>(DetailsMediumPath);
 		_objects = GetNodeOrNull<TileMapLayer>(ObjectsPath);
 		_shadows = GetNodeOrNull<TileMapLayer>(ShadowsPath);
+		_canopy = GetNodeOrNull<TileMapLayer>(CanopyPath);
 
 		if (_ground == null) GD.PrintErr("DeltaGen: Ground TileMapLayer not found! Check GroundPath export.");
 		if (_detailsSmall == null) GD.PrintErr("DeltaGen: DetailsSmall TileMapLayer not found!");
 		if (_detailsMedium == null) GD.PrintErr("DeltaGen: DetailsMedium TileMapLayer not found!");
 		if (_objects == null) GD.PrintErr("DeltaGen: Objects TileMapLayer not found!");
 		if (_shadows == null) GD.PrintErr("DeltaGen: Shadows TileMapLayer not found!");
+		if (_canopy == null) GD.PrintErr("DeltaGen: Canopy TileMapLayer not found!");
 
 		if (AutoFitRenderRadiusToScreen)
 		{
@@ -266,10 +270,10 @@ public partial class DeltaGen : Node2D
 				_chestReferences.Add(chestNode);
 		}
 
-		if (EnemysManager.I != null)
+		if (EnemiesManager.I != null)
 		{
 			foreach (DeltaEnemySpawnData enemy in _levelMetadata.Enemies)
-				EnemysManager.I.SpawnEnemy(enemy.EnemyId, CellToWorldCenter(enemy.Cell));
+				EnemiesManager.I.SpawnEnemy(enemy.EnemyId, CellToWorldCenter(enemy.Cell));
 		}
 
 		_levelEntitiesSpawned = true;
@@ -467,6 +471,10 @@ public partial class DeltaGen : Node2D
 		if (_shadows != null)
 			foreach (Vector4I tile in chunk.ShadowTiles)
 				_shadows.SetCell(new Vector2I(tile.X, tile.Y), 0, new Vector2I(tile.Z, tile.W));
+
+		if (_canopy != null)
+			foreach (Vector4I tile in chunk.CanopyTiles)
+				_canopy.SetCell(new Vector2I(tile.X, tile.Y), 0, new Vector2I(tile.Z, tile.W));
 	}
 
 	private void UnloadChunk(Vector2I chunkCoord)
@@ -493,6 +501,10 @@ public partial class DeltaGen : Node2D
 		if (_shadows != null)
 			foreach (Vector4I tile in chunk.ShadowTiles)
 				_shadows.EraseCell(new Vector2I(tile.X, tile.Y));
+
+		if (_canopy != null)
+			foreach (Vector4I tile in chunk.CanopyTiles)
+				_canopy.EraseCell(new Vector2I(tile.X, tile.Y));
 	}
 
 	private void OnViewportSizeChanged()

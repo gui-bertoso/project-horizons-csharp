@@ -1,0 +1,111 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Interface/PauseMenu/PauseMenu.cs" id="1_nwoc0"]
+[ext_resource type="PackedScene" uid="uid://dduowujep6yb0" path="res://Interface/SettingsMenu/SettingsMenu.tscn" id="2_h00hx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jd2ho"]
+bg_color = Color(0.0627451, 0.07058824, 0.08627451, 0.92)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6901961, 0.654902, 0.4392157, 0.8)
+
+[node name="PauseMenu" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_nwoc0")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="MenuRoot" type="CenterContainer" parent="." unique_name_in_owner=true]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="MenuRoot"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jd2ho")
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuRoot/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuRoot/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Jogo Pausado"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+modulate = Color(0.84, 0.84, 0.84, 0.82)
+text = "Escolha o que fazer agora"
+horizontal_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Continuar"
+
+[node name="SaveButton" type="Button" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Salvar"
+
+[node name="SettingsButton" type="Button" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Configurações"
+
+[node name="ExitButton" type="Button" parent="MenuRoot/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+text = "Sair para o menu"
+
+[node name="StatusLabel" type="Label" parent="MenuRoot/Panel/MarginContainer/VBoxContainer" unique_name_in_owner=true]
+layout_mode = 2
+modulate = Color(0.88235295, 0.93333334, 0.7254902, 1)
+horizontal_alignment = 1
+
+[node name="SettingsMenu" parent="." unique_name_in_owner=true instance=ExtResource("2_h00hx")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="button_up" from="MenuRoot/Panel/MarginContainer/VBoxContainer/ContinueButton" to="." method="_OnContinueButtonUp"]
+[connection signal="button_up" from="MenuRoot/Panel/MarginContainer/VBoxContainer/SaveButton" to="." method="_OnSaveButtonUp"]
+[connection signal="button_up" from="MenuRoot/Panel/MarginContainer/VBoxContainer/SettingsButton" to="." method="_OnSettingsButtonUp"]
+[connection signal="button_up" from="MenuRoot/Panel/MarginContainer/VBoxContainer/ExitButton" to="." method="_OnExitButtonUp"]

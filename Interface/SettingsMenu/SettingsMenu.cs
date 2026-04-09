@@ -4,6 +4,9 @@ namespace projecthorizonscs.Interface.SettingsMenu;
 
 public partial class SettingsMenu : Control
 {
+	[Signal]
+	public delegate void CloseRequestedEventHandler();
+
 	private OptionButton _fullscreenOption;
 	private OptionButton _resolutionOption;
 	private OptionButton _frameRateOption;
@@ -20,10 +23,15 @@ public partial class SettingsMenu : Control
 	private HSlider _playerVolumeSlider;
 	private HSlider _enemyVolumeSlider;
 
-	private NewEnvinroment _previewEnvinroment;
+	private NewEnvironment _previewEnvironment;
+	private Button _backButton;
+	private bool _embeddedMode;
+	private VBoxContainer _rootScrollContent;
 
 	public override void _Ready()
 	{
+		_backButton = GetNode<Button>("Button");
+		_rootScrollContent = GetNode<VBoxContainer>("Panel/VBoxContainer/ScrollContainer/VBoxContainer");
 		_fullscreenOption = GetNode<OptionButton>("%Fullscreen");
 		_resolutionOption = GetNode<OptionButton>("%Resolution");
 		_frameRateOption = GetNode<OptionButton>("%FrameRate");
@@ -40,15 +48,32 @@ public partial class SettingsMenu : Control
 		_playerVolumeSlider = GetNode<HSlider>("%PlayerVolume");
 		_enemyVolumeSlider = GetNode<HSlider>("%EnemyVolume");
 
-		_previewEnvinroment = GetNode<NewEnvinroment>("%Envinroment");
+		_previewEnvironment = GetNode<NewEnvironment>("%Environment");
 
 		LoadSettings();
+		BuildKeybindingSection();
+		RefreshKeybindingButtons();
+		ApplyEmbeddedState();
 	}
 
 	private void _OnBackButtonUp()
 	{
-		GetTree().ChangeSceneToFile("uid://c25rg72x1rdir");
 		SaveSettings();
+		Autoload.DataManager.I.SaveGameData();
+
+		if (_embeddedMode)
+		{
+			EmitSignal("CloseRequested");
+			return;
+		}
+
+		GetTree().ChangeSceneToFile("uid://c25rg72x1rdir");
+	}
+
+	public void SetEmbeddedMode(bool embeddedMode)
+	{
+		_embeddedMode = embeddedMode;
+		ApplyEmbeddedState();
 	}
 
 	private void SaveSettings()
@@ -70,12 +95,12 @@ public partial class SettingsMenu : Control
 		Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"] = _enemyVolumeSlider.Value;
 	}
 
-	public void OnSettingSwited(Godot.Variant value)
+	public void OnSettingSwited(Variant value)
 	{
-		//_previewEnvinroment.ApplyEnvinroment();
 		SaveSettings();
-		SettingsApplyer.I.ApplySettings();
-		GetTree().ChangeSceneToFile("uid://dduowujep6yb0");
+		Autoload.DataManager.I.SaveGameData();
+		SettingsApplier.I.ApplySettings();
+		UpdatePreview();
 	}
 
 	private void LoadSettings()
@@ -95,5 +120,34 @@ public partial class SettingsMenu : Control
 		_musicVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.MusicVolume"];
 		_playerVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.PlayerVolume"];
 		_enemyVolumeSlider.Value = (float)Autoload.DataManager.I.GameDataDictionary["Settings.EnemyVolume"];
+
+		UpdatePreview();
+	}
+
+	private void UpdatePreview()
+	{
+		if (_previewEnvironment == null)
+			return;
+
+		_previewEnvironment.SetPreviewBiome(GetPreviewBiomeId());
+	}
+
+	private int GetPreviewBiomeId()
+	{
+		return _worldGenerationOption.Selected switch
+		{
+			0 => 0,
+			1 => 1,
+			2 => 5,
+			_ => 0
+		};
+	}
+
+	private void ApplyEmbeddedState()
+	{
+		if (_backButton == null)
+			return;
+
+		_backButton.Text = _embeddedMode ? "VOLTAR" : "BACK";
 	}
 }

@@ -1,5 +1,6 @@
 using Godot;
 
+[Tool]
 public partial class StartNode : DialogueNodeTemplate
 {
     public override void _Ready()

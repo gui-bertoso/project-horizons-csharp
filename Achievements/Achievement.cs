@@ -55,6 +55,10 @@ public partial class Achievement : Resource
 				return manager.CurrentLevel >= RequiredAmount;
 			case AchievementType.PlayerDeaths:
 				return manager.PlayerDeathsCount >= RequiredAmount;
+			case AchievementType.DiscoverBiome:
+				return manager.DiscoveredBiomes.Contains(TargetId);
+			case AchievementType.DiscoverBiomeEvent:
+				return manager.DiscoveredBiomeEvents.Contains(TargetId);
 			case AchievementType.DefeatBoss:
 				return manager.BossesDefeated.Contains(TargetId);
 			case AchievementType.DiscoverItem:

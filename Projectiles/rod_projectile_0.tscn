@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://c4apbh0f4yydu" path="res://Projectiles/Projectile.tscn" id="1_7h2h1"]
+[ext_resource type="Texture2D" uid="uid://dtwyftn7m1ex7" path="res://Assets/Projectiles/DebugBall.png" id="2_nkocb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nkocb"]
+radius = 3.5
+
+[node name="RodProjectile0" instance=ExtResource("1_7h2h1")]
+Speed = 500.0
+Damage = 2
+
+[node name="Sprite" parent="." index="0" unique_id=78179007]
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_nkocb")
+
+[node name="CollisionShape2D" parent="Area2D" parent_id_path=PackedInt32Array(1082665479) index="0" unique_id=1798747728]
+shape = SubResource("CircleShape2D_nkocb")

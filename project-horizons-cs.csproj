@@ -1,8 +1,23 @@
-<Project Sdk="Godot.NET.Sdk/4.7.0-dev.2">
+<Project Sdk="Godot.NET.Sdk/4.7.0-dev.3">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>projecthorizonscs</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove=".godot/**" />
+    <Compile Remove="bin/**" />
+    <Compile Remove="obj/**" />
+
+    <None Remove=".godot/**" />
+    <None Remove="bin/**" />
+    <None Remove="obj/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="**/*"
+          Exclude=".godot/**;bin/**;obj/**;.git/**;.idea/**" />
+  </ItemGroup>
 </Project>

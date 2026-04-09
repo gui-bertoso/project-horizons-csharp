@@ -21,7 +21,7 @@ public partial class Globals : Node
 
 	public int CurrentLevel = 1;
 
-	public PackedScene PhysicItemScene = ResourceLoader.Load<PackedScene>("uid://bqjq1yutufivv");
+	public PackedScene PhysicsItemScene = ResourceLoader.Load<PackedScene>("uid://bqjq1yutufivv");
 
 	public Vector2 CurrentPlayerChunk;
 

@@ -26,4 +26,9 @@ public partial class MainMenu : Control
 	{
 		GetTree().ChangeSceneToFile("uid://dduowujep6yb0");
 	}
+
+	private void _OnCompendiumButtonUp()
+	{
+		GetTree().ChangeSceneToFile("res://Interface/AchievementsMenu/AchievementsMenu.tscn");
+	}
 }

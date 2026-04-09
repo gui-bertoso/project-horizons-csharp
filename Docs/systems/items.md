@@ -1,26 +1,56 @@
-﻿# Item System
+# Item System
 
 ## Overview
 
-Handles all item-related logic, including definitions and usage.
+The item system is built around `Item.cs` and `.tres` resources.
 
-## Structure
+Each item can represent:
 
-- Item.cs → base item logic
-- .tres files → item data definitions
+- a weapon
+- armor
+- a consumable
+- an accessory
 
-## Responsibilities
+## Main files
 
-- item properties (damage, type, etc.)
-- item behavior
-- integration with player or systems
+- `Items/Item.cs`
+- `Items/*.tres`
+- `Interface/ItemsDisplay/ItemsDisplay.cs`
+- `Player/PlayerHand.cs`
 
-## Design Approach
+## Important fields
 
-Data-driven system where logic is separated from configuration.
+### `ItemType`
 
-## Future Improvements
+Defines the general category of the item.
 
-- inventory system
-- equipment system
-- item modifiers
+### `ItemClass`
+
+Defines the functional class. Right now gameplay mainly uses it to distinguish melee from ranged.
+
+### `ItemTexture`
+
+Sprite used in the inventory and as a fallback visual when there is no concrete scene.
+
+### `ItemScene`
+
+Scene instantiated when the item is equipped and needs real runtime behavior.
+
+## Current flow
+
+1. the item is loaded from a `.tres`
+2. when equipped, `PlayerHand` tries to instantiate `ItemScene`
+3. if there is no scene, it falls back to a plain sprite
+4. the UI stores the equipped item in `DataManager.CurrentWorldData`
+
+## Notes
+
+- important weapons should have `ItemScene`
+- items without `ItemScene` still work visually, but with less behavior
+- placeholders still exist in `ItemName` and descriptions
+
+## Desired improvements
+
+- clean up names and descriptions
+- better separate classes such as mage, wizard, archer, and bommet at runtime
+- add clearer progression and drop metadata

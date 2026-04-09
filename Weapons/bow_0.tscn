@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_ankwq"]
+[ext_resource type="Texture2D" uid="uid://vnid3nguadq6" path="res://Assets/Weapons/Archer/DebugBow.png" id="2_lx0hj"]
+[ext_resource type="PackedScene" path="res://Projectiles/debug_arrow.tscn" id="3_7rb6l"]
+
+[node name="Bow0" instance=ExtResource("1_ankwq")]
+_projectileScene = ExtResource("3_7rb6l")
+_projectileScale = 1.0
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(-3, -7)
+texture = ExtResource("2_lx0hj")
+
+[node name="ProjectileSpawn" parent="." index="1" unique_id=211260653]
+position = Vector2(9, -8)

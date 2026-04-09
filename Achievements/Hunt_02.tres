@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/Achievements/002.png" id="1_tex"]
+[ext_resource type="Script" path="res://Achievements/Achievement.cs" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+Id = "Hunt_02"
+AchievementName = "Slime Season"
+ClassType = 0
+AchievementDescription = "Kill 10 slimes."
+AchievementTexture = ExtResource("1_tex")
+Type = 0
+TriggerEvent = "EnemyKilled"
+TargetId = "Slime"
+RequiredAmount = 10

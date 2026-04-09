@@ -1,0 +1,190 @@
+[gd_scene format=3 uid="uid://cuqaf4voofpgw"]
+
+[ext_resource type="Script" uid="uid://c2jmpufg04o4" path="res://Environment/NewEnvironment.cs" id="1_i71m7"]
+[ext_resource type="Texture2D" uid="uid://dd7bcssnyljho" path="res://Assets/Effects/particles.png" id="2_mfwf4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rain"]
+atlas = ExtResource("2_mfwf4")
+region = Rect2(264, 0, 16, 32)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain"]
+lifetime_randomness = 0.65
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(700, 105, 1)
+direction = Vector3(0, 1, 0)
+gravity = Vector3(0, 9800, 0)
+scale_min = 0.1
+scale_max = 0.4
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dust"]
+atlas = ExtResource("2_mfwf4")
+region = Rect2(232, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dust"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(566.44, 100, 1)
+direction = Vector3(1, -0.1, 0)
+spread = 12.0
+flatness = 0.9
+initial_velocity_min = 76.5
+initial_velocity_max = 281.15
+gravity = Vector3(0, 9.8, 0)
+scale_min = 0.1
+scale_max = 0.3
+color = Color(0.76, 0.7, 0.47, 0.9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_snow"]
+atlas = ExtResource("2_mfwf4")
+region = Rect2(200, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_snow"]
+lifetime_randomness = 0.43
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(600, 120, 1)
+direction = Vector3(-0.12, 1, 0)
+spread = 6.0
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spores"]
+atlas = ExtResource("2_mfwf4")
+region = Rect2(328, 8, 16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spores"]
+lifetime_randomness = 0.55
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(600, 140, 1)
+direction = Vector3(0.15, -0.1, 0)
+spread = 32.0
+initial_velocity_min = 6.0
+initial_velocity_max = 26.0
+gravity = Vector3(0, -8, 0)
+scale_min = 0.12
+scale_max = 0.26
+color = Color(0.8, 0.95, 0.72, 0.65)
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=1273801706]
+script = ExtResource("1_i71m7")
+
+[node name="SkyOverlay" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="ColorRect" type="ColorRect" parent="SkyOverlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="FarFog" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="ColorRect" type="ColorRect" parent="FarFog"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="NearFog" type="CanvasLayer" parent="."]
+layer = 4
+
+[node name="ColorRect" type="ColorRect" parent="NearFog"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 0.45
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Weather" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Rain" type="GPUParticles2D" parent="Weather" unique_id=2004600792]
+visible = false
+position = Vector2(577, -191)
+emitting = false
+amount = 84
+texture = SubResource("AtlasTexture_rain")
+lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_rain")
+
+[node name="Dust" type="GPUParticles2D" parent="Weather" unique_id=503340621]
+visible = false
+position = Vector2(1242, -50)
+rotation = 0.32
+emitting = false
+amount = 260
+texture = SubResource("AtlasTexture_dust")
+lifetime = 5.0
+process_material = SubResource("ParticleProcessMaterial_dust")
+
+[node name="Snow" type="GPUParticles2D" parent="Weather" unique_id=471369646]
+visible = false
+position = Vector2(577, -299)
+emitting = false
+amount = 98
+texture = SubResource("AtlasTexture_snow")
+lifetime = 4.54
+process_material = SubResource("ParticleProcessMaterial_snow")
+
+[node name="AmbientParticles" type="CanvasLayer" parent="."]
+layer = 6
+
+[node name="Spores" type="GPUParticles2D" parent="AmbientParticles"]
+visible = false
+position = Vector2(577, 82)
+emitting = false
+amount = 60
+texture = SubResource("AtlasTexture_spores")
+lifetime = 8.0
+process_material = SubResource("ParticleProcessMaterial_spores")
+
+[node name="LightOverlay" type="CanvasLayer" parent="."]
+layer = 7
+
+[node name="ColorRect" type="ColorRect" parent="LightOverlay"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="ScreenFx" type="CanvasLayer" parent="."]
+layer = 8
+
+[node name="HeatHaze" type="ColorRect" parent="ScreenFx"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="DirectionalLight" type="DirectionalLight2D" parent="." unique_id=461681002]
+enabled = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=748544833]

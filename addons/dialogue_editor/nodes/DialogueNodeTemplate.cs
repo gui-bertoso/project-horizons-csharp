@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Text;
 
+[Tool]
 public partial class DialogueNodeTemplate : GraphNode
 {
     public string NodeType = "base";
@@ -54,6 +55,21 @@ public partial class DialogueNodeTemplate : GraphNode
 
         foreach (var pair in connections)
             sb.AppendLine($"next_{pair.Key}={pair.Value}");
+    }
+
+    protected static string EscapeText(string text)
+    {
+        return (text ?? string.Empty)
+            .Replace("\\", "\\\\")
+            .Replace("\n", "\\n")
+            .Replace("\r", "");
+    }
+
+    protected static string UnescapeText(string text)
+    {
+        return (text ?? string.Empty)
+            .Replace("\\n", "\n")
+            .Replace("\\\\", "\\");
     }
 
     public void Setup(string id, string type)

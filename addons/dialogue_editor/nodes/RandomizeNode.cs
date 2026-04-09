@@ -1,6 +1,7 @@
 using Godot;
 using System.Text;
 
+[Tool]
 public partial class RandomizeNode : DialogueNodeTemplate
 {
     public override void _Ready()
@@ -18,7 +19,29 @@ public partial class RandomizeNode : DialogueNodeTemplate
     public override bool HasInput() => true;
     public override bool HasOutput() => true;
     public override int GetPrimaryInputSlot() => 0;
-    public override int GetPrimaryOutputSlot() => 1;
+    public override int GetPrimaryOutputSlot() => 2;
+
+    public override int VisualOutputSlotToPort(int visualSlot)
+    {
+        return visualSlot switch
+        {
+            2 => 0,
+            3 => 1,
+            4 => 2,
+            _ => 0
+        };
+    }
+
+    public override int PortToVisualOutputSlot(int port)
+    {
+        return port switch
+        {
+            0 => 2,
+            1 => 3,
+            2 => 4,
+            _ => 2
+        };
+    }
 
     public override string ExportBody(DialogueEditor editor)
     {
@@ -28,7 +51,7 @@ public partial class RandomizeNode : DialogueNodeTemplate
 
         int index = 0;
 
-        for (int slot = 1; slot <= 3; slot++)
+        for (int slot = 2; slot <= 4; slot++)
         {
             string next = editor.GetConnectionFrom(Name, slot);
 

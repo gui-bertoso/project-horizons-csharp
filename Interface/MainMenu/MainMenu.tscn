@@ -115,6 +115,26 @@ theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_pr1sf"
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_uavvt")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_6nm2i")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_31tui")
+text = "COMPENDIUM"
+
+[node name="Button5" type="Button" parent="VBoxContainer" unique_id=1753136277]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9846037, 0.99999696, 0.77647364, 1)
+theme_override_colors/font_disabled_color = Color(0.32049134, 0.32049137, 0.32049137, 1)
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxEmpty_w58jb")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_kss8r")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_5yxxf")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_rleod")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_4ie4t")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_4hvhb")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_ldof5")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_pr1sf")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_uavvt")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_6nm2i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_31tui")
 text = "QUIT"
 
 [node name="Label" type="Label" parent="." unique_id=842884004]
@@ -144,4 +164,5 @@ text = "Alpha-demo"
 
 [connection signal="button_up" from="VBoxContainer/Button" to="." method="_OnPlayButtonUp"]
 [connection signal="button_up" from="VBoxContainer/Button3" to="." method="_OnSettingsButtonUp"]
-[connection signal="button_up" from="VBoxContainer/Button4" to="." method="_OnQuitButtonUp"]
+[connection signal="button_up" from="VBoxContainer/Button4" to="." method="_OnCompendiumButtonUp"]
+[connection signal="button_up" from="VBoxContainer/Button5" to="." method="_OnQuitButtonUp"]

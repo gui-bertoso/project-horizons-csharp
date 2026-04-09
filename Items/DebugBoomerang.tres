@@ -1,10 +1,13 @@
 [gd_resource type="Resource" format=3 uid="uid://npbb34wexvr7"]
 
+[ext_resource type="PackedScene" path="res://Weapons/boomerang_0.tscn" id="1_ljwin"]
 [ext_resource type="Texture2D" uid="uid://chpdoo7c4q0o7" path="res://Assets/Weapons/Bommet/DebugBoomerang.png" id="1_p88d7"]
 [ext_resource type="Script" uid="uid://43bprar8njx4" path="res://Items/Item.cs" id="2_8b6vb"]
 
 [resource]
 script = ExtResource("2_8b6vb")
 ItemName = "Orange"
+ItemClass = 5
 ItemDescription = "A citric fruit"
 ItemTexture = ExtResource("1_p88d7")
+ItemScene = ExtResource("1_ljwin")

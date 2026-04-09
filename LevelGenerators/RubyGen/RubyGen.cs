@@ -15,6 +15,7 @@ public partial class RubyGen : Node2D
 	[Export] public NodePath DetailsMediumPath = "DetailsMedium";
 	[Export] public NodePath ObjectsPath = "Objects";
 	[Export] public NodePath ShadowsPath = "Shadows";
+	[Export] public NodePath CanopyPath = "Canopy";
 
 	[ExportGroup("Chunk Settings")]
 	[Export] public int ChunkSize = 10;
@@ -325,6 +326,7 @@ public partial class RubyGen : Node2D
 	private TileMapLayer _detailsMedium;
 	private TileMapLayer _objects;
 	private TileMapLayer _shadows;
+	private TileMapLayer _canopy;
 
 	private PackedScene _initialPortalScene;
 	private PackedScene _exitPortalScene;
@@ -335,7 +337,7 @@ public partial class RubyGen : Node2D
 	private Vector2I _currentCenterChunk = new(int.MinValue, int.MinValue);
 	private Vector2I _initialPortalCell = Vector2I.Zero;
 
-	public int EnemysAmount;
+	public int EnemiesAmount;
 
 	public volatile int _threadProgress = 0;
 	public volatile int _threadMaxProgress = 1;
@@ -431,7 +433,7 @@ public partial class RubyGen : Node2D
 			await UpdateVisibleChunksAsync(Vector2.Zero);
 
 			SetImmediateLoading("despertando criaturas...", "espalhando ameaças...", 98f);
-			await SpawnEnemysAsync();
+			await SpawnEnemiesAsync();
 
 			SetImmediateLoading("mundo pronto", $"ruby gen finalizado | {GetBiomeDisplayName()}", 100f);
 			await YieldFrame();
@@ -469,12 +471,14 @@ public partial class RubyGen : Node2D
 		_detailsMedium = GetNodeOrNull<TileMapLayer>(DetailsMediumPath);
 		_objects = GetNodeOrNull<TileMapLayer>(ObjectsPath);
 		_shadows = GetNodeOrNull<TileMapLayer>(ShadowsPath);
+		_canopy = GetNodeOrNull<TileMapLayer>(CanopyPath);
 
 		return _ground != null
 			&& _detailsSmall != null
 			&& _detailsMedium != null
 			&& _objects != null
-			&& _shadows != null;
+			&& _shadows != null
+			&& _canopy != null;
 	}
 
 	public int LevelSizeX => ChunksX * ChunkSize;
@@ -551,6 +555,7 @@ public partial class RubyGen : Node2D
 		_detailsMedium?.Clear();
 		_objects?.Clear();
 		_shadows?.Clear();
+		_canopy?.Clear();
 		_loadedChunks.Clear();
 	}
 
@@ -679,9 +684,17 @@ public partial class RubyGen : Node2D
 			if (ops % safeBatch == 0)
 				await YieldFrame();
 		}
+
+		foreach (RubyChunkTileData tile in chunk.CanopyTiles)
+		{
+			_canopy.SetCell(tile.Cell, 0, tile.Atlas);
+			ops++;
+			if (ops % safeBatch == 0)
+				await YieldFrame();
+		}
 	}
 
-	public async Task SpawnEnemysAsync()
+	public async Task SpawnEnemiesAsync()
 	{
 		int difficulty = 0;
 
@@ -695,34 +708,34 @@ public partial class RubyGen : Node2D
 			difficulty = 0;
 		}
 
-		EnemysAmount = (int)GD.RandRange(
+		EnemiesAmount = (int)GD.RandRange(
 			0,
 			Mathf.Max(1, (chunksDictionary.Keys.Count / 1000) * ((difficulty + 1) / 2f))
 		);
 
-		GD.Print($"RubyGen: Enemys To Spawn {EnemysAmount}");
+		GD.Print($"RubyGen: Enemies To Spawn {EnemiesAmount}");
 
 		int spawnedCount = 0;
 
-		for (int i = 0; i < EnemysAmount; i++)
+		for (int i = 0; i < EnemiesAmount; i++)
 		{
 			Vector2 spawnPosition = GetRandomSpawnPosition();
 			if (spawnPosition == Vector2.Zero)
 				continue;
 
-			if (EnemysManager.I == null)
+			if (EnemiesManager.I == null)
 				break;
 
-			string newEnemy = EnemysManager.I.GetRandomEnemyByChance(LevelBiomeId);
+			string newEnemy = EnemiesManager.I.GetRandomEnemyByChance(LevelBiomeId);
 			if (string.IsNullOrEmpty(newEnemy))
 				continue;
 
-			EnemysManager.I.SpawnEnemy(newEnemy, spawnPosition);
+			EnemiesManager.I.SpawnEnemy(newEnemy, spawnPosition);
 			spawnedCount++;
 
 			LoadingScreen.I?.SetText("despertando criaturas...");
-			LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemysAmount}");
-			LoadingScreen.I?.SetProgress(Mathf.Lerp(98f, 99.8f, EnemysAmount > 0 ? (float)spawnedCount / EnemysAmount : 1f));
+			LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemiesAmount}");
+			LoadingScreen.I?.SetProgress(Mathf.Lerp(98f, 99.8f, EnemiesAmount > 0 ? (float)spawnedCount / EnemiesAmount : 1f));
 
 			if (spawnedCount % 2 == 0)
 				await YieldFrame();
@@ -771,6 +784,9 @@ public partial class RubyGen : Node2D
 
 		foreach (RubyChunkTileData tile in chunk.ShadowTiles)
 			_shadows.SetCell(tile.Cell, 0, tile.Atlas);
+
+		foreach (RubyChunkTileData tile in chunk.CanopyTiles)
+			_canopy.SetCell(tile.Cell, 0, tile.Atlas);
 	}
 
 	private RubyThreadGenerationResult GenerateChunksDataThreaded()
@@ -886,6 +902,9 @@ public partial class RubyGen : Node2D
 		foreach (var pair in world.Shadows)
 			AddTileToChunk(result.Chunks, pair.Key, pair.Value, RubyLayerType.Shadows);
 
+		foreach (var pair in world.Canopy)
+			AddTileToChunk(result.Chunks, pair.Key, pair.Value, RubyLayerType.Canopy);
+
 		int processedChunks = 0;
 		int totalChunks = Mathf.Max(1, chunksDictionary.Count);
 
@@ -893,7 +912,7 @@ public partial class RubyGen : Node2D
 		{
 			_threadCurrentChunkX = pair.Key.X;
 			_threadCurrentChunkY = pair.Key.Y;
-			pair.Value.SpawnEnemys = IsSpawnableChunk(pair.Value);
+			pair.Value.SpawnEnemies = IsSpawnableChunk(pair.Value);
 
 			processedChunks++;
 			_threadChunkProgress = processedChunks;
@@ -948,6 +967,10 @@ public partial class RubyGen : Node2D
 
 			case RubyLayerType.Shadows:
 				chunk.ShadowTiles.Add(new RubyChunkTileData(cell, atlas));
+				break;
+
+			case RubyLayerType.Canopy:
+				chunk.CanopyTiles.Add(new RubyChunkTileData(cell, atlas));
 				break;
 		}
 	}
@@ -1055,6 +1078,9 @@ public partial class RubyGen : Node2D
 
 		foreach (RubyChunkTileData tile in chunk.ShadowTiles)
 			_shadows.EraseCell(tile.Cell);
+
+		foreach (RubyChunkTileData tile in chunk.CanopyTiles)
+			_canopy.EraseCell(tile.Cell);
 	}
 
 	private bool IsSpawnableChunk(RubyChunkData chunk)
@@ -1072,7 +1098,7 @@ public partial class RubyGen : Node2D
 		return true;
 	}
 
-	public void SpawnEnemys()
+	public void SpawnEnemies()
 	{
 		int difficulty = 0;
 
@@ -1086,32 +1112,32 @@ public partial class RubyGen : Node2D
 			difficulty = 0;
 		}
 
-		EnemysAmount = (int)GD.RandRange(
+		EnemiesAmount = (int)GD.RandRange(
 			0,
 			Mathf.Max(1, (chunksDictionary.Keys.Count / 1000) * ((difficulty + 1) / 2f))
 		);
 
-		GD.Print($"RubyGen: Enemys To Spawn {EnemysAmount}");
+		GD.Print($"RubyGen: Enemies To Spawn {EnemiesAmount}");
 
 		int spawnedCount = 0;
 
-		for (int i = 0; i < EnemysAmount; i++)
+		for (int i = 0; i < EnemiesAmount; i++)
 		{
 			Vector2 spawnPosition = GetRandomSpawnPosition();
 			if (spawnPosition == Vector2.Zero)
 				continue;
 
-			if (EnemysManager.I == null)
+			if (EnemiesManager.I == null)
 				break;
 
-			string newEnemy = EnemysManager.I.GetRandomEnemyByChance(LevelBiomeId);
+			string newEnemy = EnemiesManager.I.GetRandomEnemyByChance(LevelBiomeId);
 			if (string.IsNullOrEmpty(newEnemy))
 				continue;
 
-			EnemysManager.I.SpawnEnemy(newEnemy, spawnPosition);
+			EnemiesManager.I.SpawnEnemy(newEnemy, spawnPosition);
 			spawnedCount++;
 
-			LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemysAmount}");
+			LoadingScreen.I?.SetSubText($"inimigos: {spawnedCount} / {EnemiesAmount}");
 		}
 	}
 
@@ -1125,7 +1151,7 @@ public partial class RubyGen : Node2D
 			if (!chunksDictionary.TryGetValue(gridPosition, out RubyChunkData chunk))
 				continue;
 
-			if (!chunk.SpawnEnemys || chunk.ValidGroundCells.Count == 0)
+			if (!chunk.SpawnEnemies || chunk.ValidGroundCells.Count == 0)
 				continue;
 
 			if (playerPosition != null)
@@ -1219,6 +1245,32 @@ public partial class RubyGen : Node2D
 			3 => DesertTreeAtlases,
 			4 => SnowlandsTreeAtlases,
 			_ => ForestTreeAtlases
+		};
+	}
+
+	public Vector2I GetTreeTrunkAtlas(Vector2I fullAtlas)
+	{
+		return fullAtlas switch
+		{
+			var atlas when atlas == new Vector2I(24, 33) => new Vector2I(10, 12),
+			var atlas when atlas == new Vector2I(29, 33) => new Vector2I(15, 12),
+			var atlas when atlas == new Vector2I(34, 33) => new Vector2I(20, 12),
+			var atlas when atlas == new Vector2I(36, 34) => new Vector2I(24, 12),
+			var atlas when atlas == new Vector2I(38, 34) => new Vector2I(26, 12),
+			_ => fullAtlas
+		};
+	}
+
+	public Vector2I GetTreeCanopyAtlas(Vector2I fullAtlas)
+	{
+		return fullAtlas switch
+		{
+			var atlas when atlas == new Vector2I(24, 33) => new Vector2I(10, 19),
+			var atlas when atlas == new Vector2I(29, 33) => new Vector2I(15, 19),
+			var atlas when atlas == new Vector2I(34, 33) => new Vector2I(20, 19),
+			var atlas when atlas == new Vector2I(36, 34) => new Vector2I(24, 19),
+			var atlas when atlas == new Vector2I(38, 34) => new Vector2I(26, 19),
+			_ => Vector2I.Zero
 		};
 	}
 
@@ -1605,7 +1657,8 @@ public partial class RubyGen : Node2D
 		SmallDetails,
 		MediumDetails,
 		Objects,
-		Shadows
+		Shadows,
+		Canopy
 	}
 
 	private sealed class ThreadGenerationContext
@@ -1960,8 +2013,13 @@ public partial class RubyGen : Node2D
 					if (treeAtlas == Vector2I.Zero)
 						continue;
 
-					world.Objects[offsetCell] = treeAtlas;
+					Vector2I trunkAtlas = _owner.GetTreeTrunkAtlas(treeAtlas);
+					Vector2I canopyAtlas = _owner.GetTreeCanopyAtlas(treeAtlas);
+
+					world.Objects[offsetCell] = trunkAtlas;
 					world.Shadows[offsetCell + _owner.ShadowOffset] = _owner.TreeShadowAtlas;
+					if (canopyAtlas != Vector2I.Zero)
+						world.Canopy[offsetCell] = canopyAtlas;
 
 					_treePositions.Add(offsetCell);
 				}
@@ -2316,52 +2374,4 @@ public partial class RubyGen : Node2D
 			return Mathf.Clamp(mask, 0f, 1f);
 		}
 	}
-}
-
-public partial class RubyChunkData : RefCounted
-{
-	public List<RubyChunkTileData> GroundTiles = new();
-	public List<RubyChunkTileData> SmallDetailTiles = new();
-	public List<RubyChunkTileData> MediumDetailTiles = new();
-	public List<RubyChunkTileData> ObjectTiles = new();
-	public List<RubyChunkTileData> ShadowTiles = new();
-
-	public List<Vector2I> ValidGroundCells = new();
-	public HashSet<Vector2I> ValidGroundCellSet = new();
-	public HashSet<Vector2I> ObjectCellSet = new();
-	public Dictionary<Vector2I, Vector2I> GroundAtlasByCell = new();
-
-	public bool SpawnEnemys;
-	public int WaterCells;
-	public int VoidCells;
-}
-
-public partial class RubyChunkTileData : RefCounted
-{
-	public Vector2I Cell;
-	public Vector2I Atlas;
-
-	public RubyChunkTileData()
-	{
-	}
-
-	public RubyChunkTileData(Vector2I cell, Vector2I atlas)
-	{
-		Cell = cell;
-		Atlas = atlas;
-	}
-}
-
-public sealed class RubyThreadWorldData
-{
-	public Dictionary<Vector2I, Vector2I> Ground = new();
-	public Dictionary<Vector2I, Vector2I> SmallDetails = new();
-	public Dictionary<Vector2I, Vector2I> MediumDetails = new();
-	public Dictionary<Vector2I, Vector2I> Objects = new();
-	public Dictionary<Vector2I, Vector2I> Shadows = new();
-}
-
-public sealed class RubyThreadGenerationResult
-{
-	public Dictionary<Vector2I, RubyChunkData> Chunks = new();
 }

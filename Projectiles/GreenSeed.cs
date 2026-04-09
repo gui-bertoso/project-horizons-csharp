@@ -1,5 +1,5 @@
 using Godot;
-using projecthorizonscs.Enemys.RageFlower;
+using projecthorizonscs.Enemies.RageFlower;
 using System;
 
 public partial class GreenSeed : SeedProjectile

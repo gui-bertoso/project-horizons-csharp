@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://c4apbh0f4yydu" path="res://Projectiles/Projectile.tscn" id="1_p6v2s"]
+[ext_resource type="Texture2D" uid="uid://yvi1i640bqy2" path="res://Assets/Projectiles/DebugArrow.png" id="2_r8jmb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r8jmb"]
+size = Vector2(10, 3)
+
+[node name="Projectile" instance=ExtResource("1_p6v2s")]
+Speed = 650.0
+Damage = 2
+
+[node name="Sprite" parent="." index="0" unique_id=78179007]
+texture = ExtResource("2_r8jmb")
+
+[node name="CollisionShape2D" parent="Area2D" parent_id_path=PackedInt32Array(1082665479) index="0" unique_id=1798747728]
+shape = SubResource("RectangleShape2D_r8jmb")

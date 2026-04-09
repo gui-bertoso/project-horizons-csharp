@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://btxaahjihi36b"]
+
+[ext_resource type="Script" uid="uid://6g0lm4udf7fl" path="res://Enemies/EnemyTemplate/EnemyTemplate.cs" id="1_3tre6"]
+[ext_resource type="Material" uid="uid://d31dnfpjkc7js" path="res://Shaders/hitflash.tres" id="2_fn716"]
+
+[node name="EnemyTemplate" type="CharacterBody2D" unique_id=1875013965]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_3tre6")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=728830498]
+z_index = 1
+material = ExtResource("2_fn716")
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=494260580]
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=1331474415]
+collision_layer = 0
+collision_mask = 64
+
+[node name="Collision" type="CollisionShape2D" parent="Hitbox" unique_id=48495568]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=60564881]
+
+[node name="Label" type="Label" parent="." unique_id=491899875]
+offset_right = 28.0
+offset_bottom = 12.0
+theme_override_font_sizes/font_size = 8
+text = "aaaaaa"
+
+[node name="AttackArea" type="Area2D" parent="." unique_id=1732603855]
+collision_layer = 128
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape2D" parent="AttackArea" unique_id=1961384960]
+
+[connection signal="area_entered" from="Hitbox" to="." method="OnHitboxAreaEntered"]

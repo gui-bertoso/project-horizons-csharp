@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://c4apbh0f4yydu" path="res://Projectiles/Projectile.tscn" id="1_b8p5c"]
+[ext_resource type="Texture2D" uid="uid://dtwyftn7m1ex7" path="res://Assets/Projectiles/DebugBall.png" id="2_a6x94"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a6x94"]
+radius = 5.0
+
+[node name="MagicProjectile2" instance=ExtResource("1_b8p5c")]
+Speed = 630.0
+Damage = 4
+
+[node name="Sprite" parent="." index="0" unique_id=78179007]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_a6x94")
+
+[node name="CollisionShape2D" parent="Area2D" parent_id_path=PackedInt32Array(1082665479) index="0" unique_id=1798747728]
+shape = SubResource("CircleShape2D_a6x94")

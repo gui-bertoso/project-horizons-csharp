@@ -3,17 +3,35 @@
 [ext_resource type="Script" uid="uid://b5ysuncjrt8lb" path="res://addons/dialogue_editor/nodes/RandomizeNode.cs" id="1_fhdtq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fhdtq"]
-bg_color = Color(0.6611873, 0, 0, 1)
+bg_color = Color(0.141176, 0.117647, 0.258824, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.717647, 0.639216, 0.976471, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8dnu"]
-bg_color = Color(0.38044125, 0.38044122, 0.38044122, 1)
+bg_color = Color(0.239216, 0.184314, 0.419608, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.815686, 0.776471, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
 [node name="RandomizerNode" type="GraphNode" unique_id=1004435678]
-offset_right = 119.0
-offset_bottom = 44.0
+offset_right = 190.0
+offset_bottom = 98.0
+theme_override_constants/separation = 4
+theme_override_font_sizes/title_font_size = 15
 theme_override_styles/panel = SubResource("StyleBoxFlat_fhdtq")
 theme_override_styles/titlebar = SubResource("StyleBoxFlat_o8dnu")
-title = "Randomizer"
+title = "Randomize"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -63,19 +81,23 @@ script = ExtResource("1_fhdtq")
 
 [node name="Control" type="Label" parent="." unique_id=708582131]
 layout_mode = 2
-text = "input"
+theme_override_font_sizes/font_size = 12
+text = "Input"
 
 [node name="HSeparator" type="HSeparator" parent="." unique_id=1258548585]
 layout_mode = 2
 
 [node name="Control2" type="Label" parent="." unique_id=1819106185]
 layout_mode = 2
-text = "output1"
+theme_override_font_sizes/font_size = 12
+text = "Output 1"
 
 [node name="Control3" type="Label" parent="." unique_id=1392437656]
 layout_mode = 2
-text = "output2"
+theme_override_font_sizes/font_size = 12
+text = "Output 2"
 
 [node name="Control4" type="Label" parent="." unique_id=1738956985]
 layout_mode = 2
-text = "output3"
+theme_override_font_sizes/font_size = 12
+text = "Output 3"

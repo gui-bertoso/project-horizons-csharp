@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://65ponpmxfju8"]
 
-[ext_resource type="PackedScene" uid="uid://b2ubndb6p4ht5" path="res://Weapons/physic_weapon.tscn" id="1_e30or"]
-[ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Mellee/Branch.png" id="2_ora86"]
+[ext_resource type="PackedScene" uid="uid://b2ubndb6p4ht5" path="res://Weapons/physics_weapon.tscn" id="1_e30or"]
+[ext_resource type="Texture2D" uid="uid://cgre8h5v8nem5" path="res://Assets/Weapons/Melee/Branch.png" id="2_ora86"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ora86"]
 size = Vector2(6, 24)
 
 [node name="Sword0" unique_id=1442216068 instance=ExtResource("1_e30or")]
+Damage = 1
 
 [node name="Sprite" parent="." index="0" unique_id=710058318]
 position = Vector2(0, -12)

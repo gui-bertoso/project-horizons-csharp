@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_tn3hv"]
+[ext_resource type="Texture2D" uid="uid://chpdoo7c4q0o7" path="res://Assets/Weapons/Bommet/DebugBoomerang.png" id="2_hk5cn"]
+[ext_resource type="PackedScene" path="res://Projectiles/boomerang_projectile_0.tscn" id="3_86n2l"]
+
+[node name="Boomerang0" instance=ExtResource("1_tn3hv")]
+_projectileScene = ExtResource("3_86n2l")
+_projectileScale = 1.1
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+position = Vector2(0, -7)
+texture = ExtResource("2_hk5cn")
+
+[node name="ProjectileSpawn" parent="." index="1" unique_id=211260653]
+position = Vector2(8, -7)

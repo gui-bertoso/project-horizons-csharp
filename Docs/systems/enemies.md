@@ -1,26 +1,47 @@
-﻿# Enemy System
+# Enemy System
 
 ## Overview
 
-Handles enemy behavior, AI, and interactions.
+Enemies inherit from `EnemyTemplate` and specialize behavior when needed.
 
-## Structure
+## Main files
 
-- RageFlower.cs → example enemy implementation
-- assets → enemy visuals
+- `Enemies/EnemyTemplate/EnemyTemplate.cs`
+- `Autoload/EnemiesManager.cs`
+- `Enemies/EnemyGroup.cs`
+- enemy subfolders inside `Enemies/`
 
-## Responsibilities
+## What the base template does
 
-- movement logic
-- combat behavior
-- interaction with player and projectiles
+- health, damage, and XP reward
+- simple state machine
+- player distance checks
+- incoming damage application
+- invulnerability frames after hits
+- kill rewards
 
-## Integration
+## Spawning and management
 
-Managed globally via EnemysManager.
+`EnemiesManager` centralizes:
 
-## Future Improvements
+- spawn tables by biome
+- enemy instantiation by path
+- LOD groups
 
-- AI states (FSM / behavior tree)
-- enemy pooling
-- difficulty scaling
+`EnemyGroup` applies `UpdateCooldown` to grouped enemies to reduce update cost.
+
+## Damage flow
+
+- player melee damage comes through `PhysicsWeapon`
+- player projectile damage comes through `Projectile`
+- the enemy calls `ApplyDamage(int value)` and spawns floating text
+
+## Current state
+
+The system works, but it is still at baseline gameplay maturity.
+
+Main areas to improve:
+
+- richer attack behavior per enemy
+- more consistent hitbox and attack-area patterns
+- better scaling by biome and level

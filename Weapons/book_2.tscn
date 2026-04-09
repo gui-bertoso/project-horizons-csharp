@@ -1,6 +1,12 @@
 [gd_scene format=3 uid="uid://b1uokkbxu72te"]
 
 [ext_resource type="PackedScene" uid="uid://2dnu4epa24yw" path="res://Weapons/distance_weapon.tscn" id="1_jse8v"]
+[ext_resource type="Texture2D" uid="uid://cki6v8hreykks" path="res://Assets/Weapons/Mage/FireBook.png" id="2_r11dx"]
+[ext_resource type="PackedScene" path="res://Projectiles/magic_projectile_2.tscn" id="3_jtl0e"]
 
 [node name="DistanceWeapon" unique_id=1442216068 instance=ExtResource("1_jse8v")]
+_projectileScene = ExtResource("3_jtl0e")
 _projectileScale = 1.0
+
+[node name="Sprite" parent="." index="0" unique_id=710058318]
+texture = ExtResource("2_r11dx")

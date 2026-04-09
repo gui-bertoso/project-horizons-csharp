@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://lbt34dfemles"]
 
 [ext_resource type="PackedScene" uid="uid://blfohvpid3goa" path="res://Interface/DebugPanel/DebugPanel.tscn" id="1_vy2b5"]
+[ext_resource type="Script" path="res://Interface/Hud/Hud.cs" id="1_x4m35"]
 [ext_resource type="PackedScene" uid="uid://c7ybtt5poys77" path="res://Interface/ItemsDisplay/ItemsDisplay.tscn" id="2_3fcnm"]
 [ext_resource type="PackedScene" uid="uid://0f4p3021loy4" path="res://Interface/StatsContainer/StatsContainer.tscn" id="3_qthrp"]
 [ext_resource type="PackedScene" uid="uid://c2tdofnkdulbv" path="res://Interface/MobileControls/mobile_controls.tscn" id="4_3ikdg"]
+[ext_resource type="PackedScene" path="res://Interface/PauseMenu/PauseMenu.tscn" id="5_lup8r"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1839957270]
+script = ExtResource("1_x4m35")
 
 [node name="DebugPanel" parent="." unique_id=1513264503 instance=ExtResource("1_vy2b5")]
 
@@ -23,3 +26,5 @@ grow_vertical = 1
 [node name="StatsContainer" parent="." unique_id=517590207 instance=ExtResource("3_qthrp")]
 
 [node name="MobileControls" parent="." unique_id=1658402906 instance=ExtResource("4_3ikdg")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("5_lup8r")]
