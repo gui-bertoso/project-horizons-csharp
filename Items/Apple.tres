@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_06x63")
-ItemName = "Orange"
+ItemName = "Apple"
 ItemType = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A crisp fruit that looks fresh enough to eat on the spot."
 ItemTexture = ExtResource("1_3h2xm")

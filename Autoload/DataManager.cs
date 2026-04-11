@@ -32,4 +32,16 @@ public partial class DataManager : Node
 	{
 		SaveGameData();
 	}
+
+	public static string GetCurrentWorldCreationVersion()
+	{
+		if (ProjectSettings.HasSetting("application/config/version"))
+		{
+			string version = ProjectSettings.GetSetting("application/config/version", "").AsString();
+			if (!string.IsNullOrWhiteSpace(version))
+				return version;
+		}
+
+		return $"world-data-v{WorldDataVersion}";
+	}
 }

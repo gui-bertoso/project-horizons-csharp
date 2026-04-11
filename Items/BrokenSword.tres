@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_jway1")
-ItemName = "Orange"
+ItemName = "Broken Sword"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A snapped blade with just enough edge left to stay dangerous."
 ItemTexture = ExtResource("1_c6i2q")
 ItemScene = ExtResource("1_jway1")

@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_gpsp6")
-ItemName = "Orange"
+ItemName = "Old Sword"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A weathered sword whose edge survives on stubbornness alone."
 ItemTexture = ExtResource("1_u8bh5")
 ItemScene = ExtResource("1_gpsp6")

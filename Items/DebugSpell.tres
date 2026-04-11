@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_vdued")
-ItemName = "Orange"
+ItemName = "Prototype Sigil"
 ItemClass = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A raw magical pattern condensed into a dangerous test spell."
 ItemTexture = ExtResource("1_1bsqt")
 ItemScene = ExtResource("1_8xk28")

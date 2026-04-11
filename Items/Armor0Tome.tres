@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("1_hwhvk")
-ItemName = "Armor0Tome"
+ItemName = "Worn Cuirass"
 ItemType = 2
 ItemTexture = ExtResource("2_460ur")
 ArmorSpriteSheet = ExtResource("1_yf0gy")
+ItemDescription = "A scuffed chestpiece with more history than protection."

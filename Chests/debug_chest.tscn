@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cnirnm4m8txne" path="res://Assets/Map/a.png" id="2_tbnhq"]
 
 [node name="ChestTemplate" unique_id=1958636200 instance=ExtResource("1_tgpur")]
+UseAllItemsAsDrops = true
 
 [node name="Sprite2D" parent="." index="0" unique_id=578965039]
 texture = ExtResource("2_tbnhq")

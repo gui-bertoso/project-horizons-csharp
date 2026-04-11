@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_swu3e")
-ItemName = "Armor2Tome"
+ItemName = "Knight Cuirass"
 ItemType = 2
+ItemDescription = "A reinforced chestplate suited for prolonged battles."
 ItemTexture = ExtResource("2_ua5my")
 ArmorSpriteSheet = ExtResource("1_j66s8")

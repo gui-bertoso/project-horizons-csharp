@@ -7,5 +7,5 @@
 script = ExtResource("1_sbh4d")
 ItemName = "Orange"
 ItemType = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A bright citrus fruit with a sharp, refreshing smell."
 ItemTexture = ExtResource("1_p3rpm")

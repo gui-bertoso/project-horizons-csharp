@@ -147,6 +147,7 @@ public partial class SavesManager : Control
 		DataManager.I.CurrentWorldData["SaveDifficulty"] = _newSaveDifficultyOptionButton.Selected;
 		DataManager.I.CurrentWorldData["SaveSeed"] = _newSaveSeedTextEdit.Text;
 		DataManager.I.CurrentWorldData["Multiplayer"] = _newSaveMultiplayerEnabledCheckButton.ButtonPressed;
+		DataManager.I.CurrentWorldData["Meta.WorldCreatedVersion"] = DataManager.GetCurrentWorldCreationVersion();
 		((Godot.Collections.Array)DataManager.I.GameDataDictionary["Saves"]).Add(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveWorldData(_newSaveNameTextEdit.Text.ToSnakeCase());
 		DataManager.I.SaveGameData();

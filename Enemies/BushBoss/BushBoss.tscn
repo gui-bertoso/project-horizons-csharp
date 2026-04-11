@@ -5,7 +5,7 @@
 [ext_resource type="Shader" uid="uid://c8hfnsftru36o" path="res://Shaders/hitflash.gdshader" id="3_oy8hl"]
 [ext_resource type="Texture2D" uid="uid://cdw7kyw70l40g" path="res://Assets/Enemies/BossBush.png" id="4_oy8hl"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ctqsb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oy8hl"]
 resource_local_to_scene = true
 shader = ExtResource("3_oy8hl")
 shader_parameter/base_tint = Color(1, 1, 1, 1)
@@ -190,7 +190,12 @@ _data = {
 size = Vector2(35, 30)
 
 [node name="BushBoss" unique_id=1875013965 instance=ExtResource("1_rrsy7")]
+scale = Vector2(2, 2)
 script = ExtResource("2_602iq")
+MinimumDetectionDistance = 600
+MinimumAttackDistance = 240.0
+BiteDistanceThreshold = 80.0
+BreathOrRootChanceAboveFortyPercent = 0.75
 AttackRecoveryTime = 0.35
 Damage = 0
 XpReward = 107
@@ -200,7 +205,7 @@ MoveSpeed = 105
 DetectionDistance = 600
 
 [node name="Sprite" parent="." index="0" unique_id=728830498]
-material = SubResource("ShaderMaterial_ctqsb")
+material = SubResource("ShaderMaterial_oy8hl")
 position = Vector2(0, -32)
 scale = Vector2(2, 2)
 texture = ExtResource("4_oy8hl")

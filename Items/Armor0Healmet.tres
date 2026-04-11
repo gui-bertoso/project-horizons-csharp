@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_17g1v")
-ItemName = "Armor0Hat"
+ItemName = "Worn Helm"
 ItemType = 1
 ItemTexture = ExtResource("2_yqfyn")
 ArmorSpriteSheet = ExtResource("1_sijj0")
+ItemDescription = "A dented helmet from a beginner's first set of armor."

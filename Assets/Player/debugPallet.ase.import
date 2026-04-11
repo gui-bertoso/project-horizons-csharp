@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://bv7ci8d4ietvg"
+path="res://.godot/imported/debugPallet.ase-7ab8437543d67053b920490bfccee461.res"
+
+[deps]
+
+source_file="res://Assets/Player/debugPallet.ase"
+dest_files=["res://.godot/imported/debugPallet.ase-7ab8437543d67053b920490bfccee461.res"]
+
+[params]
+

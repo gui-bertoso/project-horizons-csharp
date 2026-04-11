@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://co4tngfxv2wcq"]
+
+[ext_resource type="Texture2D" uid="uid://blrvrs24eosj0" path="res://Assets/Projectiles/RootAttack.png" id="1_sgort"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sgort"]
+size = Vector2(7.5, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pkqhi"]
+size = Vector2(12, 23)
+
+[sub_resource type="Animation" id="Animation_pkqhi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_sgort"]
+resource_name = "loop"
+length = 1.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Collision:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pkqhi"]
+_data = {
+&"RESET": SubResource("Animation_pkqhi"),
+&"loop": SubResource("Animation_sgort")
+}
+
+[node name="RootAttack" type="Area2D" unique_id=617252334]
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=449077882]
+position = Vector2(0, -27)
+texture = ExtResource("1_sgort")
+hframes = 4
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=597178261]
+position = Vector2(-0.25, -36)
+shape = SubResource("RectangleShape2D_sgort")
+disabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=233473714]
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_pkqhi")
+disabled = true
+
+[node name="Animation" type="AnimationPlayer" parent="." unique_id=861548307]
+libraries/ = SubResource("AnimationLibrary_pkqhi")
+autoplay = &"loop"

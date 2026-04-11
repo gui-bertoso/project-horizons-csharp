@@ -352,26 +352,33 @@ public partial class NewEnvironment : WorldEnvironment
 			_ => CreateForestProfile()
 		};
 	}
-
+	
 	private static BiomeVisualProfile CreateForestProfile()
 	{
 		return new BiomeVisualProfile
 		{
-			Tonemap = Godot.Environment.ToneMapper.Filmic,
-			Exposure = 0.78f,
-			Brightness = 0.94f,
-			Contrast = 1.08f,
-			Saturation = 1.18f,
-			GlowBloom = 0.08f,
-			LightEnergy = 0.75f,
+			Tonemap = Godot.Environment.ToneMapper.Linear,
+
+			Exposure = 1.0f,
+			Saturation = 1.0f,
+			Brightness = 1.0f,
+			Contrast = 1.0f,
+
+			GlowBloom = 0.0f,
+
+			LightEnergy = 0.55f,
 			LightRotationDegrees = -26.0f,
-			CanvasTint = new Color(0.91f, 0.98f, 0.9f, 1.0f),
-			LightColor = new Color(0.96f, 0.93f, 0.8f, 1.0f),
-			SkyOverlayColor = new Color(0.61f, 0.82f, 0.58f, 0.0f),
-			FarFogColor = new Color(0.73f, 0.86f, 0.64f, 0.0f),
-			NearFogColor = new Color(0.52f, 0.69f, 0.49f, 0.0f),
-			LightOverlayColor = new Color(0.96f, 0.9f, 0.66f, 0.0f),
+
+			CanvasTint = new Color(1.0f, 1.0f, 1.0f, 1.0f),
+			LightColor = new Color(1.0f, 1.0f, 1.0f, 1.0f),
+
+			SkyOverlayColor = new Color(1.0f, 1.0f, 1.0f, 0.0f),
+			FarFogColor = new Color(1.0f, 1.0f, 1.0f, 0.0f),
+			NearFogColor = new Color(1.0f, 1.0f, 1.0f, 0.0f),
+
+			LightOverlayColor = new Color(1.0f, 1.0f, 1.0f, 0.0f),
 			HeatHazeColor = new Color(0.0f, 0.0f, 0.0f, 0.0f),
+
 			Variants = new[] { WeatherVariant.Calm, WeatherVariant.Rain, WeatherVariant.Spores },
 			VariantWeights = new[] { 0.55f, 0.28f, 0.17f }
 		};

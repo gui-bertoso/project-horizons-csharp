@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_881yy")
-ItemName = "Armor3Hat"
+ItemName = "Royal Helm"
 ItemType = 1
+ItemDescription = "A polished helm fit for a champion of the realm."
 ItemTexture = ExtResource("2_emuut")
 ArmorSpriteSheet = ExtResource("1_74yf7")

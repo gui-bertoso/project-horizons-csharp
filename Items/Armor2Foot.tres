@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_p3l2g")
-ItemName = "Armor2Foot"
+ItemName = "Knight Greaves"
 ItemType = 3
 ItemTexture = ExtResource("2_ri27b")
 ArmorSpriteSheet = ExtResource("1_m0kcp")
+ItemDescription = "Heavy greaves that trade comfort for dependable defense."

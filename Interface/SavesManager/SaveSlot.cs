@@ -18,6 +18,8 @@ public partial class SaveSlot : VBoxContainer
 	private Label _levelNameLabel;
 	private Label _levelDifficultyLabel;
 	private Label _seedLabel;
+	private Label _worldVersionLabel;
+	private CheckButton _multiplayerEnabledCheckButton;
 
 	private string _saveId = "";
 
@@ -35,6 +37,8 @@ public partial class SaveSlot : VBoxContainer
 		_currentLevelLabel = GetNode<Label>("%CurrentLevel");
 		_levelNameLabel = GetNode<Label>("%Name");
 		_levelDifficultyLabel = GetNode<Label>("%Difficulty");
+		_worldVersionLabel = GetNode<Label>("%WorldVersion");
+		_multiplayerEnabledCheckButton = GetNode<CheckButton>("%MultiplayerEnabled");
 	}
 
 	private void _OnShowDataButtonUp()
@@ -101,6 +105,13 @@ public partial class SaveSlot : VBoxContainer
 		_currentLevelLabel.Text = saveData["CurrentLevel"].ToString();
 		_seedLabel.Text = saveData["SaveSeed"].ToString();
 		_levelNameLabel.Text = saveData["SaveName"].ToString();
+		_worldVersionLabel.Text = saveData.TryGetValue("Meta.WorldCreatedVersion", out Variant versionVar) &&
+			!string.IsNullOrWhiteSpace(versionVar.AsString())
+			? versionVar.AsString()
+			: "Unknown";
+		_multiplayerEnabledCheckButton.ButtonPressed = saveData.TryGetValue("Multiplayer", out Variant multiplayerVar) &&
+			multiplayerVar.AsBool();
+		_multiplayerEnabledCheckButton.Disabled = true;
 
 		var difficultyId = (int)saveData["SaveDifficulty"];
 		_levelDifficultyLabel.Text = GetDifficultyText(difficultyId);

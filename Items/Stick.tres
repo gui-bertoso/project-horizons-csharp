@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("3_l7bjl")
-ItemName = "Orange"
+ItemName = "Wooden Stick"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A plain stick from the ground, simple but surprisingly reliable."
 ItemTexture = ExtResource("2_5ouia")
 ItemScene = ExtResource("1_ipn1b")

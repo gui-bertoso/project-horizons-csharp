@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_ma6yj")
-ItemName = "Orange"
+ItemName = "Prototype Hammer"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A heavy test hammer that solves problems with brute force."
 ItemTexture = ExtResource("1_va5n4")
 ItemScene = ExtResource("1_59tq8")

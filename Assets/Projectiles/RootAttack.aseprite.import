@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://7wkkqd63cs8p"
+path="res://.godot/imported/RootAttack.aseprite-bade17731030dd64e1977f3c8a87a48d.res"
+
+[deps]
+
+source_file="res://Assets/Projectiles/RootAttack.aseprite"
+dest_files=["res://.godot/imported/RootAttack.aseprite-bade17731030dd64e1977f3c8a87a48d.res"]
+
+[params]
+

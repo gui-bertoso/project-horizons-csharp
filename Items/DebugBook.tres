@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("3_03sns")
-ItemName = "Orange"
+ItemName = "Prototype Grimoire"
 ItemClass = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "An unstable test grimoire stitched together for arcane experiments."
 ItemTexture = ExtResource("2_tmm7d")
 ItemScene = ExtResource("1_3r1hn")

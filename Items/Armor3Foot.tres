@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_dmqya")
-ItemName = "Armor3Foot"
+ItemName = "Royal Greaves"
 ItemType = 3
 ItemTexture = ExtResource("2_4hubf")
 ArmorSpriteSheet = ExtResource("1_1ijp8")
+ItemDescription = "Masterworked greaves worn by veterans of high rank."

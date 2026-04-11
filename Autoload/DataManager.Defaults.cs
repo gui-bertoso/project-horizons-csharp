@@ -56,6 +56,7 @@ public partial class DataManager
 		return new Dictionary<string, Variant>
 		{
 			{ "Meta.WorldDataVersion", WorldDataVersion },
+			{ "Meta.WorldCreatedVersion", "" },
 			{ "CurrentLevel", 1 },
 			{ "PlayedTime", 0f },
 			{ "SaveSeed", "" },

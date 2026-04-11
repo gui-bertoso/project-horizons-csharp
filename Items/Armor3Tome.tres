@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_okx32")
-ItemName = "Armor3Tome"
+ItemName = "Royal Cuirass"
 ItemType = 2
 ItemTexture = ExtResource("2_42pda")
 ArmorSpriteSheet = ExtResource("1_uo0m6")
+ItemDescription = "An elite cuirass forged to endure the worst a battlefield can offer."

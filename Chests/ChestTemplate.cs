@@ -22,6 +22,8 @@ public partial class ChestDrop : Resource
 }
 public partial class ChestTemplate : Node2D, IGeneratedChest
 {
+	private const string ItemsDirectoryPath = "res://Items";
+
     private Sprite2D _sprite;
     private Label _label;
     private string _chestId = "";
@@ -35,6 +37,9 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
 
     [Export]
     public bool IsOpened = false;
+
+	[Export]
+	public bool UseAllItemsAsDrops = false;
 
     public Godot.Collections.Array<ChestDrop> Drops = new();
 
@@ -53,7 +58,12 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
             _sprite.Frame = IsOpened ? 1 : 0;
 
         if (Drops == null || Drops.Count == 0)
-            BuildDefaultDrops();
+        {
+            if (UseAllItemsAsDrops)
+                BuildAllItemDrops();
+            else
+                BuildDefaultDrops();
+        }
 
         GD.Print($"chest drops count: {Drops.Count}");
 
@@ -130,6 +140,25 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
         AddDrop(6, "res://Items/VenomPotion.tres");
     }
 
+	private void BuildAllItemDrops()
+	{
+		Drops = new Godot.Collections.Array<ChestDrop>();
+
+		foreach (string fileName in DirAccess.GetFilesAt(ItemsDirectoryPath))
+		{
+			if (!fileName.EndsWith(".tres", StringComparison.OrdinalIgnoreCase))
+				continue;
+
+			string itemPath = $"{ItemsDirectoryPath}/{fileName}";
+			Item item = ResourceLoader.Load<Item>(itemPath);
+
+			if (!IsValidDropItem(item))
+				continue;
+
+			Drops.Add(new ChestDrop(1, item));
+		}
+	}
+
     public void SetupChest(string chestId, int levelId, Vector2I cell)
     {
         _chestId = chestId;
@@ -151,7 +180,7 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
     {
         Item item = ResourceLoader.Load<Item>(itemPath);
 
-        if (item == null)
+        if (!IsValidDropItem(item))
         {
             GD.PrintErr($"falhou ao carregar item: {itemPath}");
             return;
@@ -159,6 +188,11 @@ public partial class ChestTemplate : Node2D, IGeneratedChest
 
         Drops.Add(new ChestDrop(chance, item));
     }
+
+	private static bool IsValidDropItem(Item item)
+	{
+		return item != null && !string.IsNullOrWhiteSpace(item.ItemName);
+	}
 
     private void UpdateCanOpen()
     {

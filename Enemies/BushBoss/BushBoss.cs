@@ -21,7 +21,7 @@ public partial class BushBoss : EnemyTemplate
 	public float MinimumAttackDistance = 240f;
 
 	[Export]
-	public float BiteDistanceThreshold = 80f;
+	public float BiteDistanceThreshold = 120f;
 
 	[Export]
 	public float BreathOrRootChanceAboveFortyPercent = 0.75f;

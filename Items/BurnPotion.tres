@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_lr5dv")
-ItemName = "Orange"
+ItemName = "Burn Tonic"
 ItemType = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A volatile brew that carries a searing aftertaste."
 ItemTexture = ExtResource("1_r2una")

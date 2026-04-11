@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("1_yrcub")
-ItemName = "Armor0Foot"
+ItemName = "Worn Boots"
 ItemType = 3
 ItemTexture = ExtResource("2_wenwj")
 ArmorSpriteSheet = ExtResource("1_b8ohd")
+ItemDescription = "Old leather boots that still hold together through mud and sand."

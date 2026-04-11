@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_s67t3")
-ItemName = "Armor2Hat"
+ItemName = "Knight Helm"
 ItemType = 1
 ItemTexture = ExtResource("2_ksmxq")
 ArmorSpriteSheet = ExtResource("1_iqjx6")
+ItemDescription = "A solid helm forged for front-line fighters."

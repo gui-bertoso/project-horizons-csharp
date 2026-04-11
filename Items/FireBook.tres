@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_28dgc")
-ItemName = "Orange"
+ItemName = "Ember Tome"
 ItemClass = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A scorched spellbook that hums with contained flame."
 ItemTexture = ExtResource("1_d7iw5")
 ItemScene = ExtResource("1_2o8a1")

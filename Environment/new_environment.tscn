@@ -69,12 +69,10 @@ color = Color(0.8, 0.95, 0.72, 0.65)
 [node name="WorldEnvironment" type="WorldEnvironment" unique_id=1273801706]
 script = ExtResource("1_i71m7")
 
-[node name="SkyOverlay" type="CanvasLayer" parent="."]
-layer = 1
+[node name="SkyOverlay" type="CanvasLayer" parent="." unique_id=2020991474]
 
-[node name="ColorRect" type="ColorRect" parent="SkyOverlay"]
+[node name="ColorRect" type="ColorRect" parent="SkyOverlay" unique_id=802159731]
 visible = false
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -83,13 +81,12 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="FarFog" type="CanvasLayer" parent="."]
+[node name="FarFog" type="CanvasLayer" parent="." unique_id=48987252]
 layer = 2
 
-[node name="ColorRect" type="ColorRect" parent="FarFog"]
+[node name="ColorRect" type="ColorRect" parent="FarFog" unique_id=906169531]
 visible = false
-layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_top = 0.2
 anchor_right = 1.0
 anchor_bottom = 0.9
@@ -98,13 +95,12 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="NearFog" type="CanvasLayer" parent="."]
+[node name="NearFog" type="CanvasLayer" parent="." unique_id=634385504]
 layer = 4
 
-[node name="ColorRect" type="ColorRect" parent="NearFog"]
+[node name="ColorRect" type="ColorRect" parent="NearFog" unique_id=2122724423]
 visible = false
-layout_mode = 1
-anchors_preset = 12
+anchors_preset = -1
 anchor_top = 0.45
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -113,7 +109,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="Weather" type="CanvasLayer" parent="."]
+[node name="Weather" type="CanvasLayer" parent="." unique_id=325722361]
 layer = 5
 
 [node name="Rain" type="GPUParticles2D" parent="Weather" unique_id=2004600792]
@@ -144,10 +140,10 @@ texture = SubResource("AtlasTexture_snow")
 lifetime = 4.54
 process_material = SubResource("ParticleProcessMaterial_snow")
 
-[node name="AmbientParticles" type="CanvasLayer" parent="."]
+[node name="AmbientParticles" type="CanvasLayer" parent="." unique_id=237584910]
 layer = 6
 
-[node name="Spores" type="GPUParticles2D" parent="AmbientParticles"]
+[node name="Spores" type="GPUParticles2D" parent="AmbientParticles" unique_id=947567316]
 visible = false
 position = Vector2(577, 82)
 emitting = false
@@ -156,12 +152,11 @@ texture = SubResource("AtlasTexture_spores")
 lifetime = 8.0
 process_material = SubResource("ParticleProcessMaterial_spores")
 
-[node name="LightOverlay" type="CanvasLayer" parent="."]
+[node name="LightOverlay" type="CanvasLayer" parent="." unique_id=1926546612]
 layer = 7
 
-[node name="ColorRect" type="ColorRect" parent="LightOverlay"]
+[node name="ColorRect" type="ColorRect" parent="LightOverlay" unique_id=896561585]
 visible = false
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -170,12 +165,11 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
-[node name="ScreenFx" type="CanvasLayer" parent="."]
+[node name="ScreenFx" type="CanvasLayer" parent="." unique_id=2058678960]
 layer = 8
 
-[node name="HeatHaze" type="ColorRect" parent="ScreenFx"]
+[node name="HeatHaze" type="ColorRect" parent="ScreenFx" unique_id=731388325]
 visible = false
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -185,6 +179,5 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="DirectionalLight" type="DirectionalLight2D" parent="." unique_id=461681002]
-enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=748544833]

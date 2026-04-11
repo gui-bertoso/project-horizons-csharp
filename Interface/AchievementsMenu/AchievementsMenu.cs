@@ -6,6 +6,8 @@ namespace projecthorizonscs.Interface.AchievementsMenu;
 
 public partial class AchievementsMenu : Control
 {
+	private static readonly Shader SilhouetteShader = ResourceLoader.Load<Shader>("res://Shaders/compendium_silhouette.gdshader");
+
 	private VBoxContainer _achievementsList;
 	private VBoxContainer _itemsList;
 
@@ -70,11 +72,13 @@ public partial class AchievementsMenu : Control
 
 	private Control CreateAchievementCard(Achievement achievement, AchievementsManager manager)
 	{
+		bool isUnlocked = achievement.Unlocked;
+
 		var panel = CreateCardPanel();
 		var row = new HBoxContainer();
 		panel.AddChild(row);
 
-		row.AddChild(CreateIcon(achievement.AchievementTexture));
+		row.AddChild(CreateIcon(achievement.AchievementTexture, isUnlocked));
 
 		var content = new VBoxContainer();
 		content.SizeFlagsHorizontal = SizeFlags.ExpandFill;
@@ -82,21 +86,25 @@ public partial class AchievementsMenu : Control
 
 		var title = new Label
 		{
-			Text = $"{achievement.AchievementName} [{GetStatusText(achievement)}]"
+			Text = isUnlocked
+				? $"{achievement.AchievementName} [{GetStatusText(achievement)}]"
+				: "Locked achievement"
 		};
-		title.AddThemeColorOverride("font_color", achievement.Unlocked ? new Color("9ad06f") : new Color("d08a6f"));
+		title.AddThemeColorOverride("font_color", isUnlocked ? new Color("9ad06f") : new Color("9b9b9b"));
 		content.AddChild(title);
 
 		var description = new Label
 		{
-			Text = achievement.AchievementDescription,
+			Text = isUnlocked ? achievement.AchievementDescription : "Unlock this achievement to reveal its details.",
 			AutowrapMode = TextServer.AutowrapMode.WordSmart
 		};
 		content.AddChild(description);
 
 		var metadata = new Label
 		{
-			Text = $"Class: {achievement.ClassType} | Trigger: {achievement.TriggerEvent} | Progress: {GetProgressText(achievement, manager)}",
+			Text = isUnlocked
+				? $"Class: {achievement.ClassType} | Trigger: {achievement.TriggerEvent} | Progress: {GetProgressText(achievement, manager)}"
+				: "Details hidden until unlocked.",
 			AutowrapMode = TextServer.AutowrapMode.WordSmart
 		};
 		metadata.AddThemeColorOverride("font_color", new Color("b7b7b7"));
@@ -107,28 +115,34 @@ public partial class AchievementsMenu : Control
 
 	private Control CreateItemCard(Item item)
 	{
+		bool isDiscovered = IsItemDiscovered(item);
+
 		var panel = CreateCardPanel();
 		var row = new HBoxContainer();
 		panel.AddChild(row);
 
-		row.AddChild(CreateIcon(item.ItemTexture));
+		row.AddChild(CreateIcon(item.ItemTexture, isDiscovered));
 
 		var content = new VBoxContainer();
 		content.SizeFlagsHorizontal = SizeFlags.ExpandFill;
 		row.AddChild(content);
 
-		content.AddChild(new Label { Text = item.ItemName });
+		content.AddChild(new Label { Text = isDiscovered ? item.ItemName : "Unknown item" });
 
 		var description = new Label
 		{
-			Text = string.IsNullOrWhiteSpace(item.ItemDescription) ? "No description." : item.ItemDescription,
+			Text = isDiscovered
+				? (string.IsNullOrWhiteSpace(item.ItemDescription) ? "No description." : item.ItemDescription)
+				: "Discover this item to reveal its data.",
 			AutowrapMode = TextServer.AutowrapMode.WordSmart
 		};
 		content.AddChild(description);
 
 		var metadata = new Label
 		{
-			Text = $"Type: {item.ItemType} | Class: {item.ItemClass} | Amount: {item.ItemAmount} | Path: {item.ResourcePath}",
+			Text = isDiscovered
+				? $"Type: {item.ItemType} | Class: {item.ItemClass} | Amount: {item.ItemAmount} | Path: {item.ResourcePath}"
+				: "Details hidden until discovered.",
 			AutowrapMode = TextServer.AutowrapMode.WordSmart
 		};
 		metadata.AddThemeColorOverride("font_color", new Color("b7b7b7"));
@@ -159,7 +173,7 @@ public partial class AchievementsMenu : Control
 		return panel;
 	}
 
-	private static Control CreateIcon(Texture2D texture)
+	private static Control CreateIcon(Texture2D texture, bool isRevealed)
 	{
 		var textureRect = new TextureRect
 		{
@@ -169,7 +183,20 @@ public partial class AchievementsMenu : Control
 			Texture = texture
 		};
 
+		if (!isRevealed && SilhouetteShader != null)
+		{
+			textureRect.Material = new ShaderMaterial
+			{
+				Shader = SilhouetteShader
+			};
+		}
+
 		return textureRect;
+	}
+
+	private static bool IsItemDiscovered(Item item)
+	{
+		return AchievementsManager.I?.DiscoveredItems.Contains(item.ItemName) == true;
 	}
 
 	private static string GetStatusText(Achievement achievement)

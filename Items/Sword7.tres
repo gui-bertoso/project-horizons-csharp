@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_xgodc")
-ItemName = "Orange"
+ItemName = "Storm Blade"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A refined blade that feels eager to split the air itself."
 ItemTexture = ExtResource("1_iw25f")
 ItemScene = ExtResource("1_xgodc")

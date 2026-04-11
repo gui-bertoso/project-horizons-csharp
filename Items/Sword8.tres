@@ -6,8 +6,8 @@
 
 [resource]
 script = ExtResource("2_ol24v")
-ItemName = "Orange"
+ItemName = "Sunforged Greatsword"
 ItemClass = 1
-ItemDescription = "A citric fruit"
+ItemDescription = "A high-tier sword forged with enough heat to leave legends behind."
 ItemTexture = ExtResource("1_b2uis")
 ItemScene = ExtResource("1_j0c6q")

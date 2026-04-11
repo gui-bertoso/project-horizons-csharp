@@ -6,7 +6,8 @@
 
 [resource]
 script = ExtResource("3_fxdma")
-ItemName = "Armor1Foot"
+ItemName = "Scout Boots"
 ItemType = 3
+ItemDescription = "Flexible boots made for quick movement across broken ground."
 ItemTexture = ExtResource("2_7j7l3")
 ArmorSpriteSheet = ExtResource("1_jh03p")

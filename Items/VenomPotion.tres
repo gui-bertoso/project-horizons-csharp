@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("2_0qggs")
-ItemName = "Orange"
+ItemName = "Venom Flask"
 ItemType = 5
-ItemDescription = "A citric fruit"
+ItemDescription = "A dark concoction that carries a bitter sting in every drop."
 ItemTexture = ExtResource("1_m3fog")
